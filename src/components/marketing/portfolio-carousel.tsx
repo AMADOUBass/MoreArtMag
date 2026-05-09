@@ -15,12 +15,28 @@ const SAMPLE_WORKS = [
 export default function PortfolioCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState(0)
+  const [x, setX] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
 
   useEffect(() => {
     if (scrollRef.current) {
       setWidth(scrollRef.current.scrollWidth - scrollRef.current.offsetWidth)
     }
   }, [])
+
+  // Auto-play logic
+  useEffect(() => {
+    if (isPaused) return
+
+    const interval = setInterval(() => {
+      setX((prevX) => {
+        const nextX = prevX - 1
+        return nextX < -width ? 0 : nextX
+      })
+    }, 30) // Slow smooth movement
+
+    return () => clearInterval(interval)
+  }, [width, isPaused])
 
   return (
     <div className="py-20 overflow-hidden bg-background-primary">
@@ -35,11 +51,14 @@ export default function PortfolioCarousel() {
       <motion.div 
         ref={scrollRef}
         className="cursor-grab active:cursor-grabbing overflow-hidden"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
       >
         <motion.div 
           drag="x"
           dragConstraints={{ right: 0, left: -width }}
-          whileTap={{ cursor: 'grabbing' }}
+          animate={{ x }}
+          onDragStart={() => setIsPaused(true)}
           className="flex gap-8 px-[10vw]"
         >
           {SAMPLE_WORKS.map((work) => (
