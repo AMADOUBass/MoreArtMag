@@ -76,7 +76,7 @@ export default async function PeinturesPage() {
             const isPlaceholder = art._id.startsWith('pa');
             const imgSrc = isPlaceholder 
               ? `/images/placeholders/painting_${art._id.replace('pa', '')}.png`
-              : urlFor(art.mainImage).width(1600).url();
+              : (art.mainImage ? urlFor(art.mainImage).width(1600).url() : '/images/placeholders/painting_1.png');
 
             return (
               <section key={art._id} className={`grid grid-cols-1 lg:grid-cols-12 gap-12 items-center ${idx % 2 === 0 ? '' : 'lg:flex-row-reverse'}`}>

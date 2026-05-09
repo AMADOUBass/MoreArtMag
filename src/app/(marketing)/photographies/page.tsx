@@ -106,7 +106,7 @@ export default async function PhotographiesPage() {
             const isPlaceholder = art._id.startsWith('ph');
             const imgSrc = isPlaceholder 
               ? `/images/placeholders/photo_${art._id.replace('ph', '')}.png`
-              : urlFor(art.mainImage).width(1000).url();
+              : (art.mainImage ? urlFor(art.mainImage).width(1000).url() : '/images/placeholders/photo_1.png');
 
             return (
               <div key={art._id} className="break-inside-avoid group relative rounded-sm overflow-hidden bg-background-secondary shadow-xl transition-all duration-500 hover:shadow-accent/5">

@@ -19,7 +19,7 @@ export default function ArtworkCard({ artwork, onClick }: ArtworkCardProps) {
     >
       <div className="relative aspect-[4/5] overflow-hidden">
         <Image
-          src={urlFor(artwork.mainImage).width(800).url()}
+          src={artwork.mainImage ? urlFor(artwork.mainImage).width(800).url() : '/images/placeholders/photo_1.png'}
           alt={artwork.title}
           fill
           className="object-cover transition-transform duration-1000 group-hover:scale-110"

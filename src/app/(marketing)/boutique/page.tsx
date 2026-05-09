@@ -94,7 +94,7 @@ export default async function BoutiquePage() {
              const isPlaceholder = art._id.startsWith('shop');
              const imgSrc = isPlaceholder 
                ? (art.type === 'photo' ? '/images/placeholders/photo_1.png' : '/images/placeholders/painting_1.png')
-               : urlFor(art.mainImage).width(1000).url();
+               : (art.mainImage ? urlFor(art.mainImage).width(1000).url() : '/images/placeholders/photo_1.png');
              
              return (
               <div key={art._id} className="group flex flex-col">
