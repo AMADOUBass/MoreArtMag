@@ -8,6 +8,8 @@ import { ShoppingBag, Trash2, Plus, Minus, ArrowRight, ChevronLeft } from 'lucid
 import { useCart } from '@/store/use-cart'
 import { toast } from 'sonner'
 
+import Breadcrumbs from '@/components/marketing/breadcrumbs'
+
 export default function CartPage() {
   const { items, removeItem, updateQuantity, totalPrice, totalItems } = useCart()
   const [mounted, setMounted] = useState(false)
@@ -51,9 +53,7 @@ export default function CartPage() {
     <main className="min-h-screen bg-background-primary pt-32 pb-20">
       <div className="container-custom max-w-5xl py-20">
         <header className="mb-16">
-           <Link href="/moreart" className="eyebrow text-text-muted hover:text-accent transition-colors flex items-center gap-2 mb-8">
-              <ChevronLeft size={16} /> Retour à la galerie
-           </Link>
+           <Breadcrumbs items={[{ label: 'PANIER' }]} />
            <h1 className="text-4xl md:text-8xl font-display italic text-white leading-none">
               Mon <span className="text-accent">Panier</span>
            </h1>

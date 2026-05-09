@@ -9,6 +9,8 @@ import { urlFor } from '@/lib/sanity/image'
 import { createClient } from '@/lib/supabase/server'
 import { ArtworkWithStock } from '@/types/artwork'
 
+import Breadcrumbs from '@/components/marketing/breadcrumbs'
+
 interface PageProps {
   params: { slug: string }
 }
@@ -64,12 +66,11 @@ export default async function ArtworkPage({ params }: PageProps) {
   return (
     <main className="pt-32 pb-20 bg-background-primary min-h-screen">
       <div className="container-custom py-20">
-        {/* Navigation fil d'Ariane minimaliste */}
-        <nav className="mb-12">
-          <Link href="/moreart" className="eyebrow text-text-muted hover:text-accent transition-colors flex items-center gap-2">
-            <span className="text-lg">←</span> Retour à la galerie
-          </Link>
-        </nav>
+        {/* Navigation fil d'Ariane dynamique */}
+        <Breadcrumbs items={[
+          { label: 'GALERIE', href: '/moreart' },
+          { label: artwork.title }
+        ]} />
 
         <ArtworkView artwork={artwork} />
 

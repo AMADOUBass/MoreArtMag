@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import { client } from '@/lib/sanity/client'
+import Breadcrumbs from '@/components/marketing/breadcrumbs'
 import PortfolioCarousel from '@/components/marketing/portfolio-carousel'
 
 export default async function ArtistPage() {
@@ -16,6 +17,7 @@ export default async function ArtistPage() {
       {/* Hero Section - Conservation du Portrait Original */}
       <section className="container-custom py-20 lg:py-40">
         <div className="mb-32 md:mb-56 max-w-4xl relative">
+          <Breadcrumbs items={[{ label: 'À PROPOS' }]} />
           <div className="absolute -left-12 -top-12 text-[140px] font-display italic text-white/[0.03] select-none pointer-events-none leading-none">
             Bio
           </div>

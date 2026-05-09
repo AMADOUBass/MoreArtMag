@@ -6,6 +6,8 @@ import { Send, Mail, Phone, MapPin, Globe, MessageCircle, ArrowRight } from 'luc
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import Breadcrumbs from '@/components/marketing/breadcrumbs'
+
 const contactSchema = z.object({
   name: z.string().min(2, "Le nom est trop court"),
   email: z.string().email("Email invalide"),
@@ -68,6 +70,7 @@ export default function ContactPage() {
           {/* Left Column: Info */}
           <div className="lg:col-span-5 space-y-16">
             <header>
+               <Breadcrumbs items={[{ label: 'CONTACT' }]} />
                <p className="eyebrow text-accent mb-8 flex items-center gap-4">
                   <span className="w-12 h-[1px] bg-accent/50" />
                   Contact & Collaboration
