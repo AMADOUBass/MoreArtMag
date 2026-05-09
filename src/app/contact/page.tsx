@@ -11,11 +11,11 @@ import Breadcrumbs from '@/components/marketing/breadcrumbs'
 import Button from '@/components/ui/button'
 
 const contactSchema = z.object({
-  name: z.string().min(2, "Le nom est trop court"),
-  email: z.string().email("Email invalide"),
+  name: z.string().min(1, "Veuillez renseigner votre nom complet"),
+  email: z.string().min(1, "L'adresse email est obligatoire").email("Le format de l'email n'est pas valide"),
   phone: z.string().optional(),
-  subject: z.string().min(5, "Le sujet est trop court"),
-  message: z.string().min(10, "Le message est trop court"),
+  subject: z.string().min(1, "L'objet de votre message est requis").min(3, "Le sujet est trop court"),
+  message: z.string().min(1, "Le contenu de votre message est vide").min(10, "Votre message doit contenir au moins 10 caractères"),
   type: z.enum(['general', 'commission', 'press', 'gallery']),
   budget: z.string().optional(),
   size: z.string().optional(),
