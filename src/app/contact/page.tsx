@@ -83,26 +83,43 @@ export default function ContactPage() {
                </h1>
             </header>
 
-            <div className="space-y-12">
-               <div className="flex gap-6 group">
-                  <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-text-muted group-hover:text-accent group-hover:border-accent transition-all duration-300">
-                     <Mail size={20} />
-                  </div>
-                  <div>
-                     <p className="eyebrow text-[10px] text-text-muted mb-1">Email</p>
-                     <p className="text-xl text-white">contact@moreartmag.com</p>
-                  </div>
-               </div>
+            <div className="space-y-10">
+                <div className="flex items-start gap-5 group">
+                   <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500">
+                      <Mail size={20} />
+                   </div>
+                   <div>
+                      <p className="eyebrow text-[10px] text-text-muted mb-2">Email</p>
+                      <p className="text-white text-lg font-display italic leading-tight">
+                         contact@moreartmag.com
+                      </p>
+                   </div>
+                </div>
 
-               <div className="flex gap-6 group">
-                  <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-text-muted group-hover:text-accent group-hover:border-accent transition-all duration-300">
-                     <MapPin size={20} />
-                  </div>
-                  <div>
-                     <p className="eyebrow text-[10px] text-text-muted mb-1">Studio</p>
-                     <p className="text-xl text-white">Bamako, Mali / Paris, France</p>
-                  </div>
-               </div>
+                <div className="flex items-start gap-5 group">
+                   <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500">
+                      <MapPin size={20} />
+                   </div>
+                   <div>
+                      <p className="eyebrow text-[10px] text-text-muted mb-2">Studio</p>
+                      <p className="text-white text-lg font-display italic leading-tight">
+                         430 Rue Faraday #102<br/>
+                         Québec, QC G1N 4E5
+                      </p>
+                   </div>
+                </div>
+
+                <div className="flex items-start gap-5 group">
+                   <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500">
+                      <Phone size={20} />
+                   </div>
+                   <div>
+                      <p className="eyebrow text-[10px] text-text-muted mb-2">Téléphone</p>
+                      <p className="text-white text-lg font-display italic leading-tight">
+                         (418) 670-4391
+                      </p>
+                   </div>
+                </div>
             </div>
 
             <div className="pt-12 border-t border-white/5">
@@ -165,21 +182,23 @@ export default function ContactPage() {
                    />
                 </div>
 
-                <div className="space-y-3">
-                   <label className="eyebrow text-[10px] text-text-muted">Type de Demande</label>
-                   <div className="flex flex-wrap gap-3">
+                <div className="space-y-6">
+                   <label className="eyebrow text-[10px] text-text-muted">Type de demande</label>
+                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                       {['general', 'commission', 'press', 'gallery'].map((type) => (
                         <button
                           key={type}
                           type="button"
-                          className={`px-6 py-3 rounded-full eyebrow text-[10px] border transition-all duration-300 ${
-                            formData.type === type 
-                            ? 'bg-accent border-accent text-white' 
-                            : 'bg-transparent border-white/10 text-text-muted hover:border-white/30'
-                          }`}
                           onClick={() => setFormData({...formData, type: type as any})}
+                          className={`py-3 px-4 rounded-xl border text-[9px] eyebrow transition-all duration-500 text-center ${
+                            formData.type === type 
+                              ? 'border-accent bg-accent/10 text-accent shadow-[0_0_20px_rgba(192,136,85,0.15)]' 
+                              : 'border-white/5 bg-white/5 text-text-muted hover:border-white/20'
+                          }`}
                         >
-                          {type === 'general' ? 'Général' : type === 'commission' ? 'Commande Art' : type === 'press' ? 'Presse' : 'Galerie'}
+                          {type === 'general' ? 'Général' : 
+                           type === 'commission' ? 'Commande' : 
+                           type === 'press' ? 'Presse' : 'Galerie'}
                         </button>
                       ))}
                    </div>
