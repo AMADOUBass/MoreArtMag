@@ -113,13 +113,13 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Right Column: Form */}
-          <div className="lg:col-span-7">
+           <div className="lg:col-span-7">
              <motion.form 
                initial={{ opacity: 0, y: 20 }}
                whileInView={{ opacity: 1, y: 0 }}
-               className="bg-white/[0.02] backdrop-blur-xl p-8 md:p-12 rounded-sm border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] space-y-8 relative overflow-hidden"
+               className="bg-white/[0.02] backdrop-blur-xl p-6 md:p-10 rounded-sm border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] space-y-6 relative overflow-hidden"
                onSubmit={handleSubmit}
+               noValidate
              >
                 {/* Subtle Gradient Glow */}
                 <div className="absolute -top-24 -right-24 w-48 h-48 bg-accent/10 rounded-full blur-[100px] pointer-events-none" />
@@ -129,9 +129,8 @@ export default function ContactPage() {
                       <label className="eyebrow text-[10px] text-text-muted">Nom Complet</label>
                       <input 
                         type="text" 
-                        required
                         placeholder="Votre nom"
-                        className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors"
+                        className="w-full bg-white/5 border border-white/10 rounded-sm px-5 py-3 text-white focus:outline-none focus:border-accent transition-colors"
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
                       />
@@ -140,9 +139,8 @@ export default function ContactPage() {
                       <label className="eyebrow text-[10px] text-text-muted">Email</label>
                       <input 
                         type="email" 
-                        required
                         placeholder="votre@email.com"
-                        className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors"
+                        className="w-full bg-white/5 border border-white/10 rounded-sm px-5 py-3 text-white focus:outline-none focus:border-accent transition-colors"
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
                       />
@@ -154,7 +152,7 @@ export default function ContactPage() {
                    <input 
                      type="tel" 
                      placeholder="+33 6 00 00 00 00"
-                     className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors"
+                     className="w-full bg-white/5 border border-white/10 rounded-sm px-5 py-3 text-white focus:outline-none focus:border-accent transition-colors"
                      value={formData.phone}
                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
                    />
@@ -215,21 +213,21 @@ export default function ContactPage() {
 
                 <div className="space-y-3">
                    <label className="eyebrow text-[10px] text-text-muted">Sujet</label>
-                   <input 
-                     type="text" 
-                     placeholder="L'objet de votre message"
-                     className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors"
-                     value={formData.subject}
-                     onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                   />
+                    <input 
+                      type="text" 
+                      placeholder="L'objet de votre message"
+                      className="w-full bg-white/5 border border-white/10 rounded-sm px-5 py-3 text-white focus:outline-none focus:border-accent transition-colors"
+                      value={formData.subject}
+                      onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                    />
                 </div>
 
                 <div className="space-y-3">
                    <label className="eyebrow text-[10px] text-text-muted">Message</label>
                    <textarea 
-                     rows={6}
+                     rows={5}
                      placeholder="Comment puis-je vous aider ?"
-                     className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors resize-none"
+                     className="w-full bg-white/5 border border-white/10 rounded-sm px-5 py-3 text-white focus:outline-none focus:border-accent transition-colors resize-none"
                      value={formData.message}
                      onChange={(e) => setFormData({...formData, message: e.target.value})}
                    />
@@ -238,7 +236,7 @@ export default function ContactPage() {
                 <button 
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-white text-black py-6 eyebrow text-xs font-bold uppercase tracking-[0.2em] rounded-sm hover:bg-accent hover:text-white transition-all duration-500 flex items-center justify-center gap-4 group"
+                  className="w-full bg-white text-black py-4 eyebrow text-xs font-bold uppercase tracking-[0.2em] rounded-sm hover:bg-accent hover:text-white transition-all duration-500 flex items-center justify-center gap-4 group"
                 >
                    {loading ? "Envoi en cours..." : (
                      <>
