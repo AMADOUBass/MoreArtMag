@@ -146,6 +146,7 @@ export default function ArtworkView({ artwork }: ArtworkViewProps) {
                        {selectedSize?.sizeId === size.sizeId && <Check size={18} className="text-accent" />}
                     </div>
                   </button>
+                ))}
               </div>
             </div>
           )}
