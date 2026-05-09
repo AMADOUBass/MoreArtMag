@@ -7,9 +7,9 @@ import PortfolioCarousel from '@/components/marketing/portfolio-carousel'
 export default async function ArtistPage() {
   const artist = {
     name: "Bazan Togola",
-    bio: "Artiste malien en quête perpétuelle de ses racines, Bazan Togola capture l'invisible à travers son objectif et ses pinceaux. Baigné dans la culture malienne, son œuvre est un dialogue vibrant entre la mémoire ancestrale et la modernité.",
-    quote: "L'art est ma boussole dans cette recherche constante de mes racines.",
-    vision: "Ma vision est celle d'un pont entre deux mondes. À travers Triple Vision, je cherche à exprimer ce que signifie être héritier d'une culture millénaire tout en évoluant dans le chaos contemporain. La photographie fige le réel, la peinture libère l'âme."
+    bio: "Né au Québec mais profondément imprégné par sa culture d'origine, Bazan Togola est un artiste en quête perpétuelle de ses racines maliennes. Son œuvre est un dialogue vibrant entre son héritage nord-américain et une mémoire ancestrale qu'il explore à travers l'image et la matière.",
+    quote: "Mon art est le pont entre ma terre de naissance et mes racines lointaines.",
+    vision: "Ma vision est celle d'une réconciliation. À travers Triple Vision, je cherche à exprimer ce que signifie être né ici tout en étant l'héritier d'une culture millénaire. La photographie fige cet entre-deux, la peinture lui donne une profondeur organique."
   }
 
   return (
@@ -49,7 +49,7 @@ export default async function ArtistPage() {
                 </p>
                 <div className="w-20 h-px bg-accent/30" />
                 <p className="text-text-muted text-lg leading-relaxed">
-                   Baigné dans la culture malienne, Bazan a construit son langage visuel sur cette recherche constante de ses racines. Son travail est une méditation profonde sur l'identité, capturée à travers le grain de la photographie et la profondeur de la peinture, entre Bamako et son atelier actuel à Québec.
+                   Né à Québec, Bazan a construit son langage visuel sur cette recherche constante de ses racines maliennes. Son travail est une méditation profonde sur l'identité, capturée à travers le grain de la photographie et la profondeur de la peinture, créant un pont unique entre son lieu de naissance et ses origines.
                 </p>
              </div>
           </div>
