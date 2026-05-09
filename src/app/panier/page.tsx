@@ -10,6 +10,8 @@ import { toast } from 'sonner'
 
 import Breadcrumbs from '@/components/marketing/breadcrumbs'
 
+import Button from '@/components/ui/button'
+
 export default function CartPage() {
   const { items, removeItem, updateQuantity, totalPrice, totalItems } = useCart()
   const [mounted, setMounted] = useState(false)
@@ -170,20 +172,15 @@ export default function CartPage() {
                        </div>
                     </div>
 
-                    <button 
+                    <Button 
                       onClick={handleCheckout}
-                      disabled={isCheckingOut}
-                      className="w-full bg-white text-black py-6 flex items-center justify-center gap-4 text-xs font-bold uppercase tracking-[0.2em] hover:bg-accent hover:text-white transition-all duration-500 rounded-sm group shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                      loading={isCheckingOut}
+                      size="xl"
+                      className="w-full"
+                      icon={<ArrowRight size={16} />}
                     >
-                       {isCheckingOut ? (
-                         <span className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                       ) : (
-                         <>
-                           Passer à la caisse 
-                           <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-                         </>
-                       )}
-                    </button>
+                       Passer à la caisse 
+                    </Button>
 
                     <div className="mt-12 space-y-4">
                        <p className="text-[10px] eyebrow text-text-muted flex items-center gap-3">

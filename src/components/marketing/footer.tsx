@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react'
 import Link from 'next/link'
 import { ArrowUpRight, Mail, Globe } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { useIrisStore } from '@/stores/iris-store'
 import { usePathname } from 'next/navigation'
 
@@ -86,14 +87,16 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-6">
               {SOCIAL_LINKS.map((link) => (
-                <a 
+                <motion.a 
                   key={link.name}
                   href={link.href}
+                  whileHover={{ scale: 1.1, y: -2 }}
+                  whileTap={{ scale: 0.9 }}
                   className="w-10 h-10 rounded-full border border-white/5 flex items-center justify-center text-text-muted hover:text-white hover:border-white/20 transition-all duration-300"
                   aria-label={link.name}
                 >
                   {link.icon}
-                </a>
+                </motion.a>
               ))}
             </div>
           </div>

@@ -8,6 +8,7 @@ import { Maximize2, ShoppingBag, Ruler, Check, Info } from 'lucide-react'
 import RoomPreview from './room-preview'
 import { ArtworkWithStock, ArtworkStock, ArtworkSize } from '@/types/artwork'
 import { toast } from 'sonner'
+import Button from '@/components/ui/button'
 
 interface ArtworkViewProps {
   artwork: ArtworkWithStock
@@ -148,55 +149,30 @@ export default function ArtworkView({ artwork }: ArtworkViewProps) {
                 ))}
               </div>
             </div>
-          )}
-
-          {/* Actions */}
+               {/* Actions */}
           <div className="space-y-6">
-            <button 
+            <Button 
                onClick={handleAddToCart}
-               disabled={isAdding || isSoldOut}
-               className={`w-full py-6 flex items-center justify-center gap-4 text-xs font-bold uppercase tracking-[0.2em] transition-all duration-500 rounded-sm relative overflow-hidden ${
-                isSoldOut ? 'bg-white/5 text-text-muted cursor-not-allowed' :
-                isAdding ? 'bg-success text-white' : 'bg-white text-black hover:bg-accent hover:text-white'
-               }`}
+               loading={isAdding}
+               disabled={isSoldOut}
+               size="xl"
+               className="w-full"
+               icon={isSoldOut ? null : <ShoppingBag size={18} />}
             >
-              <AnimatePresence mode="wait">
-                {isSoldOut ? (
-                  <motion.div key="sold" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>Indisponible</motion.div>
-                ) : isAdding ? (
-                  <motion.div 
-                    key="check"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    exit={{ scale: 0 }}
-                    className="flex items-center gap-2"
-                  >
-                    <Check size={18} /> Ajouté au panier
-                  </motion.div>
-                ) : (
-                  <motion.div 
-                    key="add"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="flex items-center gap-2"
-                  >
-                    <ShoppingBag size={18} /> Ajouter à la collection
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </button>
+              {isSoldOut ? 'Indisponible' : 'Ajouter à la collection'}
+            </Button>
 
-            <button 
+            <Button 
+               variant="outline"
                onClick={() => setShowRoomPreview(true)}
-               className="w-full py-6 flex items-center justify-center gap-4 border border-white/10 hover:border-accent hover:text-accent transition-all duration-300 text-[10px] font-bold uppercase tracking-[0.2em] rounded-sm eyebrow group"
+               size="xl"
+               className="w-full"
+               icon={<Maximize2 size={16} />}
             >
-              <span className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
-                <Maximize2 size={16} />
-              </span>
               Visualiser dans mon intérieur
-            </button>
+            </Button>
           </div>
+     </div>
 
           {/* Accordions / Extra Info */}
           <div className="mt-16 pt-12 border-t border-white/5 space-y-8">

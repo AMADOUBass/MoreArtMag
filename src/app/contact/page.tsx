@@ -8,6 +8,8 @@ import { z } from 'zod'
 
 import Breadcrumbs from '@/components/marketing/breadcrumbs'
 
+import Button from '@/components/ui/button'
+
 const contactSchema = z.object({
   name: z.string().min(2, "Le nom est trop court"),
   email: z.string().email("Email invalide"),
@@ -238,20 +240,15 @@ export default function ContactPage() {
                    />
                 </div>
 
-                <motion.button 
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                <Button 
                   type="submit"
-                  disabled={loading}
-                  className="w-full bg-white text-black py-4 eyebrow text-xs font-bold uppercase tracking-[0.2em] rounded-xl hover:bg-accent hover:text-white transition-all duration-500 flex items-center justify-center gap-4 group shadow-xl shadow-black/20"
+                  loading={loading}
+                  size="xl"
+                  className="w-full"
+                  icon={<Send size={16} />}
                 >
-                   {loading ? "Envoi en cours..." : (
-                     <>
-                        Envoyer le message 
-                        <Send size={16} className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                     </>
-                   )}
-                </motion.button>
+                   Envoyer le message 
+                </Button>
              </motion.form>
           </div>
         </div>
