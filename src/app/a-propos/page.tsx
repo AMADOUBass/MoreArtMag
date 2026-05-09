@@ -7,9 +7,9 @@ import PortfolioCarousel from '@/components/marketing/portfolio-carousel'
 export default async function ArtistPage() {
   const artist = {
     name: "Bazan Togola",
-    bio: "Né au cœur du Mali, Bazan Togola capture l'invisible à travers son objectif et ses pinceaux. Son œuvre est un dialogue permanent entre la matière brute et la lumière éthérée, un voyage où chaque fragment raconte une histoire universelle.",
-    quote: "L'art n'est pas ce que l'on voit, mais ce que l'on fait voir aux autres.",
-    vision: "Ma vision est celle d'un monde où la technologie ne remplace pas l'âme, mais l'amplifie. À travers Triple Vision, nous cherchons à créer des ponts entre le tangible et l'imaginaire, en utilisant la photographie comme base et la peinture comme émotion pure."
+    bio: "Artiste malien en quête perpétuelle de ses racines, Bazan Togola capture l'invisible à travers son objectif et ses pinceaux. Baigné dans la culture malienne, son œuvre est un dialogue vibrant entre la mémoire ancestrale et la modernité.",
+    quote: "L'art est ma boussole dans cette recherche constante de mes racines.",
+    vision: "Ma vision est celle d'un pont entre deux mondes. À travers Triple Vision, je cherche à exprimer ce que signifie être héritier d'une culture millénaire tout en évoluant dans le chaos contemporain. La photographie fige le réel, la peinture libère l'âme."
   }
 
   return (
@@ -49,7 +49,7 @@ export default async function ArtistPage() {
                 </p>
                 <div className="w-20 h-px bg-accent/30" />
                 <p className="text-text-muted text-lg leading-relaxed">
-                   Originaire du Mali, Bazan a construit un pont visuel entre les traditions ancestrales et l'art contemporain. Son travail est une méditation sur l'identité, capturée à travers le grain de la photographie et la profondeur de la peinture.
+                   Baigné dans la culture malienne, Bazan a construit son langage visuel sur cette recherche constante de ses racines. Son travail est une méditation profonde sur l'identité, capturée à travers le grain de la photographie et la profondeur de la peinture, entre Bamako et son atelier actuel à Québec.
                 </p>
              </div>
           </div>
