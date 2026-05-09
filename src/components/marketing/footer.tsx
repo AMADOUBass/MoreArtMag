@@ -16,8 +16,8 @@ const NAV_LINKS = [
 
 const SOCIAL_LINKS = [
   { 
-    name: 'Instagram', 
-    href: '#', 
+    name: 'Instagram MoreArt', 
+    href: 'https://www.instagram.com/moreart.mag/', 
     icon: (
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
@@ -26,8 +26,18 @@ const SOCIAL_LINKS = [
       </svg>
     ) 
   },
-  { name: 'Behance', href: '#', icon: <Globe size={14} /> },
-  { name: 'Email', href: 'mailto:contact@moreartmag.art', icon: <Mail size={14} /> },
+  { 
+    name: 'Instagram TripleVision', 
+    href: 'https://www.instagram.com/triplevisiontv/', 
+    icon: (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+      </svg>
+    ) 
+  },
+  { name: 'Email', href: 'mailto:contact@moreartmag.com', icon: <Mail size={14} /> },
 ]
 
 export default function Footer() {

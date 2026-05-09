@@ -122,17 +122,27 @@ export default function ContactPage() {
                 </div>
             </div>
 
-            <div className="pt-12 border-t border-white/5">
-               <p className="eyebrow text-text-muted mb-6">Réseaux Sociaux</p>
-               <div className="flex gap-6">
-                  <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all">
-                     <Globe size={18} />
-                  </a>
-                  <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all">
-                     <MessageCircle size={18} />
-                  </a>
-               </div>
-            </div>
+             <div className="pt-12 border-t border-white/5">
+                <p className="eyebrow text-text-muted mb-6">Réseaux Sociaux</p>
+                <div className="flex gap-4">
+                   <a 
+                     href="https://www.instagram.com/moreart.mag/" 
+                     target="_blank" 
+                     rel="noopener noreferrer"
+                     className="px-6 py-2 rounded-full border border-white/10 text-[10px] eyebrow text-white hover:bg-accent hover:border-accent transition-all duration-300"
+                   >
+                      MoreArt Mag
+                   </a>
+                   <a 
+                     href="https://www.instagram.com/triplevisiontv/" 
+                     target="_blank" 
+                     rel="noopener noreferrer"
+                     className="px-6 py-2 rounded-full border border-white/10 text-[10px] eyebrow text-white hover:bg-accent hover:border-accent transition-all duration-300"
+                   >
+                      TripleVision
+                   </a>
+                </div>
+             </div>
           </div>
 
            <div className="lg:col-span-7">
