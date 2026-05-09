@@ -21,6 +21,8 @@ async function getArtworks(): Promise<Artwork[]> {
   `)
 }
 
+import { Suspense } from 'react'
+
 export default async function MoreArtPage() {
   const artworks = await getArtworks()
 
@@ -48,7 +50,14 @@ export default async function MoreArtPage() {
         </header>
       </div>
 
-      <GalleryView artworks={artworks} />
+      <Suspense fallback={
+        <div className="py-40 flex flex-col items-center gap-6">
+          <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin" />
+          <p className="eyebrow text-text-muted">Chargement de la galerie...</p>
+        </div>
+      }>
+        <GalleryView artworks={artworks} />
+      </Suspense>
     </main>
   )
 }
