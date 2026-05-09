@@ -35,8 +35,11 @@
   --font-size-2xl: clamp(1.5rem, 1.4rem + 0.5vw, 1.75rem); /* 24px - 28px */
   --font-size-3xl: clamp(1.875rem, 1.75rem + 0.8vw, 2.25rem); /* 30px - 36px */
   --font-size-4xl: clamp(2.375rem, 2.1rem + 1.2vw, 3rem); /* 38px - 48px */
-  --font-size-5xl: clamp(3rem, 2.5rem + 2vw, 4rem); /* 48px - 64px */
-  --font-size-6xl: clamp(3.75rem, 3rem + 3.5vw, 6rem); /* 60px - 96px */
+  --font-size-5xl: clamp(3rem, 2.5rem + 1.5vw, 3.75rem); /* 48px - 60px */
+  --font-size-6xl: clamp(3.75rem, 3rem + 2.5vw, 5.25rem); /* 60px - 84px */
+  --font-size-7xl: clamp(4.5rem, 4rem + 3.5vw, 6rem); /* 72px - 96px */
+  --font-size-8xl: clamp(6rem, 5rem + 5vw, 8rem); /* 96px - 128px */
+  --font-size-9xl: clamp(8rem, 6rem + 8vw, 10rem); /* 128px - 160px */
 
   /* Border radius */
   --radius-sm: 2px;
@@ -96,7 +99,7 @@
     }
     
     .container-custom {
-      @apply max-w-[1440px] mx-auto px-6 md:px-12;
+      @apply max-w-[1280px] mx-auto px-6 md:px-12 lg:px-20;
     }
     
     .eyebrow {
