@@ -47,6 +47,7 @@ next-env.d.ts
 # AI & IDE
 .gemini/
 .antigravity/
+.claude/
 .vscode/
 .idea/
 *.log
