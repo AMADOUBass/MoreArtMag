@@ -64,8 +64,8 @@ export default function Footer() {
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-64 bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="container-custom relative z-10">
-        {/* Top Section: The Big CTA - Hidden on Contact page */}
-        {!isContactPage && (
+        {/* Top Section: The Big CTA - Home page only */}
+        {isHome && (
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-16 mb-48">
             <div className="max-w-3xl">
               <p className="eyebrow text-accent mb-8">Collaboration</p>
