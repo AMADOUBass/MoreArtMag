@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Send, Mail, Phone, MapPin, Globe, MessageCircle, ArrowRight, Instagram } from 'lucide-react'
+import { Send, Mail, Phone, MapPin, Globe, MessageCircle, ArrowRight } from 'lucide-react'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -132,7 +132,11 @@ export default function ContactPage() {
                      className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-accent hover:border-accent transition-all duration-500 shadow-lg group"
                      title="Instagram MoreArt Mag"
                    >
-                      <Instagram size={20} className="transition-transform duration-500 group-hover:scale-110" />
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-500 group-hover:scale-110">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                      </svg>
                    </a>
                    <a 
                      href="https://www.instagram.com/triplevisiontv/" 
@@ -141,7 +145,11 @@ export default function ContactPage() {
                      className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-accent hover:border-accent transition-all duration-500 shadow-lg group"
                      title="Instagram TripleVision"
                    >
-                      <Instagram size={20} className="transition-transform duration-500 group-hover:scale-110" />
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-500 group-hover:scale-110">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                      </svg>
                    </a>
                 </div>
              </div>
