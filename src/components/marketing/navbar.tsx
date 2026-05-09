@@ -92,28 +92,30 @@ export default function Navbar() {
               href={link.href} 
               onMouseEnter={() => setHoveredIndex(idx)}
               className={`
-                relative px-6 py-2 text-[10px] uppercase tracking-[0.2em] transition-colors duration-300 z-10
+                relative px-6 py-2 text-[10px] uppercase tracking-[0.2em] transition-colors duration-500 z-10
                 ${hoveredIndex === idx || pathname === link.href ? "text-text-primary" : "text-text-secondary"}
               `}
             >
               {link.name}
+              
               {/* Active Indicator Dot */}
               {pathname === link.href && (
-                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-accent rounded-full" />
+                <motion.span 
+                  layoutId="activeDot"
+                  className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-accent rounded-full" 
+                />
+              )}
+
+              {/* Smooth Hover Pill Background */}
+              {hoveredIndex === idx && (
+                <motion.div
+                  layoutId="hoverPill"
+                  className="absolute inset-0 bg-white/10 rounded-full -z-0"
+                  transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                />
               )}
             </Link>
           ))}
-          
-          {/* Hover Pill Background */}
-          <div 
-            className="absolute top-1 bottom-1 left-1 transition-all duration-500 ease-spring bg-white/10 rounded-full -z-0"
-            style={{
-              width: hoveredIndex !== null ? 'calc(25% - 4px)' : '0%', // Simplified approximation
-              opacity: hoveredIndex !== null ? 1 : 0,
-              transform: `translateX(calc(${hoveredIndex || 0} * 100%))`,
-              visibility: hoveredIndex !== null ? 'visible' : 'hidden'
-            }}
-          />
         </nav>
 
         {/* Actions Section */}
