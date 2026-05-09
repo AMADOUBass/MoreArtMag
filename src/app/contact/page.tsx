@@ -48,7 +48,7 @@ export default function ContactPage() {
       if (!response.ok) throw new Error("Erreur d'envoi")
 
       toast.success("Message envoyé avec succès !")
-      setFormData({ name: '', email: '', subject: '', message: '', type: 'general' })
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '', type: 'general', budget: '', size: '' })
     } catch (err: any) {
       if (err instanceof z.ZodError) {
         toast.error(err.issues[0].message)
@@ -248,7 +248,7 @@ export default function ContactPage() {
                         <Send size={16} className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
                      </>
                    )}
-                </button>
+                </motion.button>
              </motion.form>
           </div>
         </div>
