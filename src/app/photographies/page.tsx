@@ -34,6 +34,16 @@ async function getPhotos(): Promise<Artwork[]> {
       year: '2026',
       location: 'Bamako',
       featured: false
+    } as any,
+    {
+      _id: 'ph3',
+      title: 'Sédimentation Tactile',
+      slug: { current: 'photo-3' },
+      type: 'photo',
+      mainImage: { _type: 'image', asset: { _ref: 'placeholder-3' } },
+      year: '2026',
+      location: 'Dogon Country',
+      featured: false
     } as any
   ]
 }
