@@ -130,15 +130,15 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Location / Status */}
+          {/* Location / Identity */}
           <div className="md:col-span-3 md:col-start-10 flex flex-col gap-6">
-            <span className="eyebrow text-text-muted text-[10px]">Studio</span>
-            <div className="text-sm text-text-secondary leading-loose">
-              <p>Basé au Québec, Canada</p>
-              <p>Disponible pour mandats</p>
+            <span className="eyebrow text-text-muted text-[10px]">Identité</span>
+            <div className="text-sm text-text-secondary leading-loose italic">
+              <p>Baigné dans la culture malienne</p>
+              <p>En quête perpétuelle de ses racines</p>
               <p className="text-accent mt-2 flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
-                Ouvert aux commandes
+                Basé à Québec, Canada
               </p>
             </div>
           </div>

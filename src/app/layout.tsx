@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     default: 'MoreArt Mag | Bazan Togola',
     template: '%s | MoreArt Mag',
   },
-  description: 'Portfolio et boutique de Bazan Togola, photographe et peintre basé au Québec. Une immersion dans l\'art muséal et cinématique.',
+  description: 'Exploration poétique de Bazan Togola, photographe et peintre baigné dans la culture malienne. Une quête de racines à travers l\'image et la matière, entre Bamako et Québec.',
   metadataBase: new URL('https://moreartmag.art'),
   openGraph: {
     title: 'MoreArt Mag | Bazan Togola',
