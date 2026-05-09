@@ -85,24 +85,24 @@ export default function ContactPage() {
 
             <div className="space-y-10">
                 <div className="flex items-start gap-5 group">
-                   <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500">
+                   <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500 shadow-lg shadow-black/20">
                       <Mail size={20} />
                    </div>
                    <div>
                       <p className="eyebrow text-[10px] text-text-muted mb-2">Email</p>
-                      <p className="text-white text-lg font-display italic leading-tight">
+                      <p className="text-white text-xl font-display italic leading-tight">
                          contact@moreartmag.com
                       </p>
                    </div>
                 </div>
 
                 <div className="flex items-start gap-5 group">
-                   <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500">
+                   <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500 shadow-lg shadow-black/20">
                       <MapPin size={20} />
                    </div>
                    <div>
                       <p className="eyebrow text-[10px] text-text-muted mb-2">Studio</p>
-                      <p className="text-white text-lg font-display italic leading-tight">
+                      <p className="text-white text-xl font-display italic leading-tight">
                          430 Rue Faraday #102<br/>
                          Québec, QC G1N 4E5
                       </p>
@@ -110,12 +110,12 @@ export default function ContactPage() {
                 </div>
 
                 <div className="flex items-start gap-5 group">
-                   <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500">
+                   <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500 shadow-lg shadow-black/20">
                       <Phone size={20} />
                    </div>
                    <div>
                       <p className="eyebrow text-[10px] text-text-muted mb-2">Téléphone</p>
-                      <p className="text-white text-lg font-display italic leading-tight">
+                      <p className="text-white text-xl font-display italic leading-tight">
                          (418) 670-4391
                       </p>
                    </div>
