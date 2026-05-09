@@ -146,10 +146,11 @@ export default function ArtworkView({ artwork }: ArtworkViewProps) {
                        {selectedSize?.sizeId === size.sizeId && <Check size={18} className="text-accent" />}
                     </div>
                   </button>
-                ))}
               </div>
             </div>
-               {/* Actions */}
+          )}
+
+          {/* Actions */}
           <div className="space-y-6">
             <Button 
                onClick={handleAddToCart}
@@ -172,7 +173,6 @@ export default function ArtworkView({ artwork }: ArtworkViewProps) {
               Visualiser dans mon intérieur
             </Button>
           </div>
-     </div>
 
           {/* Accordions / Extra Info */}
           <div className="mt-16 pt-12 border-t border-white/5 space-y-8">
