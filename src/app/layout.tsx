@@ -47,6 +47,7 @@ export const metadata: Metadata = {
 
 import { Toaster } from 'sonner'
 import CookieBanner from '@/components/marketing/cookie-banner'
+import Footer from '@/components/marketing/footer'
 
 export default function RootLayout({
   children,
@@ -61,6 +62,7 @@ export default function RootLayout({
         <CookieBanner />
         <SmoothScroll>
           {children}
+          <Footer />
         </SmoothScroll>
       </body>
     </html>

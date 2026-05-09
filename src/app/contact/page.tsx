@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Send, Mail, Phone, MapPin, Globe, MessageCircle, ArrowRight } from 'lucide-react'
+import { Send, Mail, Phone, MapPin, Globe, MessageCircle, ArrowRight, Instagram } from 'lucide-react'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -123,23 +123,25 @@ export default function ContactPage() {
             </div>
 
              <div className="pt-12 border-t border-white/5">
-                <p className="eyebrow text-text-muted mb-6">Réseaux Sociaux</p>
+                <p className="eyebrow text-text-muted mb-6">Suivre l'aventure</p>
                 <div className="flex gap-4">
                    <a 
                      href="https://www.instagram.com/moreart.mag/" 
                      target="_blank" 
                      rel="noopener noreferrer"
-                     className="px-6 py-2 rounded-full border border-white/10 text-[10px] eyebrow text-white hover:bg-accent hover:border-accent transition-all duration-300"
+                     className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-accent hover:border-accent transition-all duration-500 shadow-lg group"
+                     title="Instagram MoreArt Mag"
                    >
-                      MoreArt Mag
+                      <Instagram size={20} className="transition-transform duration-500 group-hover:scale-110" />
                    </a>
                    <a 
                      href="https://www.instagram.com/triplevisiontv/" 
                      target="_blank" 
                      rel="noopener noreferrer"
-                     className="px-6 py-2 rounded-full border border-white/10 text-[10px] eyebrow text-white hover:bg-accent hover:border-accent transition-all duration-300"
+                     className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-accent hover:border-accent transition-all duration-500 shadow-lg group"
+                     title="Instagram TripleVision"
                    >
-                      TripleVision
+                      <Instagram size={20} className="transition-transform duration-500 group-hover:scale-110" />
                    </a>
                 </div>
              </div>
