@@ -51,6 +51,7 @@ export default function Footer() {
   }, [hydrate])
 
   const isHome = pathname === '/'
+  const isContactPage = pathname === '/contact'
   const showFooter = !isHome || traversed
 
   return (
@@ -63,29 +64,31 @@ export default function Footer() {
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-64 bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="container-custom relative z-10">
-        {/* Top Section: The Big CTA */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-16 mb-48">
-          <div className="max-w-3xl">
-            <p className="eyebrow text-accent mb-8">Collaboration</p>
-            <h2 className="text-6xl md:text-8xl lg:text-9xl font-display italic leading-[0.85] tracking-tighter">
-              Porter un <br/>
-              <span className="text-white">nouveau regard.</span>
-            </h2>
-          </div>
-          
-          <Link 
-            href="/contact" 
-            className="group relative flex items-center gap-6 text-2xl md:text-3xl font-display italic text-text-primary hover:text-accent transition-colors duration-500"
-          >
-            <span className="relative">
-              Démarrer un projet
-              <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-accent group-hover:w-full transition-all duration-700" />
-            </span>
-            <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-accent group-hover:border-accent group-hover:scale-110 transition-all duration-700">
-              <ArrowUpRight size={24} className="transition-transform duration-500 group-hover:rotate-45" />
+        {/* Top Section: The Big CTA - Hidden on Contact page */}
+        {!isContactPage && (
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-16 mb-48">
+            <div className="max-w-3xl">
+              <p className="eyebrow text-accent mb-8">Collaboration</p>
+              <h2 className="text-6xl md:text-8xl lg:text-9xl font-display italic leading-[0.85] tracking-tighter">
+                Porter un <br/>
+                <span className="text-white">nouveau regard.</span>
+              </h2>
             </div>
-          </Link>
-        </div>
+            
+            <Link 
+              href="/contact" 
+              className="group relative flex items-center gap-6 text-2xl md:text-3xl font-display italic text-text-primary hover:text-accent transition-colors duration-500"
+            >
+              <span className="relative">
+                Démarrer un projet
+                <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-accent group-hover:w-full transition-all duration-700" />
+              </span>
+              <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-accent group-hover:border-accent group-hover:scale-110 transition-all duration-700">
+                <ArrowUpRight size={24} className="transition-transform duration-500 group-hover:rotate-45" />
+              </div>
+            </Link>
+          </div>
+        )}
 
         {/* Links Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-8 pb-24">
