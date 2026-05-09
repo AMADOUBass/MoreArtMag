@@ -1,20 +1,26 @@
 import React from 'react'
 import Image from 'next/image'
+import { Metadata } from 'next'
 import { client } from '@/lib/sanity/client'
 import Breadcrumbs from '@/components/marketing/breadcrumbs'
 import PortfolioCarousel from '@/components/marketing/portfolio-carousel'
 
+export const metadata: Metadata = {
+  title: 'À Propos | L\'Artiste & La Vision',
+  description: 'Découvrez l\'univers de Bazan Togola, photographe et peintre explorant ses racines entre le Québec et le Mali.',
+}
+
 export default async function ArtistPage() {
   const artist = {
     name: "Bazan Togola",
-    bio: "Né au Québec mais profondément imprégné par sa culture d'origine, Bazan Togola est un artiste en quête perpétuelle de ses racines maliennes. Son œuvre est un dialogue vibrant entre son héritage nord-américain et une mémoire ancestrale qu'il explore à travers l'image et la matière.",
-    quote: "Mon art est le pont entre ma terre de naissance et mes racines lointaines.",
-    vision: "Ma vision est celle d'une réconciliation. À travers Triple Vision, je cherche à exprimer ce que signifie être né ici tout en étant l'héritier d'une culture millénaire. La photographie fige cet entre-deux, la peinture lui donne une profondeur organique."
+    bio: "Un voyageur immobile entre deux mondes. Né au Québec, Bazan Togola explore les profondeurs de son héritage malien à travers une lentille contemporaine. Son œuvre est un dialogue vibrant entre son héritage nord-américain et une mémoire ancestrale qu'il explore à travers l'image et la matière.",
+    quote: "Capturer l'invisible pour rendre hommage à ce qui nous précède.",
+    vision: "Ma vision est celle d'une réconciliation. À travers le collectif Triple Vision, je cherche à exprimer ce que signifie être l'héritier d'une culture millénaire tout en vivant ici. La photographie fige cet entre-deux, la peinture lui donne une profondeur organique, créant un pont entre ma terre de naissance et mes racines lointaines."
   }
 
   return (
     <main className="bg-background-primary pt-32 overflow-hidden">
-      {/* Hero Section - Conservation du Portrait Original */}
+      {/* Hero Section - Portrait de l'Artiste */}
       <section className="container-custom py-20 lg:py-40">
         <div className="mb-32 md:mb-56 max-w-4xl relative">
           <Breadcrumbs items={[{ label: 'À PROPOS' }]} />
@@ -23,7 +29,7 @@ export default async function ArtistPage() {
           </div>
           <p className="eyebrow mb-8 flex items-center gap-4">
             <span className="w-12 h-[1px] bg-accent/50" />
-            L'Artiste & La Vision
+            L'Artiste & La Quête
           </p>
           <h1 className="text-6xl md:text-8xl lg:text-9xl mb-12 leading-[0.9] font-display tracking-tighter">
             Bazan <br/> 
@@ -49,14 +55,14 @@ export default async function ArtistPage() {
                 </p>
                 <div className="w-20 h-px bg-accent/30" />
                 <p className="text-text-muted text-lg leading-relaxed">
-                   Né à Québec, Bazan a construit son langage visuel sur cette recherche constante de ses racines maliennes. Son travail est une méditation profonde sur l'identité, capturée à travers le grain de la photographie et la profondeur de la peinture, créant un pont unique entre son lieu de naissance et ses origines.
+                   De Bamako à Québec, Bazan a construit un langage visuel unique. Son travail est une méditation profonde sur l'identité, capturée à travers le grain argentique et la matière brute, créant une œuvre qui défie les frontières temporelles et géographiques.
                 </p>
              </div>
           </div>
         </div>
       </section>
 
-      {/* Vision Section - Nouvel Élément */}
+      {/* Vision Section - Focus Artistique */}
       <section className="py-40 bg-white/5 relative">
         <div className="container-custom grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
            <div className="order-2 lg:order-1">
@@ -68,19 +74,20 @@ export default async function ArtistPage() {
                  {artist.vision}
               </p>
            </div>
-           <div className="order-1 lg:order-2 relative aspect-square lg:aspect-video rounded-sm overflow-hidden shadow-2xl">
+           <div className="order-1 lg:order-2 relative aspect-square lg:aspect-video rounded-sm overflow-hidden shadow-2xl group">
               <Image 
-                src="/images/gallery/vision_shot.png" // Potential new shot
+                src="/images/gallery/vision_shot.png"
                 alt="Vision Artistique" 
                 fill 
-                className="object-cover"
+                className="object-cover transition-transform duration-1000 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-accent/10 mix-blend-overlay" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-60" />
            </div>
         </div>
       </section>
 
-      {/* Portfolio Carousel - Nouvel Élément */}
+      {/* Portfolio Carousel */}
       <PortfolioCarousel />
 
       {/* Philosophy Section */}
@@ -93,23 +100,23 @@ export default async function ArtistPage() {
           <div className="flex flex-wrap justify-center gap-12 md:gap-24">
              <div className="flex flex-col items-center">
                 <span className="text-5xl font-display italic text-accent">15+</span>
-                <p className="eyebrow mt-4 text-xs">Années d'Art</p>
+                <p className="eyebrow mt-4 text-xs">Années de Recherche</p>
              </div>
              <div className="w-px h-16 bg-white/10 hidden md:block" />
              <div className="flex flex-col items-center">
                 <span className="text-5xl font-display italic text-accent">200+</span>
-                <p className="eyebrow mt-4 text-xs">Œuvres</p>
+                <p className="eyebrow mt-4 text-xs">Œuvres Originales</p>
              </div>
              <div className="w-px h-16 bg-white/10 hidden md:block" />
              <div className="flex flex-col items-center">
                 <span className="text-5xl font-display italic text-accent">12</span>
-                <p className="eyebrow mt-4 text-xs">Expositions</p>
+                <p className="eyebrow mt-4 text-xs">Expositions Solo</p>
              </div>
           </div>
         </div>
       </section>
 
-      {/* Triple Vision Section - Conservation de l'Atelier Original */}
+      {/* Triple Vision Section */}
       <section className="py-40 container-custom">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
            <div className="order-2 lg:order-1">
@@ -128,7 +135,7 @@ export default async function ArtistPage() {
                 Plus qu'un simple atelier, **Triple Vision** est le collectif créatif fondé par Bazan et ses deux alliés. C'est ici que les idées s'entrechoquent, entre photographie, design et peinture, pour donner naissance à des œuvres qui défient les frontières.
               </p>
               <p className="text-text-secondary text-lg leading-relaxed italic border-l-2 border-accent/30 pl-8">
-                "À trois, notre regard ne se contente pas de voir, il construit une perspective nouvelle."
+                "À trois, notre regard ne se contente pas de voir, il construit une perspective nouvelle, une vision partagée de la beauté brute."
               </p>
            </div>
            <div className="order-1 lg:order-2 relative aspect-video rounded-sm overflow-hidden border border-white/5 shadow-2xl group">
@@ -140,7 +147,7 @@ export default async function ArtistPage() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background-primary/80 to-transparent opacity-60" />
               <div className="absolute bottom-8 left-8">
-                 <p className="eyebrow text-white">L'Atelier Créatif</p>
+                 <p className="eyebrow text-white">L'Atelier Créatif — Québec</p>
               </div>
            </div>
         </div>

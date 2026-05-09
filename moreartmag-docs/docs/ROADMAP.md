@@ -88,7 +88,7 @@ C'est la pièce maîtresse, prendre le temps.
 - [x] Gérer la redirection vers Stripe Checkout
 - [ ] Implémenter `/api/stripe/webhook` (Post-lancement V1)
 - [x] Implémenter `/checkout/success` de confirmation
-- Configurer les emails Resend (templates : confirmation client, notification Bazan)
+- [x] Configurer les emails Resend (templates : confirmation client, notification Bazan)
 
 ### Jour 11 — Page À propos et contact
 
@@ -99,12 +99,13 @@ C'est la pièce maîtresse, prendre le temps.
 
 ### Jours 12 et 13 — Panel admin
 
-- Implémenter le middleware d'auth admin
-- Implémenter `/admin` (hub d'accueil + KPIs)
-- Implémenter `/admin/oeuvres` (liste + édition stock/prix)
-- Implémenter `/admin/commandes` (liste + détail + changement de statut)
-- Implémenter `/admin/messages` (inquiries)
-- Voir `features/ADMIN.md` pour le détail
+- [x] Implémenter le middleware d'auth admin
+- [x] Implémenter `/admin` (hub d'accueil + KPIs)
+- [x] Implémenter `/admin/oeuvres` (liste + édition stock/prix)
+- [x] Implémenter `/admin/commandes` (liste + détail + changement de statut)
+- [x] Implémenter `/admin/messages` (inquiries)
+- [x] Implémenter `/admin/rooms` (gestion des pièces preview)
+- [x] Voir `features/ADMIN.md` pour le détail
 
 ---
 

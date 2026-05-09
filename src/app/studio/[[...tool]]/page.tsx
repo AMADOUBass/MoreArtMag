@@ -7,11 +7,18 @@
  * https://github.com/sanity-io/next-sanity
  */
 
+'use client'
+
 import { NextStudio } from 'next-sanity/studio'
 import config from '../../../../sanity.config'
+import dynamic from 'next/dynamic'
 
-export const dynamic = 'force-static'
+// On force le rendu uniquement côté client pour éviter "window is not defined"
+const StudioPageContent = dynamic(
+  () => Promise.resolve(() => <NextStudio config={config} />),
+  { ssr: false }
+)
 
 export default function StudioPage() {
-  return <NextStudio config={config} />
+  return <StudioPageContent />
 }

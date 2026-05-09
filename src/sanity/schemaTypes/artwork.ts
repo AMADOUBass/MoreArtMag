@@ -136,6 +136,29 @@ export const artwork = defineType({
       description: 'N\'apparaît pas dans la boutique mais reste dans la galerie.',
       initialValue: false,
     }),
+    defineField({
+      name: 'technique',
+      title: 'Détails techniques (Matière)',
+      type: 'text',
+      rows: 3,
+      description: 'Ex: "Papier Hahnemühle, pigments naturels de terre d\'ocre."',
+    }),
+    defineField({
+      name: 'process',
+      title: 'Processus créatif',
+      type: 'array',
+      of: [{ type: 'block' }],
+      description: 'L\'histoire derrière la création de cette œuvre.',
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'object',
+      fields: [
+        { name: 'metaTitle', title: 'Titre SEO spécifique', type: 'string' },
+        { name: 'metaDescription', title: 'Description SEO spécifique', type: 'text', rows: 3 },
+      ],
+    }),
   ],
   preview: {
     select: {

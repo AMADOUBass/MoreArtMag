@@ -39,7 +39,13 @@ export async function POST(req: Request) {
       },
       // metadata can be used for webhooks later
       metadata: {
-        cartItems: JSON.stringify(items.map(i => ({ id: i.id, q: i.quantity })))
+        cartItems: JSON.stringify(items.map(i => ({ 
+          id: i.id, 
+          q: i.quantity,
+          title: i.title,
+          image: i.image,
+          size: i.sizeLabel
+        })))
       }
     })
 

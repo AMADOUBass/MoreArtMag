@@ -77,5 +77,27 @@ export const about = defineType({
       type: 'text',
       rows: 3,
     }),
+    defineField({
+      name: 'vision',
+      title: 'Vision Artistique',
+      type: 'text',
+      rows: 5,
+      description: 'Le texte qui explique la vision globale de l\'artiste.',
+    }),
+    defineField({
+      name: 'portraitSecondary',
+      title: 'Portrait Secondaire (Ambiance)',
+      type: 'image',
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'object',
+      fields: [
+        { name: 'metaTitle', title: 'Titre SEO spécifique', type: 'string' },
+        { name: 'metaDescription', title: 'Description SEO spécifique', type: 'text', rows: 3 },
+      ],
+    }),
   ],
 })

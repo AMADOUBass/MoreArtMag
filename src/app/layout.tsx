@@ -29,8 +29,14 @@ export const metadata: Metadata = {
     default: 'MoreArt Mag | Bazan Togola',
     template: '%s | MoreArt Mag',
   },
-  description: 'Exploration poétique de Bazan Togola, artiste né au Québec et baigné dans la culture malienne. Une quête de racines à travers l\'image et la matière, entre ses origines et sa terre de naissance.',
+  description: 'Exploration poétique de Bazan Togola, artiste né au Québec et baigné dans la culture malienne. Une quête de racines à travers l\'image et la matière.',
   metadataBase: new URL('https://moreartmag.art'),
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'MoreArt Mag',
+  },
   openGraph: {
     title: 'MoreArt Mag | Bazan Togola',
     description: 'Portfolio et boutique de Bazan Togola, photographe et peintre basé au Québec.',
@@ -38,6 +44,20 @@ export const metadata: Metadata = {
     siteName: 'MoreArt Mag',
     locale: 'fr_CA',
     type: 'website',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'MoreArt Mag Gallery',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'MoreArt Mag | Bazan Togola',
+    description: 'Portfolio et boutique de Bazan Togola.',
+    images: ['/og-image.jpg'],
   },
   robots: {
     index: true,
@@ -46,8 +66,6 @@ export const metadata: Metadata = {
 }
 
 import { Toaster } from 'sonner'
-import CookieBanner from '@/components/marketing/cookie-banner'
-import Footer from '@/components/marketing/footer'
 
 export default function RootLayout({
   children,
@@ -57,13 +75,8 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${inter.variable} ${cormorant.variable}`}>
       <body className="antialiased bg-black" suppressHydrationWarning={true}>
-        <Navbar />
         <Toaster position="bottom-right" richColors theme="dark" />
-        <CookieBanner />
-        <SmoothScroll>
-          {children}
-          <Footer />
-        </SmoothScroll>
+        {children}
       </body>
     </html>
   )
