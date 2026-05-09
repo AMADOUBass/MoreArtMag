@@ -115,9 +115,11 @@ export default function ContactPage() {
 
            <div className="lg:col-span-7">
              <motion.form 
-               initial={{ opacity: 0, y: 20 }}
+               initial={{ opacity: 0, y: 30 }}
                whileInView={{ opacity: 1, y: 0 }}
-               className="bg-white/[0.02] backdrop-blur-xl p-6 md:p-10 rounded-sm border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] space-y-6 relative overflow-hidden"
+               viewport={{ once: true }}
+               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+               className="bg-white/[0.03] backdrop-blur-2xl p-8 md:p-12 rounded-[2.5rem] border border-white/10 shadow-[0_30px_100px_rgba(0,0,0,0.6)] space-y-6 relative overflow-hidden group/form"
                onSubmit={handleSubmit}
                noValidate
              >
@@ -130,7 +132,7 @@ export default function ContactPage() {
                       <input 
                         type="text" 
                         placeholder="Votre nom"
-                        className="w-full bg-white/5 border border-white/10 rounded-sm px-5 py-3 text-white focus:outline-none focus:border-accent transition-colors"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30 transition-all duration-300"
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
                       />
@@ -140,7 +142,7 @@ export default function ContactPage() {
                       <input 
                         type="email" 
                         placeholder="votre@email.com"
-                        className="w-full bg-white/5 border border-white/10 rounded-sm px-5 py-3 text-white focus:outline-none focus:border-accent transition-colors"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30 transition-all duration-300"
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
                       />
@@ -152,7 +154,7 @@ export default function ContactPage() {
                    <input 
                      type="tel" 
                      placeholder="+33 6 00 00 00 00"
-                     className="w-full bg-white/5 border border-white/10 rounded-sm px-5 py-3 text-white focus:outline-none focus:border-accent transition-colors"
+                     className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30 transition-all duration-300"
                      value={formData.phone}
                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
                    />
@@ -216,7 +218,7 @@ export default function ContactPage() {
                     <input 
                       type="text" 
                       placeholder="L'objet de votre message"
-                      className="w-full bg-white/5 border border-white/10 rounded-sm px-5 py-3 text-white focus:outline-none focus:border-accent transition-colors"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30 transition-all duration-300"
                       value={formData.subject}
                       onChange={(e) => setFormData({...formData, subject: e.target.value})}
                     />
@@ -227,16 +229,18 @@ export default function ContactPage() {
                    <textarea 
                      rows={5}
                      placeholder="Comment puis-je vous aider ?"
-                     className="w-full bg-white/5 border border-white/10 rounded-sm px-5 py-3 text-white focus:outline-none focus:border-accent transition-colors resize-none"
+                     className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30 transition-all duration-300 resize-none"
                      value={formData.message}
                      onChange={(e) => setFormData({...formData, message: e.target.value})}
                    />
                 </div>
 
-                <button 
+                <motion.button 
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-white text-black py-4 eyebrow text-xs font-bold uppercase tracking-[0.2em] rounded-sm hover:bg-accent hover:text-white transition-all duration-500 flex items-center justify-center gap-4 group"
+                  className="w-full bg-white text-black py-4 eyebrow text-xs font-bold uppercase tracking-[0.2em] rounded-xl hover:bg-accent hover:text-white transition-all duration-500 flex items-center justify-center gap-4 group shadow-xl shadow-black/20"
                 >
                    {loading ? "Envoi en cours..." : (
                      <>
