@@ -16,41 +16,42 @@ const LINKS = [
 ]
 
 export default function Navbar() {
-  const traversed = useIrisStore((s) => s.traversed)
-   const hydrate = useIrisStore((s) => s.hydrate)
-   const pathname = usePathname()
-   const [scrolled, setScrolled] = useState(false)
-   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-   const [isMenuOpen, setIsMenuOpen] = useState(false)
-   const [mounted, setMounted] = useState(false)
-   
-   const cartCount = useCart((s) => s.totalItems())
-
-   useEffect(() => {
-     setMounted(true)
-     hydrate()
-   }, [hydrate])
-
-   useEffect(() => {
-     if (isMenuOpen) {
-       document.body.style.overflow = 'hidden'
-     } else {
-       document.body.style.overflow = 'unset'
-     }
-   }, [isMenuOpen])
-
-   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
-    }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  const isHome = pathname === '/'
-  const showNav = !isHome || traversed
+    const { traversed, irisActive } = useIrisStore()
+    const hydrate = useIrisStore((s) => s.hydrate)
+    const pathname = usePathname()
+    const [scrolled, setScrolled] = useState(false)
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [mounted, setMounted] = useState(false)
+    
+    const cartCount = useCart((s) => s.totalItems())
+ 
+    useEffect(() => {
+      setMounted(true)
+      hydrate()
+    }, [hydrate])
+ 
+    useEffect(() => {
+      if (isMenuOpen) {
+        document.body.style.overflow = 'hidden'
+      } else {
+        document.body.style.overflow = 'unset'
+      }
+    }, [isMenuOpen])
+ 
+    const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
+ 
+    useEffect(() => {
+      const handleScroll = () => {
+        setScrolled(window.scrollY > 100)
+      }
+      window.addEventListener('scroll', handleScroll, { passive: true })
+      return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
+ 
+    const isHome = pathname === '/'
+    // On cache la nav si on est sur Home et que l'iris est actif
+    const showNav = !isHome || (!irisActive && (traversed || scrolled))
 
   return (
     <div className="fixed top-0 left-0 w-full z-50 flex justify-center pointer-events-none p-4 md:p-6 lg:p-8">

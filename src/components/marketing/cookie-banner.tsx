@@ -4,17 +4,21 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { Cookie, X } from 'lucide-react'
+import { useIrisStore } from '@/stores/iris-store'
 
 export default function CookieBanner() {
   const [show, setShow] = useState(false)
 
+  const traversed = useIrisStore((s) => s.traversed)
+
   useEffect(() => {
     const consent = localStorage.getItem('moreart-cookie-consent')
-    if (!consent) {
-      const timer = setTimeout(() => setShow(true), 2000)
-      return () => clearTimeout(timer)
+    if (!consent && traversed) {
+      setShow(true)
+    } else if (consent) {
+      setShow(false)
     }
-  }, [])
+  }, [traversed])
 
   const handleAccept = () => {
     localStorage.setItem('moreart-cookie-consent', 'true')
