@@ -77,7 +77,7 @@ export default function ContactPage() {
                   <span className="w-12 h-[1px] bg-accent/50" />
                   Contact & Collaboration
                </p>
-               <h1 className="text-6xl md:text-8xl font-display italic text-white leading-[0.9] tracking-tighter">
+               <h1 className="text-4xl sm:text-6xl md:text-8xl font-display italic text-white leading-[0.9] tracking-tighter">
                   Engageons la <br/>
                   <span className="text-accent">conversation.</span>
                </h1>

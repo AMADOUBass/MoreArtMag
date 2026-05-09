@@ -67,7 +67,7 @@ export default async function ArtistPage() {
         <div className="container-custom grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
            <div className="order-2 lg:order-1">
               <p className="eyebrow text-accent mb-6">La Vision</p>
-              <h2 className="text-5xl md:text-7xl font-display italic text-white mb-10 leading-tight">
+              <h2 className="text-3xl sm:text-5xl md:text-7xl font-display italic text-white mb-10 leading-tight">
                  Une quête de <span className="text-accent">clarté</span> dans le chaos.
               </h2>
               <p className="text-text-secondary text-xl leading-relaxed mb-8">

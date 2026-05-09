@@ -69,7 +69,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-16 mb-48">
             <div className="max-w-3xl">
               <p className="eyebrow text-accent mb-8">Collaboration</p>
-              <h2 className="text-6xl md:text-8xl lg:text-9xl font-display italic leading-[0.85] tracking-tighter">
+              <h2 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-display italic leading-[0.85] tracking-tighter">
                 Porter un <br/>
                 <span className="text-white">nouveau regard.</span>
               </h2>

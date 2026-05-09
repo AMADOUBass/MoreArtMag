@@ -16,14 +16,18 @@ const NAV_ITEMS = [
   { name: 'Configuration', href: '/admin/settings', icon: Settings },
 ]
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ 
+  isOpen, 
+  onClose 
+}: { 
+  isOpen?: boolean; 
+  onClose?: () => void 
+}) {
   const pathname = usePathname()
   const router = useRouter()
   const supabase = createClient()
 
-  // Si on est sur la page login, on n'affiche rien (le layout gérera le cas différemment si besoin, 
-  // mais ici le layout serveur redirige déjà)
-  if (pathname === '/admin/login') return null
+  if (pathname.includes('/admin/login')) return null
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
@@ -32,43 +36,61 @@ export default function AdminSidebar() {
   }
 
   return (
-    <aside className="w-64 border-r border-white/5 flex flex-col fixed inset-y-0 bg-[#0a0a0a] z-50">
-      <div className="p-8">
-        <Link href="/" className="font-display italic text-2xl tracking-tighter">
-          MoreArt <span className="text-accent">Admin</span>
-        </Link>
-      </div>
+    <>
+      {/* Overlay mobile */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+          onClick={onClose}
+        />
+      )}
 
-      <nav className="flex-1 px-4 space-y-2 mt-8">
-        {NAV_ITEMS.map((item) => {
-          const isActive = pathname === item.href
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`
-                flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 eyebrow text-[10px]
-                ${isActive 
-                  ? "bg-accent text-white shadow-lg shadow-accent/20" 
-                  : "text-text-muted hover:text-white hover:bg-white/5"}
-              `}
-            >
-              <item.icon size={18} strokeWidth={1.5} />
-              {item.name}
-            </Link>
-          )
-        })}
-      </nav>
+      <aside className={`
+        fixed inset-y-0 left-0 w-72 bg-[#0a0a0a] border-r border-white/5 flex flex-col z-50
+        transition-transform duration-500 ease-cinematic
+        ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+      `}>
+        <div className="p-8 flex items-center justify-between">
+          <Link href="/" className="font-display italic text-2xl tracking-tighter">
+            MoreArt <span className="text-accent">Admin</span>
+          </Link>
+          <button onClick={onClose} className="md:hidden text-text-muted hover:text-white">
+            <LogOut size={20} className="rotate-180" />
+          </button>
+        </div>
 
-      <div className="p-6 border-t border-white/5">
-        <button 
-          onClick={handleSignOut}
-          className="flex items-center gap-4 px-4 py-3 text-error hover:bg-error/10 w-full rounded-xl transition-all eyebrow text-[10px]"
-        >
-          <LogOut size={18} strokeWidth={1.5} />
-          Déconnexion
-        </button>
-      </div>
-    </aside>
+        <nav className="flex-1 px-4 space-y-2 mt-8 overflow-y-auto">
+          {NAV_ITEMS.map((item) => {
+            const isActive = pathname === item.href
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={onClose}
+                className={`
+                  flex items-center gap-4 px-4 py-4 rounded-xl transition-all duration-300 eyebrow text-[10px]
+                  ${isActive 
+                    ? "bg-accent text-white shadow-lg shadow-accent/20" 
+                    : "text-text-muted hover:text-white hover:bg-white/5"}
+                `}
+              >
+                <item.icon size={20} strokeWidth={1.5} />
+                {item.name}
+              </Link>
+            )
+          })}
+        </nav>
+
+        <div className="p-6 border-t border-white/5">
+          <button 
+            onClick={handleSignOut}
+            className="flex items-center gap-4 px-4 py-4 text-error hover:bg-error/10 w-full rounded-xl transition-all eyebrow text-[10px]"
+          >
+            <LogOut size={20} strokeWidth={1.5} />
+            Déconnexion
+          </button>
+        </div>
+      </aside>
+    </>
   )
 }

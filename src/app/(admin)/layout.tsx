@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
-import AdminSidebar from '../../components/admin/sidebar'
+import AdminLayoutWrapper from '@/components/admin/admin-layout-wrapper'
 
 export default async function AdminLayout({
   children,
@@ -33,12 +33,14 @@ export default async function AdminLayout({
     }
   }
 
+  // Pour la page login, on n'affiche pas le wrapper (sidebar)
+  if (pathname.includes('/admin/login')) {
+    return <>{children}</>
+  }
+
   return (
-    <div className="flex min-h-screen bg-[#0a0a0a] text-white font-sans">
-      <AdminSidebar />
-      <main className="flex-1 ml-0 md:ml-64 p-8 md:p-12">
-        {children}
-      </main>
-    </div>
+    <AdminLayoutWrapper>
+      {children}
+    </AdminLayoutWrapper>
   )
 }

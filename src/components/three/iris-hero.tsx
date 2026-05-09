@@ -294,7 +294,7 @@ export default function IrisHero() {
           <p className="text-[10px] md:text-xs uppercase tracking-[0.4em] text-white/80 mb-3 font-sans">
             Bazan Togola
           </p>
-          <h1 className="font-display italic text-white text-3xl md:text-5xl leading-tight">
+          <h1 className="font-display italic text-white text-2xl sm:text-3xl md:text-5xl leading-tight">
             Le poète oculaire
           </h1>
         </div>

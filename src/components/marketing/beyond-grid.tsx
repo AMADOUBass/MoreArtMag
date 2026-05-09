@@ -116,7 +116,7 @@ export default function BeyondGrid() {
         </div>
 
         {/* Mosaic Grid - Gaps confortables */}
-        <div className="grid grid-cols-12 gap-12 md:gap-24 lg:gap-32 items-start">
+        <div className="grid grid-cols-12 gap-8 md:gap-24 lg:gap-32 items-start">
           {UNIVERSES.map((uni, idx) => (
             <div 
               key={uni.title}
