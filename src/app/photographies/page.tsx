@@ -5,11 +5,37 @@ import { urlFor } from '@/lib/sanity/image'
 import Link from 'next/link'
 
 async function getPhotos(): Promise<Artwork[]> {
-  return client.fetch(`
+  const artworks = await client.fetch(`
     *[_type == "artwork" && type == "photo" && archived != true] | order(year desc) {
       _id, title, slug, type, mainImage, year, location, continent, availableInShop, featured
     }
   `)
+  
+  if (artworks.length > 0) return artworks
+
+  // Fallback Placeholders si Sanity est vide
+  return [
+    {
+      _id: 'ph1',
+      title: 'Matière Éphémère I',
+      slug: { current: 'photo-1' },
+      type: 'photo',
+      mainImage: { _type: 'image', asset: { _ref: 'placeholder-1' } }, // Dummy ref
+      year: '2026',
+      location: 'Sahara',
+      featured: true
+    } as any,
+    {
+      _id: 'ph2',
+      title: 'L\'Ombre Portée',
+      slug: { current: 'photo-2' },
+      type: 'photo',
+      mainImage: { _type: 'image', asset: { _ref: 'placeholder-2' } },
+      year: '2026',
+      location: 'Bamako',
+      featured: false
+    } as any
+  ]
 }
 
 export default async function PhotographiesPage() {
@@ -57,23 +83,30 @@ export default async function PhotographiesPage() {
 
         {/* Layout Différent : Masonry-like Grid */}
         <div className="columns-1 md:columns-2 lg:columns-3 gap-12 space-y-12 pb-40">
-          {artworks.map((art) => (
-            <div key={art._id} className="break-inside-avoid group relative rounded-sm overflow-hidden bg-background-secondary shadow-xl">
-               <Link href={`/oeuvres/${art.slug.current}`} className="block relative">
-                  <Image
-                    src={urlFor(art.mainImage).width(1000).url()}
-                    alt={art.title}
-                    width={800}
-                    height={1000}
-                    className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-1000 duration-1000 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
-                     <p className="eyebrow text-white text-[10px] mb-2">{art.location}</p>
-                     <h3 className="text-2xl font-display italic text-white">{art.title}</h3>
-                  </div>
-               </Link>
-            </div>
-          ))}
+          {artworks.map((art) => {
+            const isPlaceholder = art._id.startsWith('ph');
+            const imgSrc = isPlaceholder 
+              ? `/images/placeholders/photo_${art._id.replace('ph', '')}.png`
+              : urlFor(art.mainImage).width(1000).url();
+
+            return (
+              <div key={art._id} className="break-inside-avoid group relative rounded-sm overflow-hidden bg-background-secondary shadow-xl">
+                 <Link href={`/oeuvres/${art.slug.current}`} className="block relative">
+                    <Image
+                      src={imgSrc}
+                      alt={art.title}
+                      width={800}
+                      height={1000}
+                      className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                       <p className="eyebrow text-white text-[10px] mb-2">{art.location}</p>
+                       <h3 className="text-2xl font-display italic text-white">{art.title}</h3>
+                    </div>
+                 </Link>
+              </div>
+            );
+          })}
         </div>
       </div>
     </main>

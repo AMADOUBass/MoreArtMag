@@ -5,11 +5,36 @@ import { urlFor } from '@/lib/sanity/image'
 import Link from 'next/link'
 
 async function getPeintures(): Promise<Artwork[]> {
-  return client.fetch(`
+  const artworks = await client.fetch(`
     *[_type == "artwork" && type == "peinture" && archived != true] | order(year desc) {
       _id, title, slug, type, mainImage, year, location, continent, availableInShop, featured, shortDescription
     }
   `)
+
+  if (artworks.length > 0) return artworks
+
+  return [
+    {
+      _id: 'pa1',
+      title: 'Genèse Tactile I',
+      slug: { current: 'peinture-1' },
+      type: 'peinture',
+      mainImage: { _type: 'image', asset: { _ref: 'placeholder-1' } },
+      year: '2026',
+      location: 'Atelier',
+      shortDescription: 'Une exploration des couches géologiques et de la mémoire de la terre.'
+    } as any,
+    {
+      _id: 'pa2',
+      title: 'Sédimentation Blanche',
+      slug: { current: 'peinture-2' },
+      type: 'peinture',
+      mainImage: { _type: 'image', asset: { _ref: 'placeholder-2' } },
+      year: '2026',
+      location: 'Atelier',
+      shortDescription: 'Le vide comme matière, capturé dans l\'épaisseur du blanc et du gris.'
+    } as any
+  ]
 }
 
 export default async function PeinturesPage() {
@@ -41,40 +66,47 @@ export default async function PeinturesPage() {
 
         {/* Layout Différent : Liste Immersive Full Width */}
         <div className="space-y-40 md:space-y-64 pb-40">
-          {artworks.map((art, idx) => (
-            <section key={art._id} className={`grid grid-cols-1 lg:grid-cols-12 gap-12 items-center ${idx % 2 === 0 ? '' : 'lg:flex-row-reverse'}`}>
-              
-              <div className={`lg:col-span-8 relative aspect-[4/5] md:aspect-[16/10] overflow-hidden rounded-sm group shadow-2xl ${idx % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
-                <Image
-                  src={urlFor(art.mainImage).width(1600).url()}
-                  alt={art.title}
-                  fill
-                  className="object-cover transition-transform duration-1000 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700" />
-              </div>
+          {artworks.map((art, idx) => {
+            const isPlaceholder = art._id.startsWith('pa');
+            const imgSrc = isPlaceholder 
+              ? `/images/placeholders/painting_${art._id.replace('pa', '')}.png`
+              : urlFor(art.mainImage).width(1600).url();
 
-              <div className={`lg:col-span-4 flex flex-col ${idx % 2 === 0 ? 'lg:order-2 lg:pl-12' : 'lg:order-1 lg:pr-12 text-right items-end'}`}>
-                <span className="text-accent text-sm font-display italic mb-4">#{idx + 1}</span>
-                <h2 className="text-5xl md:text-6xl mb-8 leading-tight text-white">{art.title}</h2>
-                <p className="text-text-secondary text-lg mb-8 leading-relaxed max-w-sm italic">
-                  {art.shortDescription || "Une exploration des formes et des ombres née du mouvement intuitif de la main."}
-                </p>
-                <div className="flex gap-6 eyebrow text-text-muted mb-12">
-                  <span>{art.year}</span>
-                  <span>/</span>
-                  <span>{art.location}</span>
+            return (
+              <section key={art._id} className={`grid grid-cols-1 lg:grid-cols-12 gap-12 items-center ${idx % 2 === 0 ? '' : 'lg:flex-row-reverse'}`}>
+                
+                <div className={`lg:col-span-8 relative aspect-[4/5] md:aspect-[16/10] overflow-hidden rounded-sm group shadow-2xl ${idx % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
+                  <Image
+                    src={imgSrc}
+                    alt={art.title}
+                    fill
+                    className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700" />
                 </div>
-                <Link 
-                  href={`/oeuvres/${art.slug.current}`}
-                  className="inline-block px-8 py-4 border border-white/10 hover:border-accent hover:text-accent transition-all duration-300 eyebrow"
-                >
-                  Découvrir la toile
-                </Link>
-              </div>
 
-            </section>
-          ))}
+                <div className={`lg:col-span-4 flex flex-col ${idx % 2 === 0 ? 'lg:order-2 lg:pl-12' : 'lg:order-1 lg:pr-12 text-right items-end'}`}>
+                  <span className="text-accent text-sm font-display italic mb-4">#{idx + 1}</span>
+                  <h2 className="text-5xl md:text-6xl mb-8 leading-tight text-white">{art.title}</h2>
+                  <p className="text-text-secondary text-lg mb-8 leading-relaxed max-w-sm italic">
+                    {art.shortDescription || "Une exploration des formes et des ombres née du mouvement intuitif de la main."}
+                  </p>
+                  <div className="flex gap-6 eyebrow text-text-muted mb-12">
+                    <span>{art.year}</span>
+                    <span>/</span>
+                    <span>{art.location}</span>
+                  </div>
+                  <Link 
+                    href={`/oeuvres/${art.slug.current}`}
+                    className="inline-block px-8 py-4 border border-white/10 hover:border-accent hover:text-accent transition-all duration-300 eyebrow"
+                  >
+                    Découvrir la toile
+                  </Link>
+                </div>
+
+              </section>
+            );
+          })}
         </div>
       </div>
     </main>
