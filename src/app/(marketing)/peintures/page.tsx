@@ -6,49 +6,76 @@ import { urlFor } from '@/lib/sanity/image'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Peintures | L\'Âme sur la Toile Brute',
-  description: 'Découvrez les œuvres picturales de Bazan Togola. Une exploration tactile de la matière et de la mémoire à travers des pigments naturels.',
+  title: 'Peintures | La Trace du Temps',
+  description: 'Découvrez les œuvres picturales de Bazan Togola. Une exploration de la matière et de la sédimentation à travers la technique mixte.',
 }
 
-async function getPeintures(): Promise<Artwork[]> {
-  const artworks = await client.fetch(`
+async function getPaintings(): Promise<Artwork[]> {
+  const sanityArtworks = await client.fetch(`
     *[_type == "artwork" && type == "peinture" && archived != true] | order(year desc) {
-      _id, title, slug, type, mainImage, year, location, continent, availableInShop, featured, shortDescription
+      _id, title, slug, type, mainImage, year, location, availableInShop, featured, shortDescription
     }
   `)
-
-  if (artworks.length > 0) return artworks
-
-  return [
+  
+  // Fallback si Sanity est vide ou peu rempli
+  const fallbacks = [
     {
       _id: 'pa1',
       title: 'Genèse Tactile I',
       slug: { current: 'genese-tactile-1' },
       type: 'peinture',
-      mainImage: { _type: 'image', asset: { _ref: 'placeholder-1' } },
+      mainImage: null,
       year: '2026',
-      location: 'Atelier, Québec',
-      shortDescription: 'Une exploration des couches géologiques et de la mémoire de la terre, où chaque épaisseur raconte un millénaire.'
+      location: 'Studio',
+      featured: true,
+      shortDescription: "Une exploration de la sédimentation et des couches de mémoire à travers la technique mixte."
     } as any,
     {
       _id: 'pa2',
-      title: 'Sédimentation Blanche',
-      slug: { current: 'sedimentation-blanche' },
+      title: 'Sédimentation Ocre',
+      slug: { current: 'sedimentation-ocre' },
       type: 'peinture',
-      mainImage: { _type: 'image', asset: { _ref: 'placeholder-2' } },
+      mainImage: null,
+      year: '2025',
+      location: 'Studio',
+      featured: false,
+      shortDescription: "Le dialogue entre les pigments naturels et la structure de la toile."
+    } as any,
+    {
+      _id: 'pa3',
+      title: 'Mémoire Bleue',
+      slug: { current: 'memoire-bleue' },
+      type: 'peinture',
+      mainImage: null,
       year: '2026',
-      location: 'Atelier, Québec',
-      shortDescription: 'Le vide comme matière, capturé dans l\'épaisseur du blanc et du gris, une méditation sur l\'absence.'
+      location: 'Studio',
+      featured: false,
+      shortDescription: "Une immersion dans les teintes indigo, rappelant les teintures traditionnelles revisitées."
+    } as any,
+    {
+      _id: 'pa4',
+      title: 'Éclat de Terre',
+      slug: { current: 'eclat-de-terre' },
+      type: 'peinture',
+      mainImage: null,
+      year: '2026',
+      location: 'Studio',
+      featured: true,
+      shortDescription: "La force brute de la terre capturée dans un mouvement ascendant et lumineux."
     } as any
   ]
+
+  const combined = [...(sanityArtworks || []), ...fallbacks]
+  const uniqueArtworks = Array.from(new Map(combined.map(item => [item._id, item])).values())
+  return uniqueArtworks.slice(0, 4)
 }
 
 export default async function PeinturesPage() {
-  const artworks = await getPeintures()
+  const artworks = await getPaintings()
 
   return (
-    <main className="pt-32 bg-[#0d0d0d]">
-      <div className="container-custom py-20">
+    <main className="pt-40 pb-20 bg-background-primary min-h-screen">
+      <div className="container-custom">
         {/* Header Harmonisé */}
         <div className="mb-32 md:mb-56 max-w-4xl relative">
           <div className="absolute -left-12 -top-12 text-[140px] font-display italic text-white/[0.03] select-none pointer-events-none leading-none">
@@ -56,97 +83,53 @@ export default async function PeinturesPage() {
           </div>
           <p className="eyebrow mb-8 flex items-center gap-4">
             <span className="w-12 h-[1px] bg-accent/50" />
-            Atelier & Matière
+            Matière & Sédimentation
           </p>
           <h1 className="text-6xl md:text-8xl lg:text-9xl mb-12 leading-[0.9] font-display tracking-tighter">
-            L'âme sur la <br/> 
-            <span className="italic text-accent ml-12 md:ml-24">toile brute.</span>
+            La trace <br/> 
+            <span className="italic text-accent ml-12 md:ml-24">du temps.</span>
           </h1>
           <div className="flex flex-col md:flex-row gap-12 items-start md:items-center ml-auto md:max-w-2xl">
              <div className="w-px h-24 bg-white/10 hidden md:block" />
              <p className="text-text-secondary text-xl md:text-2xl leading-relaxed italic">
-              "Chaque coup de pinceau est un souffle, une trace laissée entre le visible et l'imaginaire, une réponse tactile au silence de l'image."
+              "Peindre, c'est sédimenter l'instant. C'est laisser la matière raconter ce que les mots ne peuvent plus contenir."
             </p>
           </div>
         </div>
 
-        {/* Layout : Liste Immersive */}
-        <div className="space-y-40 md:space-y-64 pb-40">
-          {artworks.map((art, idx) => {
-            const isPlaceholder = art._id.startsWith('pa');
-            const imgSrc = isPlaceholder 
-              ? `/images/placeholders/painting_${art._id.replace('pa', '')}.png`
-              : (art.mainImage ? urlFor(art.mainImage).width(1600).url() : '/images/placeholders/painting_1.png');
-
-            return (
-              <section key={art._id} className={`grid grid-cols-1 lg:grid-cols-12 gap-12 items-center ${idx % 2 === 0 ? '' : 'lg:flex-row-reverse'}`}>
-                
-                <div className={`lg:col-span-8 relative aspect-[4/5] md:aspect-[16/10] overflow-hidden rounded-sm group shadow-2xl ${idx % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
+        {/* Gallery Sections */}
+        <div className="space-y-40">
+          {artworks.map((art, idx) => (
+            <div 
+              key={art._id} 
+              className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
+            >
+              <div className={`lg:col-span-7 ${idx % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
+                <Link href={`/oeuvres/${art.slug.current}`} className="relative block aspect-[4/5] bg-background-secondary rounded-sm overflow-hidden shadow-2xl group cursor-pointer">
                   <Image
-                    src={imgSrc}
+                    src={art._id.startsWith('pa') ? `/images/placeholders/painting_${art._id === 'pa3' ? '1' : art._id === 'pa4' ? '2' : art._id.replace('pa', '')}.png` : (art.mainImage ? urlFor(art.mainImage).width(1200).url() : '/images/placeholders/painting_1.png')}
                     alt={art.title}
                     fill
                     className="object-cover transition-transform duration-1000 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                </div>
+                </Link>
+              </div>
 
-                <div className={`lg:col-span-4 flex flex-col ${idx % 2 === 0 ? 'lg:order-2 lg:pl-12' : 'lg:order-1 lg:pr-12 text-right items-end'}`}>
-                  <span className="text-accent text-sm font-display italic mb-4">Fragment #{idx + 1}</span>
-                  <h2 className="text-5xl md:text-6xl mb-8 leading-tight text-white font-display">{art.title}</h2>
-                  <p className="text-text-secondary text-lg mb-8 leading-relaxed max-w-sm italic">
-                    {art.shortDescription || "Une exploration des formes et des ombres née du mouvement intuitif de la main."}
-                  </p>
-                  <div className="flex gap-6 eyebrow text-text-muted mb-12">
-                    <span>{art.year}</span>
-                    <span>/</span>
-                    <span>{art.location}</span>
-                  </div>
-                  <Link 
-                    href={`/oeuvres/${art.slug.current}`}
-                    className="inline-block px-10 py-5 border border-white/10 hover:border-accent hover:text-accent transition-all duration-500 eyebrow uppercase tracking-widest text-[10px]"
-                  >
-                    Découvrir l'œuvre
-                  </Link>
-                </div>
-
-              </section>
-            );
-          })}
+              <div className={`lg:col-span-5 ${idx % 2 === 0 ? 'lg:order-2 lg:pl-12' : 'lg:order-1 lg:pr-12'}`}>
+                <p className="eyebrow text-accent mb-6">Fragment {idx + 1}</p>
+                <h2 className="text-5xl font-display italic text-white mb-8 leading-tight">{art.title}</h2>
+                <p className="text-text-secondary text-lg leading-relaxed mb-12">
+                  {art.shortDescription || "Une exploration profonde de la matière, où chaque couche de pigment raconte une histoire de sédimentation et de mémoire."}
+                </p>
+                <Link href={`/oeuvres/${art.slug.current}`}>
+                  <button className="px-10 py-5 border border-white/10 hover:border-accent hover:bg-accent/5 text-white transition-all duration-500 eyebrow text-[10px] uppercase tracking-widest rounded-sm cursor-pointer">
+                     Découvrir l'œuvre
+                  </button>
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
-
-        {/* Matière Section */}
-        <section className="py-40 border-t border-white/5">
-           <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-              <div className="order-2 lg:order-1 relative aspect-square bg-white/5 rounded-sm overflow-hidden group">
-                 <Image 
-                   src="/images/beyond-grid/peinture.png"
-                   alt="Détail Matière"
-                   fill
-                   className="object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-1000"
-                 />
-                 <div className="absolute inset-0 bg-accent/5 mix-blend-overlay" />
-              </div>
-              <div className="order-1 lg:order-2">
-                 <p className="eyebrow text-accent mb-6">La Matière</p>
-                 <h2 className="text-5xl font-display italic text-white mb-10">L'organique en <span className="text-accent">fusion.</span></h2>
-                 <p className="text-text-secondary text-lg leading-relaxed mb-8">
-                   Bazan utilise des pigments naturels, souvent mélangés à des sables et des terres collectés lors de ses voyages. Cette approche donne à ses peintures une qualité tridimensionnelle, où la toile devient un bas-relief explorant la sédimentation de la mémoire.
-                 </p>
-                 <div className="grid grid-cols-2 gap-8">
-                    <div>
-                       <p className="text-white font-display italic text-xl mb-2">Pigments</p>
-                       <p className="text-text-muted text-xs leading-relaxed">Terres d'ocre du Mali et liants naturels.</p>
-                    </div>
-                    <div>
-                       <p className="text-white font-display italic text-xl mb-2">Supports</p>
-                       <p className="text-text-muted text-xs leading-relaxed">Toiles de lin brut et bois recyclé.</p>
-                    </div>
-                 </div>
-              </div>
-           </div>
-        </section>
       </div>
     </main>
   )

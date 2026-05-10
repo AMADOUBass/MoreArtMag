@@ -22,16 +22,21 @@ export default function Lightbox({ artwork, onClose }: LightboxProps) {
     }
   }, [])
 
+  const isPlaceholder = artwork._id.startsWith('ph') || artwork._id.startsWith('pa') || artwork._id.startsWith('shop');
+  const imgSrc = isPlaceholder 
+    ? (artwork._id.startsWith('pa') ? `/images/placeholders/painting_${artwork._id.replace('pa', '')}.png` : `/images/placeholders/photo_${artwork._id.replace('ph', '').replace('shop', '')}.png`)
+    : (artwork.mainImage ? urlFor(artwork.mainImage).width(1600).url() : '/images/placeholders/photo_1.png');
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-background-primary/95 backdrop-blur-2xl p-4 md:p-12"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-background-primary/98 backdrop-blur-3xl p-4 md:p-12"
     >
       <button 
         onClick={onClose}
-        className="absolute top-8 right-8 z-10 w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
+        className="absolute top-8 right-8 z-10 w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all duration-500"
       >
         <X size={24} className="text-white" />
       </button>
@@ -40,13 +45,13 @@ export default function Lightbox({ artwork, onClose }: LightboxProps) {
         
         {/* Image Display */}
         <motion.div 
-          initial={{ scale: 0.9, opacity: 0 }}
+          initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.2, type: 'spring', damping: 25 }}
-          className="lg:col-span-8 relative aspect-[4/5] lg:aspect-auto lg:h-[80vh] bg-black/40 rounded-sm overflow-hidden ring-1 ring-white/5 shadow-2xl"
+          transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="lg:col-span-8 relative aspect-[4/5] lg:aspect-auto lg:h-[85vh] bg-black/40 rounded-sm overflow-hidden ring-1 ring-white/5 shadow-2xl"
         >
           <Image
-            src={urlFor(artwork.mainImage).width(1600).url()}
+            src={imgSrc}
             alt={artwork.title}
             fill
             className="object-contain"

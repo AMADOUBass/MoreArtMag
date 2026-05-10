@@ -1,4 +1,6 @@
-import { Metadata } from 'next'
+'use client'
+
+import React, { useState, useEffect } from 'react'
 import { client } from '@/lib/sanity/client'
 import { Artwork } from '@/types/sanity'
 import Image from 'next/image'
@@ -6,143 +8,233 @@ import { urlFor } from '@/lib/sanity/image'
 import Link from 'next/link'
 import { ShoppingBag, Eye } from 'lucide-react'
 
-export const metadata: Metadata = {
-  title: 'Boutique | Acquisition & Collection',
-  description: 'Acquérez un fragment d\'âme. Découvrez les tirages limités et les œuvres originales de Bazan Togola.',
-}
-
 async function getShopArtworks(): Promise<Artwork[]> {
-  const artworks = await client.fetch(`
-    *[_type == "artwork" && availableInShop == true && archived != true] | order(year desc) {
-      _id, title, slug, type, mainImage, year, location, availableInShop, featured
-    }
-  `)
+  let sanityArtworks: Artwork[] = []
+  try {
+    sanityArtworks = await client.fetch(`
+      *[_type == "artwork" && availableInShop == true && archived != true] | order(year desc) {
+        _id, title, slug, type, mainImage, year, location, availableInShop, featured
+      }
+    `)
+  } catch (e) {
+    console.error('Sanity fetch error')
+  }
 
-  if (artworks.length > 0) return artworks
-
-  // Fallbacks si la boutique est vide dans Sanity
-  return [
+  const fallbacks = [
     {
-      _id: 'shop1',
+      _id: 'shop-fallback-1',
       title: 'Silence du Sahel',
       slug: { current: 'silence-du-sahel' },
       type: 'photo',
-      mainImage: { _type: 'image', asset: { _ref: 'placeholder-1' } },
+      mainImage: null,
       availableInShop: true,
-      featured: true
+      featured: true,
     } as any,
     {
-      _id: 'shop2',
+      _id: 'shop-fallback-2',
       title: 'Genèse Tactile I',
       slug: { current: 'genese-tactile-1' },
       type: 'peinture',
-      mainImage: { _type: 'image', asset: { _ref: 'placeholder-1' } },
+      mainImage: null,
       availableInShop: true,
-      featured: false
-    } as any
+      featured: false,
+    } as any,
+    {
+      _id: 'shop-fallback-3',
+      title: "L'Ombre Portée",
+      slug: { current: 'ombre-portee' },
+      type: 'photo',
+      mainImage: null,
+      availableInShop: true,
+      featured: false,
+    } as any,
+    {
+      _id: 'shop-fallback-4',
+      title: 'Désert de Cristal',
+      slug: { current: 'desert-de-cristal' },
+      type: 'photo',
+      mainImage: null,
+      availableInShop: true,
+      featured: true,
+    } as any,
+    {
+      _id: 'shop-fallback-5',
+      title: 'Résonance Ocre',
+      slug: { current: 'resonance-ocre' },
+      type: 'peinture',
+      mainImage: null,
+      availableInShop: true,
+      featured: false,
+    } as any,
+    {
+      _id: 'shop-fallback-6',
+      title: 'Symphonie Bleue',
+      slug: { current: 'symphonie-bleue' },
+      type: 'photo',
+      mainImage: null,
+      availableInShop: true,
+      featured: false,
+    } as any,
   ]
+
+  const combined = [...(sanityArtworks || []), ...fallbacks]
+  return combined.slice(0, 6)
 }
 
-export default async function BoutiquePage() {
-  const artworks = await getShopArtworks()
+export default function BoutiquePage() {
+  const [artworks, setArtworks] = useState<Artwork[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    getShopArtworks().then((data) => {
+      setArtworks(data)
+      setLoading(false)
+    })
+  }, [])
+
+  if (loading)
+    return (
+      <div className="bg-background-primary flex min-h-screen items-center justify-center">
+        <div className="border-accent h-12 w-12 animate-spin rounded-full border-4 border-t-transparent" />
+      </div>
+    )
 
   return (
-    <main className="pt-40 pb-20 bg-background-primary">
+    <main className="bg-background-primary min-h-screen pt-40 pb-40">
       <div className="container-custom">
         {/* Header Harmonisé */}
-        <div className="mb-32 md:mb-56 max-w-4xl relative">
-          <div className="absolute -left-12 -top-12 text-[140px] font-display italic text-white/[0.03] select-none pointer-events-none leading-none">
+        <div className="relative mb-32 max-w-4xl md:mb-56">
+          <div className="font-display pointer-events-none absolute -top-12 -left-12 text-[140px] leading-none text-white/[0.03] italic select-none">
             03
           </div>
           <p className="eyebrow mb-8 flex items-center gap-4">
-            <span className="w-12 h-[1px] bg-accent/50" />
+            <span className="bg-accent/50 h-[1px] w-12" />
             Acquisition & Collection
           </p>
-          <h1 className="text-6xl md:text-8xl lg:text-9xl mb-12 leading-[0.9] font-display tracking-tighter">
-            Posséder un <br/> 
-            <span className="italic text-accent ml-12 md:ml-24">fragment d'âme.</span>
+          <h1 className="font-display mb-12 text-6xl leading-[0.9] tracking-tighter md:text-8xl lg:text-9xl">
+            Posséder un <br />
+            <span className="text-accent ml-12 italic md:ml-24">
+              fragment d'âme.
+            </span>
           </h1>
-          <div className="flex flex-col md:flex-row gap-12 items-start md:items-center ml-auto md:max-w-2xl">
-             <div className="w-px h-24 bg-white/10 hidden md:block" />
-             <p className="text-text-secondary text-xl md:text-2xl leading-relaxed italic">
-              "L'art ne doit pas seulement être contemplé, il doit être vécu au quotidien, trouvant sa place dans l'intimité de votre espace."
+          <div className="ml-auto flex flex-col items-start gap-12 md:max-w-2xl md:flex-row md:items-center">
+            <div className="hidden h-24 w-px bg-white/10 md:block" />
+            <p className="text-text-secondary text-xl leading-relaxed italic md:text-2xl">
+              "L'art ne doit pas seulement être contemplé, il doit être vécu au
+              quotidien, trouvant sa place dans l'intimité de votre espace."
             </p>
           </div>
         </div>
 
-        {/* Info barre boutique */}
-        <div className="flex flex-wrap gap-8 md:gap-16 eyebrow text-text-muted mb-24 border-b border-white/5 pb-12">
-            <div className="flex flex-col">
-              <span className="text-white text-xl font-display italic">Livraison</span>
-              <span className="text-[10px] uppercase tracking-widest mt-1">Monde Entier</span>
-            </div>
-            <div className="w-px h-10 bg-white/10 hidden sm:block" />
-            <div className="flex flex-col">
-              <span className="text-white text-xl font-display italic">Certificat</span>
-              <span className="text-[10px] uppercase tracking-widest mt-1">Authenticité Garantie</span>
-            </div>
-            <div className="w-px h-10 bg-white/10 hidden sm:block" />
-            <div className="flex flex-col">
-              <span className="text-white text-xl font-display italic">Support</span>
-              <span className="text-[10px] uppercase tracking-widest mt-1">Fine Art & Toile</span>
-            </div>
+        {/* Info barre boutique Centrée */}
+        <div className="eyebrow text-text-muted mb-32 flex flex-wrap justify-center gap-12 border-b border-white/5 pb-16 md:gap-24">
+          <div className="flex flex-col items-center">
+            <span className="font-display text-xl text-white italic">
+              Livraison
+            </span>
+            <span className="mt-1 text-[10px] tracking-widest uppercase">
+              Monde Entier
+            </span>
+          </div>
+          <div className="hidden h-10 w-px bg-white/10 sm:block" />
+          <div className="flex flex-col items-center">
+            <span className="font-display text-xl text-white italic">
+              Certificat
+            </span>
+            <span className="mt-1 text-[10px] tracking-widest uppercase">
+              Authenticité Garantie
+            </span>
+          </div>
+          <div className="hidden h-10 w-px bg-white/10 sm:block" />
+          <div className="flex flex-col items-center">
+            <span className="font-display text-xl text-white italic">
+              Support
+            </span>
+            <span className="mt-1 text-[10px] tracking-widest uppercase">
+              Fine Art & Toile
+            </span>
+          </div>
         </div>
 
         {/* Product Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
-          {artworks.map((art) => {
-             const isPlaceholder = art._id.startsWith('shop');
-             const imgSrc = isPlaceholder 
-               ? (art.type === 'photo' ? '/images/placeholders/photo_1.png' : '/images/placeholders/painting_1.png')
-               : (art.mainImage ? urlFor(art.mainImage).width(1000).url() : '/images/placeholders/photo_1.png');
-             
-             return (
-              <div key={art._id} className="group flex flex-col">
-                 <Link href={`/oeuvres/${art.slug.current}`} className="relative aspect-[3/4] overflow-hidden bg-background-secondary mb-8 rounded-sm shadow-2xl">
-                    <Image
-                      src={imgSrc}
-                      alt={art.title}
-                      fill
-                      className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                    />
-                    {/* Quick Action Overlay */}
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center gap-4">
-                       <div className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center hover:bg-accent hover:text-white transition-all duration-500 transform scale-90 group-hover:scale-100">
-                          <ShoppingBag size={24} />
-                       </div>
-                       <div className="w-14 h-14 rounded-full bg-black/60 text-white backdrop-blur-sm flex items-center justify-center hover:bg-white hover:text-black transition-all duration-500 transform scale-90 group-hover:scale-100">
-                          <Eye size={24} />
-                       </div>
-                    </div>
-                 </Link>
+        <div className="grid grid-cols-1 gap-x-16 gap-y-32 md:grid-cols-2 lg:grid-cols-3">
+          {artworks.map((art, index) => {
+            let imgSrc = '/images/placeholders/photo_1.png'
+            if (art.mainImage) {
+              imgSrc = urlFor(art.mainImage).width(1000).url()
+            } else {
+              const fallbacks = [
+                '/images/placeholders/photo_1.png',
+                '/images/placeholders/painting_1.png',
+                '/images/placeholders/photo_2.png',
+                '/images/placeholders/photo_4.png',
+                '/images/placeholders/painting_1.png',
+                '/images/placeholders/photo_5.png'
+              ]
+              imgSrc = fallbacks[index % fallbacks.length]
+            }
 
-                 <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="text-2xl font-display italic text-white group-hover:text-accent transition-colors mb-2">{art.title}</h3>
-                      <p className="eyebrow text-[10px] text-text-muted">{art.type === 'photo' ? 'Tirage Limité / Fine Art' : 'Œuvre Originale / Technique Mixte'}</p>
+            const itemLink = `/oeuvres/${art.slug?.current || '#'}`
+
+            return (
+              <div key={art._id + index} className="group flex h-full flex-col">
+                <Link href={itemLink} className="bg-background-secondary relative mb-8 aspect-[3/4] overflow-hidden rounded-sm shadow-2xl cursor-pointer">
+                  <Image
+                    src={imgSrc}
+                    alt={art.title}
+                    fill
+                    className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                  />
+                  {/* Quick Action Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center gap-4 bg-black/40 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                    <div className="hover:bg-accent flex h-11 w-11 md:h-14 md:w-14 scale-90 transform items-center justify-center rounded-full bg-white text-black transition-all duration-500 group-hover:scale-100 hover:text-white cursor-pointer">
+                      <ShoppingBag className="w-5 h-5 md:w-6 md:h-6" strokeWidth={1.5} />
                     </div>
-                    <div className="text-right">
-                      <p className="text-xl font-display italic text-white">{art.type === 'photo' ? 'À partir de 450€' : 'Prix sur demande'}</p>
-                      <p className="text-[9px] eyebrow text-success tracking-[0.2em] mt-1 uppercase">Disponible</p>
+                    <div className="flex h-11 w-11 md:h-14 md:w-14 scale-90 transform items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-sm transition-all duration-500 group-hover:scale-100 hover:bg-white hover:text-black cursor-pointer">
+                      <Eye className="w-5 h-5 md:w-6 md:h-6" strokeWidth={1.5} />
                     </div>
-                 </div>
-                 
-                 <div className="mt-6 pt-6 border-t border-white/5 flex gap-4">
-                    <span className="px-4 py-1.5 bg-white/5 text-[9px] eyebrow rounded-full border border-white/5">Plusieurs Formats</span>
-                    <span className="px-4 py-1.5 bg-white/5 text-[9px] eyebrow rounded-full border border-white/5">Expédition Sécurisée</span>
-                 </div>
+                  </div>
+                </Link>
+
+                <div className="flex flex-1 flex-col">
+                  <div className="mb-8 flex min-h-[80px] items-start justify-between">
+                    <div className="flex-1 pr-4 text-left">
+                      <Link href={itemLink} className="cursor-pointer">
+                        <h3 className="font-display group-hover:text-accent mb-2 line-clamp-2 text-2xl text-white italic transition-colors">
+                          {art.title}
+                        </h3>
+                      </Link>
+                      <p className="eyebrow text-text-muted text-[10px]">
+                        {art.type === 'photo'
+                          ? 'Tirage Limité / Fine Art'
+                          : 'Œuvre Originale / Technique Mixte'}
+                      </p>
+                    </div>
+                    <div className="flex-shrink-0 text-right">
+                      <p className="font-display text-xl text-white italic">
+                        {art.type === 'photo'
+                          ? 'À partir de 450€'
+                          : 'Prix sur demande'}
+                      </p>
+                      <p className="eyebrow text-success mt-1 text-[9px] tracking-[0.2em] uppercase">
+                        Disponible
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-auto flex gap-4 border-t border-white/5 pt-6">
+                    <span className="eyebrow rounded-full border border-white/5 bg-white/5 px-4 py-1.5 text-[9px]">
+                      Plusieurs Formats
+                    </span>
+                    <span className="eyebrow rounded-full border border-white/5 bg-white/5 px-4 py-1.5 text-[9px]">
+                      Expédition Sécurisée
+                    </span>
+                  </div>
+                </div>
               </div>
-             );
+            )
           })}
         </div>
-
-        {artworks.length === 0 && (
-          <div className="py-40 text-center border border-dashed border-white/10 rounded-sm">
-             <ShoppingBag size={48} className="mx-auto text-white/10 mb-8" />
-             <h2 className="text-3xl font-display italic text-white mb-4">La boutique se prépare.</h2>
-             <p className="text-text-muted eyebrow max-w-sm mx-auto">Nous sélectionnons actuellement les meilleures pièces pour la collection en ligne.</p>
-          </div>
-        )}
       </div>
     </main>
   )

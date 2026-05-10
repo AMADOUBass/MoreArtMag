@@ -2,6 +2,7 @@
 
 import { useIrisStore } from '@/stores/iris-store'
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, ShoppingBag, ArrowRight, X } from 'lucide-react'
@@ -13,6 +14,7 @@ const LINKS = [
   { name: 'Peintures', href: '/peintures' },
   { name: 'Boutique', href: '/boutique' },
   { name: 'L\'Artiste', href: '/a-propos' },
+  { name: 'Contact', href: '/contact' },
 ]
 
 export default function Navbar() {
@@ -89,7 +91,7 @@ export default function Navbar() {
           className="hidden md:flex items-center gap-1 relative px-1 py-1 bg-white/5 rounded-full border border-white/5"
           onMouseLeave={() => setHoveredIndex(null)}
         >
-          {LINKS.map((link, idx) => (
+          {LINKS.filter(l => l.name !== 'Contact').map((link, idx) => (
             <Link 
               key={link.href}
               href={link.href} 
@@ -123,18 +125,24 @@ export default function Navbar() {
 
         {/* Actions Section */}
          <div className="flex items-center gap-3 md:gap-5 z-10">
-          <Link 
-            href="/panier" 
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-text-secondary hover:text-accent border border-white/5 transition-all duration-300 hover:scale-110 relative"
-            aria-label="Panier"
+          <motion.div
+            key={`cart-${cartCount}`}
+            animate={{ scale: [1, 1.5, 1] }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
           >
-            <ShoppingBag size={18} strokeWidth={1.5} />
-            {mounted && cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg animate-in zoom-in duration-300">
-                {cartCount}
-              </span>
-            )}
-          </Link>
+            <Link 
+              href="/panier" 
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-text-secondary hover:text-accent border border-white/5 transition-all duration-300 hover:scale-110 relative"
+              aria-label="Panier"
+            >
+              <ShoppingBag size={18} strokeWidth={1.5} />
+              {mounted && cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg animate-in zoom-in duration-300">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+          </motion.div>
           
           <Link 
             href="/contact" 
@@ -161,8 +169,21 @@ export default function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ duration: 0.5, ease: [0.77, 0, 0.175, 1] }}
-            className="fixed inset-0 z-40 bg-background-primary flex flex-col p-8 md:hidden"
+            className="fixed inset-0 z-40 bg-background-primary flex flex-col p-8 md:hidden pointer-events-auto"
           >
+            {/* Bouton Fermer Explicite */}
+            <div className="flex justify-between items-center mb-8">
+               <Link href="/" onClick={() => setIsMenuOpen(false)} className="font-display text-2xl italic">
+                  MoreArt<span className="text-accent">Mag</span>
+               </Link>
+               <button 
+                 onClick={() => setIsMenuOpen(false)}
+                 className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-white"
+               >
+                 <X size={24} />
+               </button>
+            </div>
+
             <div className="flex-1 flex flex-col justify-center gap-12">
               {LINKS.map((link, idx) => (
                 <motion.div

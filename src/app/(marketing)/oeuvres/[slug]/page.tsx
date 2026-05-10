@@ -16,14 +16,15 @@ interface PageProps {
 }
 
 async function getArtwork(slug: string): Promise<ArtworkWithStock | null> {
-  const artwork = await client.fetch(`
-    *[_type == "artwork" && slug.current == $slug][0] {
-      _id, title, slug, type, mainImage, year, location, continent, availableInShop, featured, shortDescription, longDescription,
+  const artwork = await client.fetch(
+    `*[_type == "artwork" && slug.current == $slug][0] {
+      ...,
       sizes[] {
         sizeId, label, widthCm, heightCm
       }
-    }
-  `, { slug })
+    }`,
+    { slug }
+  )
 
   if (!artwork) return null
 
@@ -37,15 +38,17 @@ async function getArtwork(slug: string): Promise<ArtworkWithStock | null> {
 }
 
 async function getRelatedWorks(type: string, currentId: string): Promise<Artwork[]> {
-  return client.fetch(`
-    *[_type == "artwork" && type == $type && _id != $currentId][0...3] {
+  return client.fetch(
+    `*[_type == "artwork" && type == $type && _id != $currentId][0...3] {
       _id, title, slug, mainImage, year, location
-    }
-  `, { type, currentId })
+    }`,
+    { type, currentId }
+  )
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const artwork = await getArtwork(params.slug)
+  const { slug } = await params
+  const artwork = await getArtwork(slug)
   if (!artwork) return { title: 'Œuvre non trouvée' }
 
   return {
@@ -58,7 +61,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function ArtworkPage({ params }: PageProps) {
-  const artwork = await getArtwork(params.slug)
+  const { slug } = await params
+  const artwork = await getArtwork(slug)
   if (!artwork) notFound()
 
   const relatedWorks = await getRelatedWorks(artwork.type, artwork._id)
@@ -116,12 +120,18 @@ export default async function ArtworkPage({ params }: PageProps) {
                {relatedWorks.map((art) => (
                  <Link key={art._id} href={`/oeuvres/${art.slug.current}`} className="group space-y-6">
                     <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-background-secondary shadow-xl">
-                       <Image
-                         src={art.mainImage ? urlFor(art.mainImage).width(800).url() : ''}
-                         alt={art.title}
-                         fill
-                         className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                       />
+                       {art.mainImage ? (
+                         <Image
+                           src={urlFor(art.mainImage).width(800).url()}
+                           alt={art.title}
+                           fill
+                           className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                         />
+                       ) : (
+                         <div className="w-full h-full flex items-center justify-center bg-white/5 italic text-[10px] text-text-muted">
+                           Image non disponible
+                         </div>
+                       )}
                        <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700" />
                     </div>
                     <div>

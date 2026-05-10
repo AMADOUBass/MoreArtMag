@@ -15,7 +15,6 @@ export default function MarketingLayout({
       <CookieBanner />
       <SmoothScroll>
         {children}
-        <Newsletter />
         <Footer />
       </SmoothScroll>
     </>

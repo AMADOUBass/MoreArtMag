@@ -11,22 +11,20 @@ export const metadata: Metadata = {
 }
 
 async function getPhotos(): Promise<Artwork[]> {
-  const artworks = await client.fetch(`
+  const sanityArtworks = await client.fetch(`
     *[_type == "artwork" && type == "photo" && archived != true] | order(year desc) {
       _id, title, slug, type, mainImage, year, location, continent, availableInShop, featured
     }
   `)
   
-  if (artworks.length > 0) return artworks
-
-  // Fallback Placeholders si Sanity est vide
-  return [
+  // Fallback Placeholders si Sanity est vide ou peu rempli
+  const fallbacks = [
     {
       _id: 'ph1',
       title: 'Matière Éphémère I',
       slug: { current: 'matiere-ephemere-1' },
       type: 'photo',
-      mainImage: { _type: 'image', asset: { _ref: 'placeholder-1' } },
+      mainImage: null,
       year: '2026',
       location: 'Sahara, Mali',
       featured: true,
@@ -37,7 +35,7 @@ async function getPhotos(): Promise<Artwork[]> {
       title: 'L\'Ombre Portée',
       slug: { current: 'ombre-portee' },
       type: 'photo',
-      mainImage: { _type: 'image', asset: { _ref: 'placeholder-2' } },
+      mainImage: null,
       year: '2025',
       location: 'Bamako, Mali',
       featured: false,
@@ -48,20 +46,69 @@ async function getPhotos(): Promise<Artwork[]> {
       title: 'Sédimentation Tactile',
       slug: { current: 'sedimentation-tactile' },
       type: 'photo',
-      mainImage: { _type: 'image', asset: { _ref: 'placeholder-3' } },
+      mainImage: null,
       year: '2026',
       location: 'Dogon Country, Mali',
       featured: false,
       shortDescription: "Une étude sur les parois de pierre et le temps qui s'y inscrit."
+    } as any,
+    {
+      _id: 'ph4',
+      title: 'Le Regard du Père',
+      slug: { current: 'regard-du-pere' },
+      type: 'photo',
+      mainImage: null,
+      year: '2024',
+      location: 'Bamako, Mali',
+      featured: true,
+      shortDescription: "Un portrait d'une profondeur rare, où chaque ride raconte un siècle d'histoire et de résilience."
+    } as any,
+    {
+      _id: 'ph5',
+      title: 'Grain de Vie',
+      slug: { current: 'grain-de-vie' },
+      type: 'photo',
+      mainImage: null,
+      year: '2026',
+      location: 'Mopti, Mali',
+      featured: false,
+      shortDescription: "L'intersection entre la peau et la terre, une exploration macroscopique de la matière vivante."
+    } as any,
+    {
+      _id: 'ph6',
+      title: 'Le Souffle du Fleuve',
+      slug: { current: 'souffle-du-fleuve' },
+      type: 'photo',
+      mainImage: null,
+      year: '2025',
+      location: 'Ségou, Mali',
+      featured: true,
+      shortDescription: "Une pose longue sur le fleuve Niger, où l'eau devient une brume mystique sous le soleil couchant."
+    } as any,
+    {
+      _id: 'ph7',
+      title: 'L\'Appel de l\'Ancestral',
+      slug: { current: 'appel-ancestral' },
+      type: 'photo',
+      mainImage: null,
+      year: '2026',
+      location: 'Tombouctou, Mali',
+      featured: false,
+      shortDescription: "Un détail architectural d'une porte sculptée, témoin silencieux de siècles de savoir et de culture."
     } as any
   ]
+
+  const combined = [...(sanityArtworks || []), ...fallbacks]
+  // On s'assure d'avoir une liste unique (basée sur l'ID) et de limiter à un nombre harmonieux (ex: 6)
+  const uniqueArtworks = Array.from(new Map(combined.map(item => [item._id, item])).values())
+  return uniqueArtworks.slice(0, 6)
 }
 
 export default async function PhotographiesPage() {
   const artworks = await getPhotos()
 
   return (
-    <main className="pt-40 pb-20 bg-[#080808]">
+    <main className="pt-40 pb-20 bg-[#080808] min-h-screen">
       <div className="container-custom">
         {/* Header Harmonisé */}
         <div className="mb-32 md:mb-48 max-w-4xl relative">
@@ -86,49 +133,42 @@ export default async function PhotographiesPage() {
 
         {/* Détails Techniques / Valeurs */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-48 border-t border-white/5 pt-12">
-             <div className="space-y-4">
+             <div className="space-y-6 group">
+                <div className="relative aspect-square w-full rounded-sm overflow-hidden mb-8 shadow-2xl">
+                   <Image 
+                     src="/images/placeholders/photo_2.png" 
+                     alt="Lumière" 
+                     fill 
+                     className="object-cover grayscale hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" 
+                   />
+                </div>
                 <span className="text-accent font-display italic text-2xl">Lumière</span>
                 <p className="text-text-muted text-sm leading-relaxed">Une étude permanente sur la diffraction et le contraste naturel, sans artifice.</p>
              </div>
-             <div className="space-y-4">
+             <div className="space-y-6 group">
+                <div className="relative aspect-square w-full rounded-sm overflow-hidden mb-8 shadow-2xl">
+                   <Image 
+                     src="/images/placeholders/photo_4.png" 
+                     alt="Humain" 
+                     fill 
+                     className="object-cover grayscale hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" 
+                   />
+                </div>
                 <span className="text-accent font-display italic text-2xl">Humain</span>
                 <p className="text-text-muted text-sm leading-relaxed">Le portrait comme miroir d'une âme collective et d'une histoire partagée.</p>
              </div>
-             <div className="space-y-4">
+             <div className="space-y-6 group">
+                <div className="relative aspect-square w-full rounded-sm overflow-hidden mb-8 shadow-2xl">
+                   <Image 
+                     src="/images/placeholders/photo_5.png" 
+                     alt="Texture" 
+                     fill 
+                     className="object-cover grayscale hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" 
+                   />
+                </div>
                 <span className="text-accent font-display italic text-2xl">Texture</span>
                 <p className="text-text-muted text-sm leading-relaxed">Le grain de la peau répondant à celui de la terre, capturé en haute résolution.</p>
              </div>
-        </div>
-
-        {/* Layout : Grid */}
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-12 space-y-12 pb-40">
-          {artworks.map((art) => {
-            const isPlaceholder = art._id.startsWith('ph');
-            const imgSrc = isPlaceholder 
-              ? `/images/placeholders/photo_${art._id.replace('ph', '')}.png`
-              : (art.mainImage ? urlFor(art.mainImage).width(1000).url() : '/images/placeholders/photo_1.png');
-
-            return (
-              <div key={art._id} className="break-inside-avoid group relative rounded-sm overflow-hidden bg-background-secondary shadow-xl transition-all duration-500 hover:shadow-accent/5">
-                 <Link href={`/oeuvres/${art.slug.current}`} className="block relative">
-                    <Image
-                      src={imgSrc}
-                      alt={art.title}
-                      width={800}
-                      height={1000}
-                      className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
-                       <p className="eyebrow text-accent text-[10px] mb-2">{art.location} — {art.year}</p>
-                       <h3 className="text-2xl font-display italic text-white mb-2">{art.title}</h3>
-                       <p className="text-white/60 text-xs italic line-clamp-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                         {art.shortDescription}
-                       </p>
-                    </div>
-                 </Link>
-              </div>
-            );
-          })}
         </div>
 
         {/* Processus Section */}
@@ -155,7 +195,7 @@ export default async function PhotographiesPage() {
                     </div>
                  </div>
               </div>
-              <div className="relative aspect-video bg-white/5 rounded-sm overflow-hidden group">
+              <div className="relative aspect-video bg-white/5 rounded-sm overflow-hidden group shadow-2xl">
                  <Image 
                    src="/images/beyond-grid/photo.png"
                    alt="Processus Photo"
@@ -168,6 +208,45 @@ export default async function PhotographiesPage() {
                  </div>
               </div>
            </div>
+        </section>
+
+        {/* Full Gallery Grid */}
+        <section className="py-24 border-t border-white/5">
+          <div className="flex justify-between items-end mb-16">
+             <div>
+                <p className="eyebrow text-accent mb-4">Portfolio</p>
+                <h2 className="text-4xl md:text-5xl font-display italic text-white">Œuvres Disponibles</h2>
+             </div>
+             <p className="eyebrow text-text-muted hidden md:block">
+               {artworks.length} Tirages Originaux
+             </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+            {artworks.map((art) => (
+              <Link key={art._id} href={`/oeuvres/${art.slug.current}`} className="group space-y-6 cursor-pointer">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-background-secondary shadow-xl">
+                  <Image
+                    src={
+                      art.mainImage 
+                        ? (art._id.startsWith('ph') 
+                            ? `/images/placeholders/photo_${art._id === 'ph6' ? '4' : art._id === 'ph7' ? '5' : art._id.replace('ph', '')}.png` 
+                            : urlFor(art.mainImage).width(800).url())
+                        : `/images/placeholders/photo_${(art.title.toLowerCase().includes('sahel') || art.title.toLowerCase().includes('silence')) ? '1' : '2'}.png`
+                    }
+                    alt={art.title}
+                    fill
+                    className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-display italic text-white group-hover:text-accent transition-colors duration-300">{art.title}</h3>
+                  <p className="eyebrow text-text-muted text-[10px] mt-2">{art.location} — {art.year}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </section>
       </div>
     </main>

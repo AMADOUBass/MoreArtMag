@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Send, Mail, Phone, MapPin, Globe, MessageCircle, ArrowRight } from 'lucide-react'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -33,6 +33,7 @@ export default function ContactPage() {
     budget: '',
     size: '',
   })
+  const [showBudgetSelect, setShowBudgetSelect] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -160,140 +161,163 @@ export default function ContactPage() {
              </div>
           </div>
 
-           <div className="lg:col-span-7">
-             <motion.form 
-               initial={{ opacity: 0, y: 30 }}
-               whileInView={{ opacity: 1, y: 0 }}
-               viewport={{ once: true }}
-               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-               className="bg-white/[0.03] backdrop-blur-2xl p-8 md:p-12 rounded-[2.5rem] border border-white/10 shadow-[0_30px_100px_rgba(0,0,0,0.6)] space-y-6 relative overflow-hidden group/form"
-               onSubmit={handleSubmit}
-               noValidate
-             >
-                {/* Subtle Gradient Glow */}
-                <div className="absolute -top-24 -right-24 w-48 h-48 bg-accent/10 rounded-full blur-[100px] pointer-events-none" />
+          <div className="lg:col-span-7">
+              <motion.form 
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                className="relative bg-white/[0.02] backdrop-blur-3xl p-8 md:p-12 rounded-[2.5rem] border border-white/5 shadow-[0_40px_120px_rgba(0,0,0,0.5)] space-y-8 group/form w-full"
+                onSubmit={handleSubmit}
+                noValidate
+              >
+                {/* Subtle Artistic Glow */}
+                <div className="absolute -top-32 -right-32 w-64 h-64 bg-accent/10 rounded-full blur-[120px] pointer-events-none group-hover/form:bg-accent/15 transition-colors duration-1000" />
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                   <div className="space-y-3">
-                      <label className="eyebrow text-[10px] text-text-muted">Nom Complet</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+                   <div className="relative space-y-2">
+                      <label className="text-[10px] eyebrow text-accent tracking-[0.3em] uppercase ml-1">Identité</label>
                       <input 
                         type="text" 
-                        placeholder="Votre nom"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30 transition-all duration-300"
+                        placeholder="Nom complet"
+                        className="w-full bg-transparent border-b border-white/20 py-3 text-white text-lg font-display italic focus:outline-none focus:border-accent transition-all duration-700 placeholder:text-white/30 placeholder:font-sans placeholder:not-italic"
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
                       />
                    </div>
-                   <div className="space-y-3">
-                      <label className="eyebrow text-[10px] text-text-muted">Email</label>
+                   <div className="relative space-y-2">
+                      <label className="text-[10px] eyebrow text-accent tracking-[0.3em] uppercase ml-1">Correspondance</label>
                       <input 
                         type="email" 
                         placeholder="votre@email.com"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30 transition-all duration-300"
+                        className="w-full bg-transparent border-b border-white/20 py-3 text-white text-lg font-display italic focus:outline-none focus:border-accent transition-all duration-700 placeholder:text-white/30 placeholder:font-sans placeholder:not-italic"
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
                       />
                    </div>
-                </div>
+                   
+                   <div className="relative space-y-2 md:col-span-2">
+                      <label className="text-[10px] eyebrow text-accent tracking-[0.3em] uppercase ml-1">Sujet de Réflexion</label>
+                      <input 
+                        type="text" 
+                        placeholder="De quoi souhaitez-vous discuter ?"
+                        className="w-full bg-transparent border-b border-white/20 py-3 text-white text-lg font-display italic focus:outline-none focus:border-accent transition-all duration-700 placeholder:text-white/30 placeholder:font-sans placeholder:not-italic"
+                        value={formData.subject}
+                        onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                      />
+                   </div>
 
-                <div className="space-y-3">
-                   <label className="eyebrow text-[10px] text-text-muted">Téléphone (Optionnel)</label>
-                   <input 
-                     type="tel" 
-                     placeholder="+33 6 00 00 00 00"
-                     className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30 transition-all duration-300"
-                     value={formData.phone}
-                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                   />
-                </div>
+                   <div className="space-y-4 md:col-span-2">
+                      <label className="text-[10px] eyebrow text-accent tracking-[0.3em] uppercase ml-1">Nature de la démarche</label>
+                      <div className="flex flex-wrap gap-2">
+                         {['general', 'commission', 'press', 'gallery'].map((type) => (
+                           <button
+                             key={type}
+                             type="button"
+                             onClick={() => setFormData({...formData, type: type as any})}
+                             className={`py-2 px-5 rounded-full border text-[8px] eyebrow transition-all duration-700 ${
+                               formData.type === type 
+                                 ? 'border-accent bg-accent text-white shadow-md shadow-accent/20' 
+                                 : 'border-white/20 bg-white/5 text-white/60 hover:border-white/40 hover:text-white'
+                             }`}
+                           >
+                             {type === 'general' ? 'Général' : 
+                              type === 'commission' ? 'Commande' : 
+                              type === 'press' ? 'Presse' : 'Galerie'}
+                           </button>
+                         ))}
+                      </div>
+                   </div>
 
-                <div className="space-y-6">
-                   <label className="eyebrow text-[10px] text-text-muted">Type de demande</label>
-                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                      {['general', 'commission', 'press', 'gallery'].map((type) => (
-                        <button
-                          key={type}
-                          type="button"
-                          onClick={() => setFormData({...formData, type: type as any})}
-                          className={`py-3 px-4 rounded-xl border text-[9px] eyebrow transition-all duration-500 text-center ${
-                            formData.type === type 
-                              ? 'border-accent bg-accent/10 text-accent shadow-[0_0_20px_rgba(192,136,85,0.15)]' 
-                              : 'border-white/5 bg-white/5 text-text-muted hover:border-white/20'
-                          }`}
-                        >
-                          {type === 'general' ? 'Général' : 
-                           type === 'commission' ? 'Commande' : 
-                           type === 'press' ? 'Presse' : 'Galerie'}
-                        </button>
-                      ))}
+                   {formData.type === 'commission' && (
+                     <div className="md:col-span-2 grid grid-cols-2 gap-12 pt-2">
+                        <div className="relative space-y-2">
+                           <label className="text-[10px] eyebrow text-accent tracking-[0.3em] uppercase ml-1">Budget</label>
+                           <div className="relative">
+                              <button 
+                                type="button"
+                                onClick={() => setShowBudgetSelect(!showBudgetSelect)}
+                                className="w-full bg-transparent border-b border-white/20 py-3 text-white text-lg font-display italic focus:outline-none focus:border-accent transition-all duration-700 flex justify-between items-center"
+                              >
+                                 <span className={!formData.budget ? 'text-white/30 font-sans not-italic' : ''}>
+                                    {formData.budget === '500-1000' ? '500€ - 1 000€' : 
+                                     formData.budget === '1000-3000' ? '1 000€ - 3 000€' : 
+                                     formData.budget === '3000+' ? 'Plus de 3 000€' : 'Sélectionner'}
+                                 </span>
+                                 <svg 
+                                   width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                                   className={`transition-transform duration-500 ${showBudgetSelect ? 'rotate-180' : ''}`}
+                                 >
+                                    <path d="m6 9 6 6 6-6"/>
+                                 </svg>
+                              </button>
+                              
+                              <AnimatePresence>
+                                 {showBudgetSelect && (
+                                    <motion.div 
+                                      initial={{ opacity: 0, y: 10 }}
+                                      animate={{ opacity: 1, y: 0 }}
+                                      exit={{ opacity: 0, y: 10 }}
+                                      className="absolute left-0 right-0 top-full mt-2 z-50 bg-background-secondary/95 backdrop-blur-xl border border-white/20 rounded-xl overflow-hidden shadow-2xl"
+                                    >
+                                       {['', '500-1000', '1000-3000', '3000+'].map((opt) => (
+                                          <button
+                                            key={opt}
+                                            type="button"
+                                            className="w-full text-left px-6 py-4 text-sm text-white hover:bg-accent/10 hover:text-accent transition-colors border-b border-white/10 last:border-0 font-display italic"
+                                            onClick={() => {
+                                               setFormData({...formData, budget: opt})
+                                               setShowBudgetSelect(false)
+                                            }}
+                                          >
+                                             {opt === '' ? 'Sélectionner' : 
+                                              opt === '500-1000' ? '500€ - 1 000€' : 
+                                              opt === '1000-3000' ? '1 000€ - 3 000€' : 'Plus de 3 000€'}
+                                          </button>
+                                       ))}
+                                    </motion.div>
+                                 )}
+                              </AnimatePresence>
+                           </div>
+                        </div>
+                        <div className="relative space-y-2">
+                           <label className="text-[10px] eyebrow text-accent tracking-[0.3em] uppercase ml-1">Dimensions</label>
+                           <input 
+                             type="text" 
+                             placeholder="Ex: 80x100cm"
+                             className="w-full bg-transparent border-b border-white/20 py-3 text-white text-lg font-display italic focus:outline-none focus:border-accent transition-all duration-700 placeholder:text-white/30 placeholder:font-sans placeholder:not-italic"
+                             value={formData.size}
+                             onChange={(e) => setFormData({...formData, size: e.target.value})}
+                           />
+                        </div>
+                     </div>
+                   )}
+
+                   <div className="relative space-y-4 md:col-span-2">
+                      <label className="text-[10px] eyebrow text-accent tracking-[0.3em] uppercase ml-1">Votre Message</label>
+                      <textarea 
+                        rows={3}
+                        placeholder="Exprimez votre pensée..."
+                        className="w-full bg-white/[0.02] border border-white/20 rounded-2xl p-5 text-white text-lg font-display italic focus:outline-none focus:border-accent focus:bg-white/[0.04] transition-all duration-700 resize-none placeholder:text-white/30 placeholder:font-sans placeholder:not-italic"
+                        value={formData.message}
+                        onChange={(e) => setFormData({...formData, message: e.target.value})}
+                      />
                    </div>
                 </div>
 
-                {/* Conditional Fields for Commission */}
-                {formData.type === 'commission' && (
-                  <motion.div 
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-white/5"
+                <div className="pt-2">
+                  <Button 
+                    type="submit"
+                    loading={loading}
+                    variant="secondary"
+                    size="xl"
+                    className="w-full rounded-2xl py-6 text-xs tracking-[0.3em]"
+                    icon={<ArrowRight size={16} />}
                   >
-                     <div className="space-y-3">
-                        <label className="eyebrow text-[10px] text-accent">Budget Estimé</label>
-                        <select 
-                          className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors"
-                          value={formData.budget}
-                          onChange={(e) => setFormData({...formData, budget: e.target.value})}
-                        >
-                           <option value="">Sélectionner</option>
-                           <option value="500-1000">500€ - 1 000€</option>
-                           <option value="1000-3000">1 000€ - 3 000€</option>
-                           <option value="3000+">Plus de 3 000€</option>
-                        </select>
-                     </div>
-                     <div className="space-y-3">
-                        <label className="eyebrow text-[10px] text-accent">Format Souhaité</label>
-                        <input 
-                          type="text" 
-                          placeholder="Ex: 80x100cm"
-                          className="w-full bg-white/5 border border-white/10 rounded-sm px-6 py-4 text-white focus:outline-none focus:border-accent transition-colors"
-                          value={formData.size}
-                          onChange={(e) => setFormData({...formData, size: e.target.value})}
-                        />
-                     </div>
-                  </motion.div>
-                )}
-
-                <div className="space-y-3">
-                   <label className="eyebrow text-[10px] text-text-muted">Sujet</label>
-                    <input 
-                      type="text" 
-                      placeholder="L'objet de votre message"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30 transition-all duration-300"
-                      value={formData.subject}
-                      onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                    />
+                     Soumettre la demande
+                  </Button>
                 </div>
-
-                <div className="space-y-3">
-                   <label className="eyebrow text-[10px] text-text-muted">Message</label>
-                   <textarea 
-                     rows={5}
-                     placeholder="Comment puis-je vous aider ?"
-                     className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30 transition-all duration-300 resize-none"
-                     value={formData.message}
-                     onChange={(e) => setFormData({...formData, message: e.target.value})}
-                   />
-                </div>
-
-                <Button 
-                  type="submit"
-                  loading={loading}
-                  size="xl"
-                  className="w-full"
-                  icon={<Send size={16} />}
-                >
-                   Envoyer le message 
-                </Button>
-             </motion.form>
+              </motion.form>
           </div>
         </div>
       </div>

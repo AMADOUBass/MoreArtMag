@@ -63,6 +63,11 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  icons: {
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/icons/icon-192x192.png',
+  },
 }
 
 import { Toaster } from 'sonner'

@@ -53,16 +53,24 @@ export default function CartPage() {
 
   return (
     <main className="min-h-screen bg-background-primary pt-32 pb-20">
-      <div className="container-custom max-w-5xl py-20">
-        <header className="mb-16">
-           <Breadcrumbs items={[{ label: 'PANIER' }]} />
-           <h1 className="text-4xl md:text-8xl font-display italic text-white leading-none">
-              Mon <span className="text-accent">Panier</span>
-           </h1>
-           <p className="eyebrow text-text-muted mt-6">
-              {totalItems()} {totalItems() > 1 ? 'œuvres sélectionnées' : 'œuvre sélectionnée'}
-           </p>
-        </header>
+      <div className="container-custom py-20">
+        {/* Header Harmonisé - Style Musée */}
+        <div className="mb-32 md:mb-56 max-w-4xl relative">
+          <div className="absolute -left-12 -top-12 text-[140px] font-display italic text-white/[0.03] select-none pointer-events-none leading-none">
+            04
+          </div>
+          <p className="eyebrow mb-8 flex items-center gap-4">
+            <span className="w-12 h-[1px] bg-accent/50" />
+            VOTRE SÉLECTION
+          </p>
+          <h1 className="text-6xl md:text-8xl lg:text-9xl mb-12 leading-[0.9] font-display tracking-tighter">
+            L'art à <br/> 
+            <span className="italic text-accent ml-12 md:ml-24">portée de main.</span>
+          </h1>
+          <p className="text-text-secondary text-xl md:text-2xl leading-relaxed italic max-w-2xl mt-12 border-t border-white/5 pt-12">
+             {totalItems()} {totalItems() > 1 ? 'œuvres attendent' : 'œuvre attend'} de rejoindre votre espace personnel.
+          </p>
+        </div>
 
         <AnimatePresence mode="wait">
           {isCartEmpty ? (
@@ -71,11 +79,14 @@ export default function CartPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="py-20 text-center border border-dashed border-white/10 rounded-sm"
+              className="py-40 text-center border border-dashed border-white/5 rounded-sm"
             >
-               <ShoppingBag size={48} className="mx-auto text-white/10 mb-6" />
-               <p className="text-2xl font-display italic text-white mb-8">Votre panier est vide.</p>
-               <Link href="/moreart" className="bg-white text-black px-10 py-5 eyebrow hover:bg-accent hover:text-white transition-all duration-500 rounded-sm">
+               <ShoppingBag size={48} className="mx-auto text-white/5 mb-8" />
+               <p className="text-3xl font-display italic text-white mb-12">Votre panier est vide.</p>
+               <Link 
+                 href="/photographies" 
+                 className="inline-block px-12 py-6 border border-white/10 text-white hover:border-accent hover:bg-accent/5 hover:text-accent transition-all duration-500 eyebrow uppercase tracking-widest text-[10px] rounded-sm"
+               >
                   Découvrir la collection
                </Link>
             </motion.div>
@@ -100,7 +111,7 @@ export default function CartPage() {
                   >
                     <div className="relative aspect-[4/5] w-full md:w-40 bg-background-secondary rounded-sm overflow-hidden flex-shrink-0">
                        <Image 
-                          src={item.image} 
+                          src={item.image || 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=800&auto=format&fit=crop'} 
                           alt={item.title} 
                           fill 
                           className="object-cover transition-transform duration-700 group-hover:scale-110" 

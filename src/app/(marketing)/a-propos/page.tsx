@@ -1,7 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
 import { Metadata } from 'next'
-import { client } from '@/lib/sanity/client'
 import Breadcrumbs from '@/components/marketing/breadcrumbs'
 import PortfolioCarousel from '@/components/marketing/portfolio-carousel'
 
@@ -15,14 +14,14 @@ export default async function ArtistPage() {
     name: "Bazan Togola",
     bio: "Un voyageur immobile entre deux mondes. Né au Québec, Bazan Togola explore les profondeurs de son héritage malien à travers une lentille contemporaine. Son œuvre est un dialogue vibrant entre son héritage nord-américain et une mémoire ancestrale qu'il explore à travers l'image et la matière.",
     quote: "Capturer l'invisible pour rendre hommage à ce qui nous précède.",
-    vision: "Ma vision est celle d'une réconciliation. À travers le collectif Triple Vision, je cherche à exprimer ce que signifie être l'héritier d'une culture millénaire tout en vivant ici. La photographie fige cet entre-deux, la peinture lui donne une profondeur organique, créant un pont entre ma terre de naissance et mes racines lointaines."
+    vision: "Ma vision est celle d'une réconciliation. À travers le collectif Triple Vision, je cherche à exprimer ce que signifie être l'héritier d'une culture millénaire tout en vivant ici. La photographie fige cet entre-deux, la peinture lui donne une profondeur organique."
   }
 
   return (
     <main className="bg-background-primary pt-32 overflow-hidden">
       {/* Hero Section - Portrait de l'Artiste */}
-      <section className="container-custom py-20 lg:py-40">
-        <div className="mb-32 md:mb-56 max-w-4xl relative">
+      <section className="container-custom py-20 lg:pt-40 lg:pb-20">
+        <div className="mb-24 max-w-4xl relative">
           <Breadcrumbs items={[{ label: 'À PROPOS' }]} />
           <div className="absolute -left-12 -top-12 text-[140px] font-display italic text-white/[0.03] select-none pointer-events-none leading-none">
             Bio
@@ -55,102 +54,60 @@ export default async function ArtistPage() {
                 </p>
                 <div className="w-20 h-px bg-accent/30" />
                 <p className="text-text-muted text-lg leading-relaxed">
-                   De Bamako à Québec, Bazan a construit un langage visuel unique. Son travail est une méditation profonde sur l'identité, capturée à travers le grain argentique et la matière brute, créant une œuvre qui défie les frontières temporelles et géographiques.
+                   De Bamako à Québec, Bazan a construit un langage visuel unique. Son travail est une méditation profonde sur l'identité, capturée à travers le grain argentique et la matière brute, créant une œuvre qui défie les frontières.
                 </p>
              </div>
           </div>
         </div>
       </section>
 
-      {/* Vision Section - Focus Artistique */}
-      <section className="py-40 bg-white/5 relative">
-        <div className="container-custom grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-           <div className="order-2 lg:order-1">
-              <p className="eyebrow text-accent mb-6">La Vision</p>
-              <h2 className="text-3xl sm:text-5xl md:text-7xl font-display italic text-white mb-10 leading-tight">
-                 Une quête de <span className="text-accent">clarté</span> dans le chaos.
-              </h2>
-              <p className="text-text-secondary text-xl leading-relaxed mb-8">
-                 {artist.vision}
-              </p>
-           </div>
-           <div className="order-1 lg:order-2 relative aspect-square lg:aspect-video rounded-sm overflow-hidden shadow-2xl group">
-              <Image 
-                src="/images/gallery/vision_shot.png"
-                alt="Vision Artistique" 
-                fill 
-                className="object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-accent/10 mix-blend-overlay" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-60" />
-           </div>
+      {/* Philosophy & Vision Combined */}
+      <section className="py-32 container-custom border-t border-white/5">
+        <div className="max-w-4xl mx-auto text-center mb-24">
+           <h2 className="text-3xl md:text-5xl font-display italic text-white mb-10 leading-tight">
+             "{artist.quote}"
+           </h2>
         </div>
-      </section>
-
-      {/* Portfolio Carousel */}
-      <PortfolioCarousel />
-
-      {/* Philosophy Section */}
-      <section className="bg-background-secondary py-40">
-        <div className="container-custom text-center max-w-4xl">
-          <span className="text-[120px] font-display italic text-accent/10 select-none">"</span>
-          <h2 className="text-4xl md:text-6xl font-display italic leading-tight -mt-16 text-white mb-20">
-            {artist.quote}
-          </h2>
-          <div className="flex flex-wrap justify-center gap-12 md:gap-24">
-             <div className="flex flex-col items-center">
-                <span className="text-5xl font-display italic text-accent">15+</span>
-                <p className="eyebrow mt-4 text-xs">Années de Recherche</p>
-             </div>
-             <div className="w-px h-16 bg-white/10 hidden md:block" />
-             <div className="flex flex-col items-center">
-                <span className="text-5xl font-display italic text-accent">200+</span>
-                <p className="eyebrow mt-4 text-xs">Œuvres Originales</p>
-             </div>
-             <div className="w-px h-16 bg-white/10 hidden md:block" />
-             <div className="flex flex-col items-center">
-                <span className="text-5xl font-display italic text-accent">12</span>
-                <p className="eyebrow mt-4 text-xs">Expositions Solo</p>
-             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Triple Vision Section */}
-      <section className="py-40 container-custom">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-           <div className="order-2 lg:order-1">
-              <div className="flex items-center gap-6 mb-8">
-                 <div className="relative w-16 h-16 rounded-full overflow-hidden border border-white/10 bg-white/5 p-2">
-                    <Image 
-                      src="/images/studio/logo.png" 
-                      alt="Triple Vision Logo" 
-                      fill 
-                      className="object-contain p-2"
-                    />
-                 </div>
-                 <h3 className="text-4xl font-display italic text-white">Triple Vision</h3>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-start">
+           <div className="space-y-10">
+              <div>
+                 <p className="eyebrow text-accent mb-4">La Vision</p>
+                 <p className="text-text-secondary text-xl leading-relaxed italic">
+                   {artist.vision}
+                 </p>
               </div>
-              <p className="text-text-secondary text-lg leading-relaxed mb-8">
-                Plus qu'un simple atelier, **Triple Vision** est le collectif créatif fondé par Bazan et ses deux alliés. C'est ici que les idées s'entrechoquent, entre photographie, design et peinture, pour donner naissance à des œuvres qui défient les frontières.
-              </p>
-              <p className="text-text-secondary text-lg leading-relaxed italic border-l-2 border-accent/30 pl-8">
-                "À trois, notre regard ne se contente pas de voir, il construit une perspective nouvelle, une vision partagée de la beauté brute."
-              </p>
+              <div className="pt-10 border-t border-white/5">
+                 <p className="eyebrow text-white mb-6 flex items-center gap-4">
+                    <span className="w-2 h-2 bg-accent rounded-full" />
+                    Triple Vision Collective
+                 </p>
+                 <p className="text-text-muted text-lg leading-relaxed">
+                   Fondé par Bazan et ses alliés, le collectif Triple Vision est le berceau de ses explorations. C'est ici que photographie, design et peinture fusionnent pour donner naissance à des perspectives nouvelles.
+                 </p>
+              </div>
            </div>
-           <div className="order-1 lg:order-2 relative aspect-video rounded-sm overflow-hidden border border-white/5 shadow-2xl group">
+           
+           <div className="relative aspect-video rounded-sm overflow-hidden shadow-2xl group border border-white/5">
               <Image 
                 src="/images/studio/view.png" 
                 alt="Triple Vision Studio" 
                 fill 
                 className="object-cover opacity-80 group-hover:opacity-100 transition-all duration-1000"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background-primary/80 to-transparent opacity-60" />
-              <div className="absolute bottom-8 left-8">
-                 <p className="eyebrow text-white">L'Atelier Créatif — Québec</p>
+              <div className="absolute bottom-6 left-6">
+                 <p className="eyebrow text-white text-[9px]">L'Atelier — Québec, Canada</p>
               </div>
            </div>
         </div>
+      </section>
+
+      {/* Portfolio Carousel */}
+      <section className="bg-background-secondary py-20">
+         <div className="container-custom mb-16">
+            <p className="eyebrow text-text-muted">Archives & Processus</p>
+         </div>
+         <PortfolioCarousel />
       </section>
     </main>
   )
