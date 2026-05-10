@@ -86,7 +86,7 @@ C'est la pièce maîtresse, prendre le temps.
 - [x] Configurer Stripe en mode test
 - [x] Créer l'endpoint API `/api/checkout`
 - [x] Gérer la redirection vers Stripe Checkout
-- [ ] Implémenter `/api/stripe/webhook` (Post-lancement V1)
+- [x] Implémenter `/api/stripe/webhook` (Validation V1 terminée)
 - [x] Implémenter `/checkout/success` de confirmation
 - [x] Configurer les emails Resend (templates : confirmation client, notification Bazan)
 
@@ -131,7 +131,7 @@ Tout ce qui est production se passe ici, pas avant :
 - Pages légales publiées (CGV, mentions, vie privée) — à faire rédiger par un juriste
 
 ### Go live
-- [ ] **IMPORTANT : Changer l'email de notification dans `/api/inquiries` (passer de l'email dev à l'email de Bazan)**
+- [x] **IMPORTANT : Emails de notification configurés sur bazan@moreartmag.com**
 - Mise en production (push → Vercel deploy automatique)
 - Bazan se connecte à Sanity et publie ses premières œuvres pour de vrai
 - Enregistrer la vidéo Loom d'onboarding de 3-5 min pour Bazan

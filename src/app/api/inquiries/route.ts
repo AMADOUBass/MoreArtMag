@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { Resend } from 'resend'
+import { resend } from '@/lib/resend'
 import { z } from 'zod'
-
-const resend = new Resend(process.env.RESEND_API_KEY)
 
 const inquirySchema = z.object({
   name: z.string(),
@@ -46,8 +44,8 @@ export async function POST(req: Request) {
 
     // 2. Send email via Resend (Notification to Bazan)
     await resend.emails.send({
-      from: 'MoreArt Mag <onboarding@resend.dev>',
-      to: 'bassoumamadou00@gmail.com',
+      from: 'MoreArt Mag <onboarding@moreartmag.art>',
+      to: 'bazan@moreartmag.com',
       subject: `Nouveau message: ${validatedData.subject}`,
       html: `
         <h2>Nouvelle demande reçue</h2>
