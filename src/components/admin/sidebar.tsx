@@ -52,7 +52,7 @@ export default function AdminSidebar({
       `}>
         <div className="p-8 flex items-center justify-between">
           <Link href="/" className="font-display italic text-2xl tracking-tighter">
-            MoreArt <span className="text-accent">Admin</span>
+            MoreArtMag <span className="text-accent">Admin</span>
           </Link>
           <button onClick={onClose} className="md:hidden text-text-muted hover:text-white">
             <LogOut size={20} className="rotate-180" />
@@ -70,7 +70,7 @@ export default function AdminSidebar({
                 className={`
                   flex items-center gap-4 px-4 py-4 rounded-xl transition-all duration-300 eyebrow text-[10px]
                   ${isActive 
-                    ? "bg-accent text-white shadow-lg shadow-accent/20" 
+                    ? "bg-accent text-background-primary shadow-lg shadow-accent/20" 
                     : "text-text-muted hover:text-white hover:bg-white/5"}
                 `}
               >
