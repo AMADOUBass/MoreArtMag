@@ -240,9 +240,9 @@ export default function ContactPage() {
                                 className="w-full bg-transparent border-b border-white/20 py-3 text-white text-lg font-display italic focus:outline-none focus:border-accent transition-all duration-700 flex justify-between items-center"
                               >
                                  <span className={!formData.budget ? 'text-white/30 font-sans not-italic' : ''}>
-                                    {formData.budget === '500-1000' ? '500€ - 1 000€' : 
-                                     formData.budget === '1000-3000' ? '1 000€ - 3 000€' : 
-                                     formData.budget === '3000+' ? 'Plus de 3 000€' : 'Sélectionner'}
+                                    {formData.budget === '500-1000' ? '500 $ - 1 000 $' : 
+                                     formData.budget === '1000-3000' ? '1 000 $ - 3 000 $' : 
+                                     formData.budget === '3000+' ? 'Plus de 3 000 $' : 'Sélectionner'}
                                  </span>
                                  <svg 
                                    width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
@@ -271,8 +271,8 @@ export default function ContactPage() {
                                             }}
                                           >
                                              {opt === '' ? 'Sélectionner' : 
-                                              opt === '500-1000' ? '500€ - 1 000€' : 
-                                              opt === '1000-3000' ? '1 000€ - 3 000€' : 'Plus de 3 000€'}
+                                              opt === '500-1000' ? '500 $ - 1 000 $' : 
+                                              opt === '1000-3000' ? '1 000 $ - 3 000 $' : 'Plus de 3 000 $'}
                                           </button>
                                        ))}
                                     </motion.div>

@@ -44,12 +44,12 @@ export default function ArtworkView({ artwork }: ArtworkViewProps) {
   )
   const currentStock = stockFromDb || {
     price_cents: 25000,
-    currency: 'EUR',
+    currency: 'CAD',
     remaining: 5,
     is_sold: false,
   }
   const price = currentStock
-    ? (currentStock.price_cents / 100).toLocaleString('fr-FR', {
+    ? (currentStock.price_cents / 100).toLocaleString('fr-CA', {
         style: 'currency',
         currency: currentStock.currency,
       })
@@ -204,7 +204,7 @@ export default function ArtworkView({ artwork }: ArtworkViewProps) {
                             (st) => st.size_sanity_id === size.sizeId
                           )
                           return s
-                            ? (s.price_cents / 100).toLocaleString('fr-FR', {
+                            ? (s.price_cents / 100).toLocaleString('fr-CA', {
                                 style: 'currency',
                                 currency: s.currency,
                               })

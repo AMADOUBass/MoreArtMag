@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ArrowUpRight, MessageSquare, ShoppingCart, Eye, TrendingUp, Image as ImageIcon, ExternalLink, AlertTriangle, Euro } from 'lucide-react'
+import { ArrowUpRight, MessageSquare, ShoppingCart, Eye, TrendingUp, Image as ImageIcon, ExternalLink, AlertTriangle, DollarSign } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 export default function AdminDashboard() {
@@ -101,8 +101,8 @@ export default function AdminDashboard() {
            <div className="bg-white/[0.02] border border-white/5 p-6 rounded-3xl">
               <p className="text-[10px] eyebrow text-text-muted mb-2">Chiffre d'Affaires</p>
               <div className="flex items-end justify-between">
-                 <p className="text-3xl font-display italic text-white">{stats.revenue.toLocaleString()} €</p>
-                 <Euro size={16} className="text-accent mb-2" />
+                 <p className="text-3xl font-display italic text-white">{stats.revenue.toLocaleString()} $</p>
+                 <DollarSign size={16} className="text-accent mb-2" />
               </div>
            </div>
 

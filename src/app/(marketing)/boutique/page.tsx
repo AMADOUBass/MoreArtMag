@@ -213,7 +213,7 @@ export default function BoutiquePage() {
                     <div className="flex-shrink-0 text-right">
                       <p className="font-display text-xl text-white italic">
                         {art.type === 'photo'
-                          ? 'À partir de 450€'
+                          ? 'À partir de 450 $'
                           : 'Prix sur demande'}
                       </p>
                       <p className="eyebrow text-success mt-1 text-[9px] tracking-[0.2em] uppercase">

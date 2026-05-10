@@ -47,7 +47,7 @@ export const AdminNotificationEmail = ({
     </div>
 
     <p style={{ fontSize: '18px', fontWeight: 'bold' }}>
-      Total : {(totalAmount / 100).toFixed(2)} €
+      Total : {(totalAmount / 100).toFixed(2)} $
     </p>
 
     <div style={{ marginTop: '30px' }}>

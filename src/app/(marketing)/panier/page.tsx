@@ -153,7 +153,7 @@ export default function CartPage() {
                              </button>
                           </div>
                           <p className="text-xl font-display text-white">
-                             {(item.priceCents * item.quantity / 100).toLocaleString('fr-FR', { style: 'currency', currency: item.currency })}
+                             {(item.priceCents * item.quantity / 100).toLocaleString('fr-CA', { style: 'currency', currency: item.currency })}
                           </p>
                        </div>
                     </div>
@@ -169,7 +169,7 @@ export default function CartPage() {
                     <div className="space-y-6 mb-12">
                        <div className="flex justify-between eyebrow text-text-muted">
                           <span>Sous-total</span>
-                          <span>{(totalPrice() / 100).toLocaleString('fr-FR', { style: 'currency', currency: items[0]?.currency || 'EUR' })}</span>
+                          <span>{(totalPrice() / 100).toLocaleString('fr-CA', { style: 'currency', currency: items[0]?.currency || 'CAD' })}</span>
                        </div>
                        <div className="flex justify-between eyebrow text-text-muted">
                           <span>Livraison</span>
@@ -178,7 +178,7 @@ export default function CartPage() {
                        <div className="pt-6 border-t border-white/5 flex justify-between items-end">
                           <span className="text-white font-display italic text-xl">Total</span>
                           <span className="text-3xl font-display text-accent">
-                             {(totalPrice() / 100).toLocaleString('fr-FR', { style: 'currency', currency: items[0]?.currency || 'EUR' })}
+                             {(totalPrice() / 100).toLocaleString('fr-CA', { style: 'currency', currency: items[0]?.currency || 'CAD' })}
                           </span>
                        </div>
                     </div>

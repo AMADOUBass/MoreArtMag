@@ -165,8 +165,8 @@ export default function Footer() {
                   placeholder="votre@email.com"
                   className="w-full bg-transparent border-b border-white/20 py-3 text-sm text-white focus:outline-none focus:border-accent transition-all duration-700 placeholder:text-white/30"
                 />
-                <button className="absolute right-0 bottom-3 text-accent hover:text-white transition-colors duration-500">
-                   <ArrowUpRight size={18} />
+                <button className="absolute right-0 bottom-3 text-accent hover:text-white transition-colors duration-500 eyebrow text-[9px] tracking-widest">
+                   S&apos;INSCRIRE
                 </button>
                 <div className="absolute bottom-0 left-0 w-0 h-px bg-accent group-focus-within/news:w-full transition-all duration-700" />
               </form>

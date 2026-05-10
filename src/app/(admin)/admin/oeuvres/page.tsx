@@ -125,7 +125,7 @@ export default function AdminOeuvresPage() {
               <div className="flex items-center gap-6">
                  <div className="text-right hidden md:block">
                     <p className="text-[10px] eyebrow text-text-muted">Prix Min.</p>
-                    <p className="text-white font-mono">{Math.min(...(art.stocks?.map((s: any) => s.price) || [0])).toLocaleString()} €</p>
+                    <p className="text-white font-mono">{Math.min(...(art.stocks?.map((s: any) => s.price) || [0])).toLocaleString()} $</p>
                  </div>
                  {expandedId === art._id ? <ChevronDown size={20} className="text-accent" /> : <ChevronRight size={20} className="text-text-muted" />}
               </div>
@@ -135,7 +135,7 @@ export default function AdminOeuvresPage() {
               <div className="bg-black/40 border-t border-white/5 p-8 space-y-6 animate-in slide-in-from-top-4 duration-500">
                 <div className="grid grid-cols-5 eyebrow text-[9px] text-text-muted pb-4 border-b border-white/5">
                    <span>Format / Taille</span>
-                   <span className="text-center">Prix (€)</span>
+                   <span className="text-center">Prix ($)</span>
                    <span className="text-center">Stock restant</span>
                    <span className="text-center">Statut</span>
                    <span className="text-right">Action</span>
@@ -155,7 +155,7 @@ export default function AdminOeuvresPage() {
                              onChange={(e) => setEditData({...editData, price: e.target.value})}
                              className="bg-white/10 border border-accent/50 rounded-lg px-2 py-1 w-20 text-center text-white"
                            />
-                         ) : <span className="text-text-secondary font-mono text-sm">{size.price.toLocaleString()} €</span>}
+                         ) : <span className="text-text-secondary font-mono text-sm">{size.price.toLocaleString()} $</span>}
                        </div>
 
                        <div className="flex justify-center">

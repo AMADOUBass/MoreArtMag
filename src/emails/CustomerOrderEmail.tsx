@@ -33,14 +33,14 @@ export const CustomerOrderEmail = ({
             <div style={{ fontWeight: 'bold' }}>{item.title}</div>
             <div style={{ fontSize: '12px', color: '#a0a0a0' }}>{item.sizeLabel} × {item.quantity}</div>
           </div>
-          <div>{(item.priceCents * item.quantity / 100).toFixed(2)} €</div>
+          <div>{(item.priceCents * item.quantity / 100).toFixed(2)} $</div>
         </div>
       ))}
     </div>
 
     <div style={{ borderTop: '1px solid #333', marginTop: '20px', paddingTop: '20px', textAlign: 'right' }}>
       <div style={{ fontSize: '18px', color: '#d4af37' }}>
-        Total : {(totalAmount / 100).toFixed(2)} €
+        Total : {(totalAmount / 100).toFixed(2)} $
       </div>
     </div>
 

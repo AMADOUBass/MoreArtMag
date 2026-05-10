@@ -20,7 +20,7 @@ export default function CGV() {
                 <ShoppingBag size={28} className="text-accent" /> 01. Commandes et Tarification
              </h2>
              <p>
-               Toute commande passée sur le site **MoreArt Mag** constitue une acceptation ferme et définitive des présentes conditions. Les prix affichés sont exprimés en Euros (€) ou Dollars ($) et s'entendent hors taxes et frais de port, sauf mention contraire. 
+               Toute commande passée sur le site **MoreArt Mag** constitue une acceptation ferme et définitive des présentes conditions. Les prix affichés sont exprimés en Dollars Canadiens ($ CAD) et s'entendent hors taxes et frais de port, sauf mention contraire. 
              </p>
              <p>
                Les œuvres étant pour la plupart des tirages limités ou des pièces uniques, la disponibilité est confirmée au moment du paiement. En cas d'indisponibilité exceptionnelle après commande, un remboursement intégral sera effectué sous 48h.
