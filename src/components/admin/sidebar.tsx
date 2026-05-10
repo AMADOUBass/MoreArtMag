@@ -13,7 +13,7 @@ const NAV_ITEMS = [
   { name: 'Mes commandes', href: '/admin/commandes', icon: ShoppingCart },
   { name: 'Mes messages', href: '/admin/messages', icon: MessageSquare },
   { name: 'Mes pièces (Preview)', href: '/admin/rooms', icon: ImageIcon },
-  { name: 'Configuration', href: '/admin/settings', icon: Settings },
+  { name: 'Configuration', href: '/admin/parametres', icon: Settings },
 ]
 
 export default function AdminSidebar({ 
@@ -70,7 +70,7 @@ export default function AdminSidebar({
                 className={`
                   flex items-center gap-4 px-4 py-4 rounded-xl transition-all duration-300 eyebrow text-[10px]
                   ${isActive 
-                    ? "bg-accent text-background-primary shadow-lg shadow-accent/20" 
+                    ? "bg-accent !text-background-primary shadow-lg shadow-accent/20" 
                     : "text-text-muted hover:text-white hover:bg-white/5"}
                 `}
               >

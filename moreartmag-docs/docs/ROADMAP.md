@@ -103,10 +103,10 @@ C'est la pièce maîtresse, prendre le temps.
 - [x] Implémenter `/admin` (hub d'accueil + KPIs)
 - [x] Implémenter `/admin/oeuvres` (liste + édition stock/prix)
 - [x] Implémenter `/admin/commandes` (liste commandes)
-- [ ] Implémenter `/admin/commandes/[id]` (détail commande : adresse, items, statut, numéro de suivi, notes, email auto au client)
+- [x] Implémenter `/admin/commandes/[id]` (détail commande : adresse, items, statut, numéro de suivi, notes — modal dans la liste, Server Actions supabaseAdmin)
 - [x] Implémenter `/admin/messages` (inquiries)
 - [x] Implémenter `/admin/rooms` (gestion des pièces preview)
-- [ ] Renommer `/admin/settings` → `/admin/parametres` (convention FR du projet)
+- [x] Renommer `/admin/settings` → `/admin/parametres` (convention FR du projet)
 - [x] Voir `features/ADMIN.md` pour le détail
 
 ---

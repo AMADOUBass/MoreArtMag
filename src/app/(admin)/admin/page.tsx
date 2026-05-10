@@ -61,11 +61,11 @@ export default async function AdminDashboard() {
           className="group relative bg-accent p-8 rounded-[2.5rem] overflow-hidden transition-all hover:scale-[1.02] active:scale-[0.98]"
         >
           <div className="relative z-10">
-            <ImageIcon size={32} className="text-background-primary mb-6" />
-            <h3 className="text-2xl font-display italic text-background-primary mb-2">
+            <ImageIcon size={32} className="!text-background-primary mb-6" />
+            <h3 className="text-2xl font-display italic !text-background-primary mb-2">
               Gérer mes œuvres
             </h3>
-            <p className="text-background-primary/70 text-[10px] eyebrow uppercase tracking-widest flex items-center gap-2">
+            <p className="!text-background-primary/70 text-[10px] eyebrow uppercase tracking-widest flex items-center gap-2">
               Ouvrir le Studio <ExternalLink size={12} />
             </p>
           </div>

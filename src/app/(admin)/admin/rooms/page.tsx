@@ -51,7 +51,7 @@ export default function AdminRoomsPage() {
             <h1 className="text-4xl font-display italic text-white mb-2">Mes pièces</h1>
             <p className="eyebrow text-text-muted">Gérez les décors pour la visualisation (Room Preview).</p>
          </div>
-         <button className="flex items-center gap-3 bg-accent text-background-primary px-6 py-3 rounded-xl eyebrow text-[10px] font-bold hover:bg-accent-hover transition-all">
+         <button className="flex items-center gap-3 bg-accent !text-background-primary px-6 py-3 rounded-xl eyebrow text-[10px] font-bold hover:bg-accent-hover transition-all">
             <Plus size={16} /> Ajouter une pièce
          </button>
       </header>
