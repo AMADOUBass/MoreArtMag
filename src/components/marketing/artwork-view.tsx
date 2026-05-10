@@ -161,12 +161,12 @@ export default function ArtworkView({ artwork }: ArtworkViewProps) {
             <Button 
                onClick={handleAddToCart}
                loading={isAdding}
-               disabled={isSoldOut}
+               disabled={isSoldOut || !currentStock}
                size="xl"
                className="w-full"
-               icon={isSoldOut ? null : <ShoppingBag size={18} />}
+               icon={isSoldOut || !currentStock ? null : <ShoppingBag size={18} />}
             >
-              {isSoldOut ? 'Indisponible' : 'Ajouter à la collection'}
+              {isSoldOut ? 'Indisponible' : !currentStock ? 'Prix non configuré' : 'Ajouter à la collection'}
             </Button>
 
             <Button 
