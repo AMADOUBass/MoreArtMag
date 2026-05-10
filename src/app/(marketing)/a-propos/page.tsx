@@ -1,8 +1,8 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Metadata } from 'next'
 import Breadcrumbs from '@/components/marketing/breadcrumbs'
-import PortfolioCarousel from '@/components/marketing/portfolio-carousel'
 
 export const metadata: Metadata = {
   title: 'À Propos | L\'Artiste & La Vision',
@@ -102,12 +102,69 @@ export default async function ArtistPage() {
         </div>
       </section>
 
-      {/* Portfolio Carousel */}
-      <section className="bg-background-secondary py-20">
-         <div className="container-custom mb-16">
-            <p className="eyebrow text-text-muted">Archives & Processus</p>
+      {/* Editorial Gateway / Manifeste */}
+      <section className="bg-background-secondary py-32 border-t border-white/5 relative overflow-hidden">
+         {/* Background blur */}
+         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-accent/5 blur-[150px] pointer-events-none" />
+
+         <div className="container-custom relative z-10">
+            <div className="text-center mb-24">
+               <p className="eyebrow text-accent mb-6">Explorer l'Œuvre</p>
+               <h2 className="text-5xl md:text-7xl lg:text-8xl font-display italic text-white mb-8 leading-[0.9]">
+                  Trois piliers, <br/> une <span className="text-text-muted">seule vision.</span>
+               </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+               {/* Bloc Boutique (Left) */}
+               <Link href="/boutique" className="group relative aspect-[4/5] overflow-hidden rounded-sm bg-black border border-white/5 md:mt-24">
+                  <Image 
+                    src="/images/beyond-grid/boutique.png" 
+                    alt="Boutique" 
+                    fill 
+                    className="object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-1000 ease-out"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                  <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
+                     <p className="eyebrow text-accent mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700">Acquérir une Œuvre</p>
+                     <h3 className="text-4xl lg:text-6xl font-display italic text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700 delay-75">Tirages d'Art</h3>
+                     <div className="mt-8 w-0 group-hover:w-full h-px bg-white/30 transition-all duration-1000 ease-out" />
+                  </div>
+               </Link>
+
+               {/* Bloc Photographie (Middle - Highest) */}
+               <Link href="/photographies" className="group relative aspect-[4/5] overflow-hidden rounded-sm bg-black border border-white/5">
+                  <Image 
+                    src="/images/beyond-grid/photo.png" 
+                    alt="Photographies" 
+                    fill 
+                    className="object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-1000 ease-out"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                  <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
+                     <p className="eyebrow text-accent mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700">L'Art de l'Instant</p>
+                     <h3 className="text-4xl lg:text-6xl font-display italic text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700 delay-75">Photographies</h3>
+                     <div className="mt-8 w-0 group-hover:w-full h-px bg-white/30 transition-all duration-1000 ease-out" />
+                  </div>
+               </Link>
+
+               {/* Bloc Peinture (Right) */}
+               <Link href="/peintures" className="group relative aspect-[4/5] overflow-hidden rounded-sm bg-black border border-white/5 md:mt-24">
+                  <Image 
+                    src="/images/beyond-grid/peinture.png" 
+                    alt="Peintures" 
+                    fill 
+                    className="object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-1000 ease-out"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                  <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
+                     <p className="eyebrow text-accent mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700">Matière & Lumière</p>
+                     <h3 className="text-4xl lg:text-6xl font-display italic text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700 delay-75">Peintures</h3>
+                     <div className="mt-8 w-0 group-hover:w-full h-px bg-white/30 transition-all duration-1000 ease-out" />
+                  </div>
+               </Link>
+            </div>
          </div>
-         <PortfolioCarousel />
       </section>
     </main>
   )
