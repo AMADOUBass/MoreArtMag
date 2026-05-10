@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { ArrowUpRight } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'FAQ | Questions Fréquentes',
@@ -65,7 +66,7 @@ export default function FAQPage() {
           ))}
           
           <div className="pt-24 border-t border-white/10 flex flex-col items-center text-center">
-             <p className="eyebrow text-text-muted mb-8 uppercase tracking-[0.3em]">Vous n'avez pas trouvé votre réponse ?</p>
+             <p className="eyebrow text-text-muted mb-8 uppercase tracking-[0.3em]">Vous n&apos;avez pas trouvé votre réponse ?</p>
              <a 
                href="/contact" 
                className="group flex items-center gap-6 text-2xl md:text-3xl font-display italic text-white hover:text-accent transition-all duration-700"
