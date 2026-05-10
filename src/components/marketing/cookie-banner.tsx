@@ -8,10 +8,12 @@ import { useIrisStore } from '@/stores/iris-store'
 
 export default function CookieBanner() {
   const [show, setShow] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   const traversed = useIrisStore((s) => s.traversed)
 
   useEffect(() => {
+    setMounted(true)
     const consent = localStorage.getItem('moreart-cookie-consent')
     if (!consent && traversed) {
       setShow(true)
@@ -19,6 +21,8 @@ export default function CookieBanner() {
       setShow(false)
     }
   }, [traversed])
+
+  if (!mounted) return null
 
   const handleAccept = () => {
     localStorage.setItem('moreart-cookie-consent', 'true')

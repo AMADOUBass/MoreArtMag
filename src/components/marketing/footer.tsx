@@ -45,10 +45,14 @@ export default function Footer() {
   const traversed = useIrisStore((s) => s.traversed)
   const hydrate = useIrisStore((s) => s.hydrate)
   const pathname = usePathname()
+  const [mounted, setMounted] = React.useState(false)
 
   useEffect(() => {
+    setMounted(true)
     hydrate()
   }, [hydrate])
+
+  if (!mounted) return null
 
   const isHome = pathname === '/'
   const isContactPage = pathname === '/contact'

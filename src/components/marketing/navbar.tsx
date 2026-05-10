@@ -52,6 +52,8 @@ export default function Navbar() {
     const isHome = pathname === '/'
     // On cache la nav si on est sur Home et que l'iris est actif
     const showNav = !isHome || (!irisActive && (traversed || scrolled))
+ 
+    if (!mounted) return null
 
   return (
     <div className="fixed top-0 left-0 w-full z-50 flex justify-center pointer-events-none p-4 md:p-6 lg:p-8">

@@ -20,7 +20,14 @@ export default function ArtworkView({ artwork }: ArtworkViewProps) {
   const [selectedSize, setSelectedSize] = useState<ArtworkSize | null>(artwork.sizes?.[0] || null)
   const [isAdding, setIsAdding] = useState(false)
   const [showRoomPreview, setShowRoomPreview] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const addItem = useCart((state) => state.addItem)
+
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) return null
 
   const currentStock = artwork.stock?.find((s: ArtworkStock) => s.size_sanity_id === selectedSize?.sizeId)
   const price = currentStock ? (currentStock.price_cents / 100).toLocaleString('fr-FR', { style: 'currency', currency: currentStock.currency }) : '—'
