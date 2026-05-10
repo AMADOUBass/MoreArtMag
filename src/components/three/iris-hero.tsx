@@ -103,7 +103,8 @@ function IrisMesh({
       mesh.position.y += (targetY - mesh.position.y) * 0.06
 
       const breath = 1 + Math.sin(t * 0.2 * Math.PI * 2) * 0.015 * fade
-      mesh.scale.set(breath, breath, 1)
+      const baseScale = isMobile ? Math.max(1, state.viewport.height / 1.15) : 1
+      mesh.scale.set(baseScale * breath, baseScale * breath, 1)
 
       mat.uPupilSize = 0.15 + Math.sin(t * 1.2) * 0.005 * fade
       mat.uOpacity = 1.0
@@ -256,10 +257,11 @@ export default function IrisHero() {
 
         <div
           ref={scrollIndicatorRef}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-30 pointer-events-none transition-opacity duration-700"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-60 pointer-events-none transition-opacity duration-700 flex flex-col items-center gap-4"
         >
-          <div className="w-[1px] h-10 bg-white overflow-hidden">
-            <div className="w-full h-full bg-white animate-scroll-line" />
+          <span className="eyebrow text-[8px] tracking-[0.4em] text-white/50">DÉCOUVRIR</span>
+          <div className="w-[1px] h-16 bg-white/20 overflow-hidden relative">
+            <div className="absolute top-0 left-0 w-full h-full bg-white animate-scroll-line" />
           </div>
         </div>
       </div>
