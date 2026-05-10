@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: `${artwork.title} | MoreArt Mag`,
     description: artwork.shortDescription || `Découvrez ${artwork.title} par Bazan Togola.`,
     openGraph: {
-      images: [urlFor(artwork.mainImage).width(1200).height(630).url()],
+      images: artwork.mainImage ? [urlFor(artwork.mainImage).width(1200).height(630).url()] : [],
     }
   }
 }
@@ -82,7 +82,7 @@ export default async function ArtworkPage({ params }: PageProps) {
               "@context": "https://schema.org/",
               "@type": "Product",
               "name": artwork.title,
-              "image": urlFor(artwork.mainImage).width(1200).url(),
+              "image": artwork.mainImage ? urlFor(artwork.mainImage).width(1200).url() : '',
               "description": artwork.shortDescription,
               "brand": {
                 "@type": "Brand",
@@ -117,7 +117,7 @@ export default async function ArtworkPage({ params }: PageProps) {
                  <Link key={art._id} href={`/oeuvres/${art.slug.current}`} className="group space-y-6">
                     <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-background-secondary shadow-xl">
                        <Image
-                         src={urlFor(art.mainImage).width(800).url()}
+                         src={art.mainImage ? urlFor(art.mainImage).width(800).url() : ''}
                          alt={art.title}
                          fill
                          className="object-cover transition-transform duration-1000 group-hover:scale-110"

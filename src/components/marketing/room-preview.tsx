@@ -104,7 +104,7 @@ export default function RoomPreview({ artwork, selectedSize, onClose }: RoomPrev
                className="absolute z-10 border-[1px] border-black/10 ring-1 ring-white/10"
              >
                 <Image 
-                  src={urlFor(artwork.mainImage).width(1200).url()} 
+                  src={artwork.mainImage ? urlFor(artwork.mainImage).width(1200).url() : ''} 
                   alt="Preview" 
                   fill 
                   className="object-cover"

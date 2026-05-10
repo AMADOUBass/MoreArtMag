@@ -31,11 +31,13 @@ export default function ArtworkView({ artwork }: ArtworkViewProps) {
 
     setIsAdding(true)
     
+    const imageUrl = artwork.mainImage ? urlFor(artwork.mainImage).width(400).url() : '';
+    
     addItem({
       artworkId: artwork._id,
       sizeId: selectedSize.sizeId,
       title: artwork.title,
-      image: urlFor(artwork.mainImage).width(400).url(),
+      image: imageUrl,
       sizeLabel: selectedSize.label,
       priceCents: currentStock.price_cents,
       currency: currentStock.currency,
@@ -60,7 +62,7 @@ export default function ArtworkView({ artwork }: ArtworkViewProps) {
           className="relative aspect-[4/5] bg-background-secondary rounded-sm overflow-hidden group shadow-2xl"
         >
           <Image
-            src={urlFor(artwork.mainImage).width(1600).url()}
+            src={artwork.mainImage ? urlFor(artwork.mainImage).width(1600).url() : ''}
             alt={artwork.title}
             fill
             className="object-cover transition-transform duration-1000 group-hover:scale-105"
@@ -139,9 +141,12 @@ export default function ArtworkView({ artwork }: ArtworkViewProps) {
                     </div>
                     <div className="flex items-center gap-4">
                        <span className="text-xl font-display text-white">
-                         {artwork.stock?.find((s: ArtworkStock) => s.size_sanity_id === size.sizeId) 
-                           ? (artwork.stock.find((s: ArtworkStock) => s.size_sanity_id === size.sizeId)!.price_cents / 100).toLocaleString('fr-FR', { style: 'currency', currency: artwork.stock.find((s: ArtworkStock) => s.size_sanity_id === size.sizeId)!.currency })
-                           : '—'}
+                         {(() => {
+                           const s = artwork.stock?.find((st) => st.size_sanity_id === size.sizeId);
+                           return s 
+                             ? (s.price_cents / 100).toLocaleString('fr-FR', { style: 'currency', currency: s.currency })
+                             : '—';
+                         })()}
                        </span>
                        {selectedSize?.sizeId === size.sizeId && <Check size={18} className="text-accent" />}
                     </div>
