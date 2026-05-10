@@ -25,7 +25,7 @@ const UNIVERSES = [
     tagline: 'Matière et lumière',
     href: '/peintures',
     image: '/images/beyond-grid/peinture.png',
-    className: 'col-span-12 md:col-span-5 aspect-[4/5] md:mt-48 z-20',
+    className: 'col-span-12 md:col-span-5 aspect-[4/5] md:mt-24 lg:mt-32 z-20',
     speed: -20,
   },
   {
@@ -33,7 +33,7 @@ const UNIVERSES = [
     tagline: 'Art en mouvement',
     href: '/boutique',
     image: '/images/beyond-grid/boutique.png',
-    className: 'col-span-12 md:col-span-4 aspect-square md:-mt-32 z-30',
+    className: 'col-span-12 md:col-span-4 aspect-square md:-mt-16 lg:-mt-24 z-30',
     speed: 25,
   },
   {
@@ -41,7 +41,7 @@ const UNIVERSES = [
     tagline: "L'âme de MoreArt",
     href: '/a-propos',
     image: '/images/beyond-grid/poete.png',
-    className: 'col-span-12 md:col-span-8 aspect-[16/8] md:mt-12 z-10',
+    className: 'col-span-12 md:col-span-8 aspect-[16/8] md:mt-8 lg:mt-16 z-10',
     speed: 10,
   },
 ]
@@ -116,36 +116,36 @@ export default function BeyondGrid() {
         </div>
 
         {/* Mosaic Grid - Gaps confortables */}
-        <div className="grid grid-cols-12 gap-8 md:gap-24 lg:gap-32 items-start">
+        <div className="grid grid-cols-12 gap-y-16 gap-x-8 md:gap-x-12 lg:gap-x-20 items-start">
           {UNIVERSES.map((uni, idx) => (
             <div 
               key={uni.title}
               ref={el => { itemsRef.current[idx] = el }}
-              className={`relative group overflow-hidden bg-background-secondary rounded-[2px] shadow-2xl shadow-black/80 ${uni.className}`}
+              className={`relative group overflow-hidden bg-background-secondary rounded-sm shadow-2xl shadow-black/80 ${uni.className}`}
             >
               <Link href={uni.href} className="block w-full h-full">
-                <div className="relative w-full h-full overflow-hidden">
+                <div className="relative w-full h-full overflow-hidden aspect-video md:aspect-auto">
                   <Image
                     src={uni.image}
                     alt={uni.title}
                     fill
                     priority={idx < 2}
-                    className="object-cover scale-[1.3] transition-transform duration-1000 ease-out group-hover:scale-[1.35]"
+                    className="object-cover scale-[1.15] transition-transform duration-1000 ease-out group-hover:scale-[1.2]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-70 group-hover:opacity-50 transition-opacity duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-700" />
                 </div>
 
-                <div className="absolute inset-0 p-8 md:p-12 lg:p-16 flex flex-col justify-end">
-                  <div className="transform translate-y-6 group-hover:translate-y-0 transition-transform duration-700 ease-out">
-                    <p className="text-[10px] md:text-xs uppercase tracking-[0.4em] text-accent mb-4 font-sans font-semibold">
+                <div className="absolute inset-0 p-6 md:p-10 lg:p-12 flex flex-col justify-end">
+                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700 ease-out">
+                    <p className="text-[9px] md:text-xs uppercase tracking-[0.4em] text-accent mb-2 md:mb-4 font-sans font-semibold">
                       {uni.tagline}
                     </p>
-                    <h3 className="text-4xl md:text-7xl lg:text-8xl text-white font-display italic leading-none whitespace-nowrap [text-shadow:0_4px_30px_rgba(0,0,0,0.5)]">
+                    <h3 className="text-3xl md:text-5xl lg:text-7xl text-white font-display italic leading-[0.8] [text-shadow:0_4px_30px_rgba(0,0,0,0.5)]">
                       {uni.title}
                     </h3>
                   </div>
                   
-                  <div className="mt-8 w-0 group-hover:w-full h-[1px] bg-white/30 transition-all duration-700 ease-out" />
+                  <div className="mt-6 w-0 group-hover:w-full h-[1px] bg-white/30 transition-all duration-700 ease-out" />
                 </div>
               </Link>
             </div>

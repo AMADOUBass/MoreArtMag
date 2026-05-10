@@ -102,9 +102,11 @@ C'est la pièce maîtresse, prendre le temps.
 - [x] Implémenter le middleware d'auth admin
 - [x] Implémenter `/admin` (hub d'accueil + KPIs)
 - [x] Implémenter `/admin/oeuvres` (liste + édition stock/prix)
-- [x] Implémenter `/admin/commandes` (liste + détail + changement de statut)
+- [x] Implémenter `/admin/commandes` (liste commandes)
+- [ ] Implémenter `/admin/commandes/[id]` (détail commande : adresse, items, statut, numéro de suivi, notes, email auto au client)
 - [x] Implémenter `/admin/messages` (inquiries)
 - [x] Implémenter `/admin/rooms` (gestion des pièces preview)
+- [ ] Renommer `/admin/settings` → `/admin/parametres` (convention FR du projet)
 - [x] Voir `features/ADMIN.md` pour le détail
 
 ---
@@ -138,6 +140,37 @@ Tout ce qui est production se passe ici, pas avant :
 
 ---
 
+## Avant le lancement — Finitions manquantes (audit Mai 2026)
+
+Ces items n'étaient pas dans la roadmap initiale mais sont identifiés comme nécessaires avant ou juste après le lancement.
+
+### SEO & Crawlers
+- [ ] Ajouter `src/app/sitemap.ts` (génération automatique Next.js avec toutes les œuvres Sanity)
+- [ ] Ajouter `src/app/robots.ts` (bloquer `/admin/*`, `/studio/*`, `/api/*`)
+- [ ] Créer `public/og/` avec une image OG par défaut (1200×630) pour les partages sociaux
+
+### Robustesse Next.js
+- [ ] Ajouter `src/app/error.tsx` (global error boundary)
+- [ ] Ajouter `src/app/(marketing)/error.tsx` (error boundary marketing)
+- [ ] Ajouter `loading.tsx` sur les pages à data fetching lent (galerie, boutique, oeuvre)
+
+### Commerce & Legal
+- [ ] Ajouter avertissement douanes au checkout pour commandes hors Canada (dans la session Stripe + email confirmation)
+- [ ] Configurer `shipping_options` dans le dashboard Stripe (Canada standard/express, US, Europe) et les passer à la session checkout
+- [ ] Watermark sur les images preview (HD délivré seulement après achat)
+- [ ] Email automatique client quand Bazan renseigne un numéro de suivi (dépend de `/admin/commandes/[id]`)
+- [ ] Numéro d'édition dynamique ("Exemplaire X/N") dans l'email de confirmation pour les tirages numérotés
+
+### Assets manquants
+- [ ] `public/iris-hero-mobile.jpg` (750×1334, ~80KB) — fallback mobile pour le hero iris
+- [ ] Photos de pièces réelles pour room preview (6 photos selon spec `features/ROOM_PREVIEW.md`)
+- [ ] Images OG par page clé (oeuvre, boutique, a-propos)
+
+### P1 — Collections
+- [ ] Implémenter `/collections/[slug]` (sous-galerie par série ou continent, voir PROJECT_BRIEF.md)
+
+---
+
 ## Après le lancement
 
 À surveiller la première semaine :
@@ -150,7 +183,8 @@ V1.5 (sous 1-2 mois) :
 - Sound design sur le hero (avec toggle mute)
 - Système de comptes clients + sync panier DB
 - Wishlist
-- Newsletter avec Resend Audiences
+- Newsletter avec Resend Audiences (le composant existe, câbler l'API Resend Audiences)
+- `audit_log` table Supabase pour tracer les modifications de stock et statuts commande
 - Section **Magazine** (V1.5) : Boutique de produits numériques (PDF) avec paiement Stripe et livraison automatique par email.
 - Section **Services** (V1.5) : Présentation des prestations de contrats photo et projets sur mesure.
 

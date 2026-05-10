@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { supabaseAdmin } from '@/lib/supabase/admin'
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import AdminLayoutWrapper from '@/components/admin/admin-layout-wrapper'
@@ -8,34 +9,36 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode
 }) {
-  const supabase = await createClient()
   const headerList = await headers()
   const pathname = headerList.get('x-pathname') || ''
 
+  // Page login : pas de vérification, pas de wrapper
+  if (pathname.includes('/admin/login')) {
+    return <>{children}</>
+  }
+
+  // Pour toutes les autres routes /admin/* : double vérification auth + rôle
+  const supabase = await createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (!pathname.includes('/admin/login')) {
-    if (!user) {
-      redirect('/admin/login')
-    }
-
-    const { data: profile } = await (supabase
-      .from('profiles') as any)
-      .select('role')
-      .eq('id', user.id)
-      .single()
-
-    if (profile?.role !== 'admin') {
-      await supabase.auth.signOut()
-      redirect('/admin/login?error=unauthorized')
-    }
+  if (!user) {
+    redirect('/admin/login')
   }
 
-  // Pour la page login, on n'affiche pas le wrapper (sidebar)
-  if (pathname.includes('/admin/login')) {
-    return <>{children}</>
+  // Vérification du rôle via supabaseAdmin (service role, bypass RLS)
+  // Le client anon ne suffit pas ici — on ne fait pas confiance à la session seule
+  const { data: profileRow } = await supabaseAdmin
+    .from('profiles')
+    .select('*')
+    .eq('id', user.id)
+    .single()
+
+  const profile = profileRow as { role: string } | null
+
+  if (!profile || profile.role !== 'admin') {
+    redirect('/admin/login?error=unauthorized')
   }
 
   return (
