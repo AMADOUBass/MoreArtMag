@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useLayoutEffect, useState, useSyncExternalStore, Suspense, useCallback, type RefObject } from 'react'
+import { useRef, useLayoutEffect, useState, useEffect, useSyncExternalStore, Suspense, useCallback, type RefObject } from 'react'
 import { Canvas, useFrame, useLoader, extend } from '@react-three/fiber'
 import * as THREE from 'three'
 import gsap from 'gsap'
@@ -39,15 +39,21 @@ function useIsMobile() {
 }
 
 function useLockedMode(): Mode {
-  const [mode] = useState<Mode>(() => {
-    if (typeof window === 'undefined') return 'animation'
+  const [mode, setMode] = useState<Mode>('animation')
+
+  useEffect(() => {
     try {
-      if (sessionStorage.getItem(SESSION_KEY) === 'true') return 'skipped'
+      if (sessionStorage.getItem(SESSION_KEY) === 'true') {
+        setMode('skipped')
+        return
+      }
     } catch {
       // sessionStorage indisponible
     }
-    return window.matchMedia(REDUCED_MOTION_QUERY).matches ? 'reduced' : 'animation'
-  })
+    if (window.matchMedia(REDUCED_MOTION_QUERY).matches) {
+      setMode('reduced')
+    }
+  }, [])
 
   return mode
 }
@@ -64,17 +70,65 @@ function IrisMesh({
   const saccadeRef = useRef({ next: 0, x: 0, y: 0, decay: 0 })
 
   const noiseTex = useLoader(THREE.TextureLoader, '/textures/iris-noise.png')
+  const irisTex  = useLoader(THREE.TextureLoader, '/textures/iris-eye.jpg')
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     const mat = materialRef.current
     const mesh = meshRef.current
     if (!mat || !mesh) return
 
+    // Cap delta pour éviter les sauts si l'onglet revient au premier plan
+    const dt = Math.min(delta, 0.05)
     const t = state.clock.elapsedTime
     mat.uTime = t
     const p = scrollDataRef.current?.progress ?? 0
 
-    if (p <= 0.30) {
+    // ── fitScale (dépend du viewport, recalculé chaque frame) ────────────
+    const irisDiameter = 0.42 * 1.3 * 2
+    const fitScale = isMobile
+      ? Math.min((state.viewport.width * 0.92) / irisDiameter, 1.0)
+      : 1
+
+    // ── Courbe continue de la pupille ────────────────────────────────────
+    // On plafonne à 0.42 (au lieu de 0.50) pour qu'un anneau d'iris reste
+    // visible pendant le zoom → on voit les fibres défiler au lieu de juste
+    // un disque noir qui grandit.
+    const pupilT = Math.max(0, Math.min(1, (p - 0.05) / 0.67))
+    const pupilEase = pupilT * pupilT * (3 - 2 * pupilT)
+    const restFactor = Math.max(0, 1 - p / 0.30)
+    mat.uPupilSize = 0.15 + pupilEase * 0.27 + Math.sin(t * 1.2) * 0.005 * restFactor
+
+    // ── Échelle : courbe continue ────────────────────────────────────────
+    let targetScale: number
+    if (p < 0.30) {
+      const breath = 1 + Math.sin(t * 0.4 * Math.PI) * 0.015 * restFactor
+      targetScale = fitScale * breath
+    } else if (p < 0.70) {
+      const t2 = (p - 0.30) / 0.40
+      const ease = t2 * t2 * (3 - 2 * t2)
+      targetScale = fitScale + ease * (3.5 - fitScale)
+    } else if (p < 0.85) {
+      // Cubic ease-in pour l'effet "aspiration" dans la pupille
+      const t3 = (p - 0.70) / 0.15
+      const ease = t3 * t3 * t3
+      targetScale = 3.5 + ease * 26.5
+    } else {
+      // On continue de zoomer en fondant pour l'effet tunnel
+      const t4 = Math.min(1, (p - 0.85) / 0.15)
+      targetScale = 30 + t4 * 25
+    }
+
+    // Damping frame-rate-indépendant en phase repos pour position + scale
+    if (p < 0.30) {
+      mesh.scale.x = THREE.MathUtils.damp(mesh.scale.x, targetScale, 7, dt)
+      mesh.scale.y = THREE.MathUtils.damp(mesh.scale.y, targetScale, 7, dt)
+    } else {
+      mesh.scale.set(targetScale, targetScale, 1)
+    }
+
+    // ── Position : drift + parallax + saccades (uniquement en repos) ─────
+    if (p < 0.30) {
+      const fade = restFactor
       const driftX = Math.sin(t * 0.31) * 0.025 + Math.sin(t * 0.17) * 0.012
       const driftY = Math.cos(t * 0.27) * 0.020 + Math.cos(t * 0.13) * 0.010
       const mx = state.pointer.x * 0.04
@@ -96,41 +150,26 @@ function IrisMesh({
         }
       }
 
-      const fade = 1 - p / 0.30
       const targetX = (driftX + mx + sx) * fade
       const targetY = (driftY + my + sy) * fade
-      mesh.position.x += (targetX - mesh.position.x) * 0.06
-      mesh.position.y += (targetY - mesh.position.y) * 0.06
 
-      const breath = 1 + Math.sin(t * 0.2 * Math.PI * 2) * 0.015 * fade
-      const baseScale = isMobile ? Math.max(1, state.viewport.height / 1.15) : 1
-      mesh.scale.set(baseScale * breath, baseScale * breath, 1)
-
-      mat.uPupilSize = 0.15 + Math.sin(t * 1.2) * 0.005 * fade
-      mat.uOpacity = 1.0
-    } else if (p <= 0.70) {
-      const t2 = (p - 0.30) / 0.40
-      const ease = t2 * t2 * (3 - 2 * t2)
-      mat.uPupilSize = 0.15 + ease * 0.35
-      mat.uOpacity = 1.0
-      const scale = 1 + ease * 2.5
-      mesh.scale.set(scale, scale, 1)
-      mesh.position.x *= 0.92
-      mesh.position.y *= 0.92
-    } else if (p <= 0.85) {
-      const t3 = (p - 0.70) / 0.15
-      const ease = t3 * t3 * (3 - 2 * t3)
-      mat.uPupilSize = 0.5
-      const scale = 3.5 + ease * 26.5
-      mesh.scale.set(scale, scale, 1)
+      mesh.position.x = THREE.MathUtils.damp(mesh.position.x, targetX, 4, dt)
+      mesh.position.y = THREE.MathUtils.damp(mesh.position.y, targetY, 4, dt)
+    } else if (p < 0.70) {
+      // Retour doux au centre pendant la dilatation
+      mesh.position.x = THREE.MathUtils.damp(mesh.position.x, 0, 5, dt)
+      mesh.position.y = THREE.MathUtils.damp(mesh.position.y, 0, 5, dt)
+    } else {
       mesh.position.set(0, 0, 0)
+    }
+
+    // ── Opacité : fade smooth dans les 15 derniers % ─────────────────────
+    if (p < 0.85) {
       mat.uOpacity = 1.0
     } else {
       const t4 = Math.min(1, (p - 0.85) / 0.15)
-      mat.uPupilSize = 0.5
-      mesh.scale.set(30, 30, 1)
-      mesh.position.set(0, 0, 0)
-      mat.uOpacity = 1 - t4
+      // Courbe quadratique pour un fade plus naturel
+      mat.uOpacity = 1 - t4 * t4
     }
   })
 
@@ -139,6 +178,7 @@ function IrisMesh({
       <planeGeometry args={[1.3, 1.3]} />
       <irisMaterial
         ref={materialRef}
+        uIrisTex={irisTex}
         uNoiseTex={noiseTex}
         uPupilSize={0.15}
         uOpacity={1.0}
@@ -170,7 +210,8 @@ export default function IrisHero() {
 
     if (!spacerRef.current) return
 
-    const scrubVal = isMobile ? 0.2 : 0.3
+    // Scrub plus généreux = traversée beaucoup plus fluide, surtout en fin de course
+    const scrubVal = isMobile ? 0.6 : 0.8
 
     const st = ScrollTrigger.create({
       trigger: spacerRef.current,
@@ -247,22 +288,28 @@ export default function IrisHero() {
           </Canvas>
         </div>
 
+        {/* Texte centré dans la pupille */}
         <div
           ref={titleRef}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none transition-opacity duration-200 ease-out [text-shadow:0_2px_24px_rgba(0,0,0,0.85)]"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none transition-opacity duration-200 ease-out"
+          style={{ textShadow: '0 0 32px rgba(0,0,0,0.95), 0 0 8px rgba(0,0,0,1)' }}
         >
-          <p className="text-[10px] md:text-xs uppercase tracking-[0.4em] text-white/80 mb-3 font-sans">Bazan Togola</p>
-          <h1 className="font-display italic text-white text-2xl sm:text-3xl md:text-5xl leading-tight">Le poète oculaire</h1>
+          <p className="text-[9px] md:text-xs uppercase tracking-[0.4em] text-white/70 mb-2 font-sans">Bazan Togola</p>
+          <h1 className="font-display italic text-white text-xl sm:text-3xl md:text-5xl leading-tight">Le poète oculaire</h1>
         </div>
 
+        {/* Indicateur de scroll */}
         <div
           ref={scrollIndicatorRef}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-60 pointer-events-none transition-opacity duration-700 flex flex-col items-center gap-4"
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 pointer-events-none transition-opacity duration-700 flex flex-col items-center gap-3"
         >
-          <span className="eyebrow text-[8px] tracking-[0.4em] text-white/50">DÉCOUVRIR</span>
-          <div className="w-[1px] h-16 bg-white/20 overflow-hidden relative">
-            <div className="absolute top-0 left-0 w-full h-full bg-white animate-scroll-line" />
-          </div>
+          <span className="eyebrow text-[8px] tracking-[0.35em] text-white/60 md:hidden">GLISSER</span>
+          <span className="eyebrow text-[8px] tracking-[0.35em] text-white/60 hidden md:block">DÉFILER</span>
+          <svg width="20" height="32" viewBox="0 0 20 32" fill="none" className="opacity-50 animate-bounce">
+            <rect x="7" y="1" width="6" height="12" rx="3" stroke="white" strokeWidth="1.5"/>
+            <circle cx="10" cy="6" r="2" fill="white" className="animate-pulse"/>
+            <path d="M10 18 L10 30 M6 26 L10 30 L14 26" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
         </div>
       </div>
 

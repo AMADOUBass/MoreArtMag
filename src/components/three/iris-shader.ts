@@ -5,10 +5,11 @@ export const IrisMaterial = shaderMaterial(
   {
     uTime: 0,
     uPupilSize: 0.15,
-    uColor: new THREE.Color('#c08855'),
+    uIrisTex: null,
     uNoiseTex: null,
     uOpacity: 1.0,
   },
+  // ── Vertex ────────────────────────────────────────────────────────────
   `
   varying vec2 vUv;
   void main() {
@@ -16,38 +17,54 @@ export const IrisMaterial = shaderMaterial(
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }
   `,
+  // ── Fragment ──────────────────────────────────────────────────────────
   `
-  uniform float uTime;
-  uniform float uPupilSize;
-  uniform vec3 uColor;
-  uniform sampler2D uNoiseTex;
-  uniform float uOpacity;
+  precision highp float;
+
+  uniform float      uTime;
+  uniform float      uPupilSize;
+  uniform sampler2D  uIrisTex;
+  uniform sampler2D  uNoiseTex;
+  uniform float      uOpacity;
   varying vec2 vUv;
 
   void main() {
-    vec2 uv = vUv - 0.5;
+    vec2  uv   = vUv - 0.5;
     float dist = length(uv);
-
-    float pupilMask = smoothstep(uPupilSize, uPupilSize + 0.01, dist);
-
     float angle = atan(uv.y, uv.x);
-    vec2 noiseUv = vec2(fract(dist * 4.0 - uTime * 0.05), fract(angle / 6.28 + 0.5));
+
+    float irisR = 0.42;
+
+    // ── Photo de l'iris ───────────────────────────────────────────────
+    // La texture est une photo d'iris carrée centrée sur fond noir.
+    // On la projette directement sur le disque.
+    vec2 photoUv = clamp(uv / irisR * 0.5 + 0.5, 0.01, 0.99);
+    vec3 irisColor = texture2D(uIrisTex, photoUv).rgb;
+
+    // Légère animation de scintillement via la texture de bruit
+    vec2 noiseUv = vec2(
+      fract(dist / irisR * 2.5 - uTime * 0.025),
+      fract(angle / 6.2832 + 0.5)
+    );
     float noise = texture2D(uNoiseTex, noiseUv).r;
+    irisColor *= 0.88 + noise * 0.12;
 
-    vec3 irisColor = uColor * (0.5 + noise * 0.5);
+    // ── Anneau limbique ───────────────────────────────────────────────
+    float limbal = smoothstep(0.62, 0.98, dist / irisR);
+    irisColor = mix(irisColor, vec3(0.0), limbal * 0.92);
 
-    float limbalRing = smoothstep(0.46, 0.5, dist);
-    irisColor = mix(irisColor, vec3(0.0), limbalRing);
+    // ── Pupille ───────────────────────────────────────────────────────
+    float pupilR    = (uPupilSize / 0.5) * irisR;
+    float pupilMask = 1.0 - smoothstep(pupilR - 0.012, pupilR + 0.008, dist);
+    irisColor = mix(irisColor, vec3(0.01, 0.005, 0.0), pupilMask);
 
-    vec3 finalColor = mix(vec3(0.0), irisColor, pupilMask);
+    // ── Reflet de lumière ─────────────────────────────────────────────
+    float cl = smoothstep(0.025, 0.0, length(uv - vec2(-0.075, 0.095)));
+    irisColor += cl * 0.55 * (1.0 - pupilMask);
 
-    float outerMask = smoothstep(0.5, 0.505, dist);
-    finalColor = mix(finalColor, vec3(0.0), outerMask);
-
-    float catchlight = smoothstep(0.04, 0.0, length(uv - vec2(-0.12, 0.12)));
-    finalColor += catchlight * 0.25 * pupilMask;
-
-    gl_FragColor = vec4(finalColor, uOpacity);
+    // ── Alpha : disque de l'iris ──────────────────────────────────────
+    float alpha = (1.0 - smoothstep(irisR - 0.008, irisR + 0.016, dist)) * uOpacity;
+    gl_FragColor = vec4(irisColor, alpha);
   }
   `
 )
