@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devis - MoreArt Mag (V1 à V2)</title>
+    <style>
+        :root {
+            --primary: #111111;
+            --accent: #a88151; /* Or élégant / Bronze */
+            --bg-light: #fafafa;
+            --gray: #666666;
+            --border: #eeeeee;
+        }
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: var(--primary);
+            line-height: 1.6;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: var(--bg-light);
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 20px;
+        }
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+        .logo-text span {
+            color: var(--accent);
+        }
+        .devis-meta {
+            text-align: right;
+        }
+        .devis-meta h2 {
+            margin: 0 0 5px 0;
+            font-size: 22px;
+            letter-spacing: 1px;
+        }
+        .devis-meta p {
+            margin: 0;
+            color: var(--gray);
+            font-size: 0.9em;
+        }
+        .info-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            background: #ffffff;
+            padding: 30px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+        .info-box {
+            width: 48%;
+        }
+        .info-box h3 {
+            margin-top: 0;
+            font-size: 12px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+        .info-box strong {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .info-box p {
+            margin: 0;
+            color: var(--gray);
+            font-size: 0.95em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+        }
+        th, td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .item-title {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+            color: var(--primary);
+            font-size: 15px;
+        }
+        .item-desc {
+            font-size: 0.85em;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+        .subtotal-row td {
+            background-color: #f9f9f9;
+            font-weight: 600;
+        }
+        .discount-row td {
+            color: #d9534f;
+            background-color: #fffaf9;
+        }
+        .total-row {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .total-row td {
+            background-color: var(--primary);
+            color: white;
+            border-bottom: none;
+        }
+        .terms {
+            font-size: 0.85em;
+            color: var(--gray);
+            background: #ffffff;
+            padding: 25px;
+            border-left: 4px solid var(--accent);
+            border-top: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+        .terms h4 {
+            margin-top: 0;
+            color: var(--primary);
+            font-size: 15px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .terms p {
+            margin-bottom: 8px;
+        }
+        .signatures {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            page-break-inside: avoid;
+        }
+        .sign-box {
+            width: 42%;
+        }
+        .sign-line {
+            border-bottom: 1px solid var(--primary);
+            margin-top: 60px;
+            margin-bottom: 8px;
+        }
+        .no-print {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+        @media print {
+            body { padding: 0; background-color: white; }
+            .no-print { display: none; }
+            .info-section, table, .terms { border: none; }
+            th { -webkit-print-color-adjust: exact; background-color: var(--primary) !important; color: white !important; }
+            .total-row td { -webkit-print-color-adjust: exact; background-color: var(--primary) !important; color: white !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print">
+        💡 Appuie sur <code>Ctrl+P</code> (ou <code>Cmd+P</code>) et choisis <strong>"Enregistrer au format PDF"</strong>. Assure-toi d'activer "Graphiques d'arrière-plan" dans les options d'impression pour voir les couleurs.
+    </div>
+
+    <div class="header-top">
+        <div class="logo-text">DEVIS <span>PRO</span></div>
+        <div class="devis-meta">
+            <h2>DEVIS #2026-001</h2>
+            <p>Date : 10 Mai 2026</p>
+            <p>Validité : 30 jours</p>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <div class="info-box">
+            <h3>Prestataire</h3>
+            <strong>Amadou Bassoum</strong>
+            <p>Développeur Web Full-Stack</p>
+            <p>648 rue Morin</p>
+            <p>Québec, QC, Canada</p>
+            <p>Tél : 418-998-8332</p>
+        </div>
+        <div class="info-box" style="text-align: right;">
+            <h3>Client</h3>
+            <strong>Mamadou-Bazan Togola</strong>
+            <p>Le Poète Oculaire</p>
+            <p>Tél : 418-929-9164</p>
+            <p>bazan@moreartmag.com</p>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Description détaillée des services (Inclus V1, V1.5, V2)</th>
+                <th class="text-right" style="width: 150px;">Montant (CAD)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <span class="item-title">1. Conception Visuelle & Expérience Utilisateur</span>
+                    <span class="item-desc">Création de l'interface premium muséale, animations 3D immersives (Hero Iris), navigation fluide et architecture de l'information (Pages Accueil, À Propos, Contact). Design fully responsive.</span>
+                </td>
+                <td class="text-right">1 200,00 $</td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="item-title">2. E-commerce & Intégration Sécurisée</span>
+                    <span class="item-desc">Mise en place de la boutique en ligne, galerie d'œuvres (filtres), système de panier persistant, et intégration de la passerelle de paiement sécurisée Stripe avec gestion des taxes automatiques.</span>
+                </td>
+                <td class="text-right">1 800,00 $</td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="item-title">3. Base de données & CMS (Sanity / Supabase)</span>
+                    <span class="item-desc">Architecture des bases de données pour la gestion des commandes. Mise en place du CMS sur-mesure permettant l'ajout/modification d'œuvres, éditions limitées et stocks de manière autonome.</span>
+                </td>
+                <td class="text-right">1 200,00 $</td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="item-title">4. Panneau d'Administration Privé</span>
+                    <span class="item-desc">Création du tableau de bord sécurisé permettant la gestion des ventes, le suivi des expéditions et la configuration globale du site.</span>
+                </td>
+                <td class="text-right">800,00 $</td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="item-title">5. Développements Futurs (V1.5 & V2)</span>
+                    <span class="item-desc">Intégration ultérieure du système de Magazine Numérique, de la section Services et de la timeline d'Archives d'Expositions.</span>
+                </td>
+                <td class="text-right">1 500,00 $</td>
+            </tr>
+            
+            <tr class="subtotal-row">
+                <td class="text-right">Valeur réelle des prestations :</td>
+                <td class="text-right">6 500,00 $</td>
+            </tr>
+            <tr class="discount-row">
+                <td>
+                    <span class="item-title" style="color: #d9534f;">Rabais "Partenariat / Prix d'Ami"</span>
+                    <span class="item-desc">Ajustement exceptionnel accordé pour inclure la globalité du projet.</span>
+                </td>
+                <td class="text-right">- 4 500,00 $</td>
+            </tr>
+            <tr class="total-row">
+                <td class="text-right">TOTAL À PAYER :</td>
+                <td class="text-right">2 000,00 $</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="terms">
+        <h4>Modalités contractuelles et Paiement</h4>
+        <p><strong>1. Phases du projet :</strong> Ce devis sécurise le développement de la Plateforme V1 ainsi que les mises à jour majeures prévues (Magazine V1.5, Archives V2) qui seront déployées de manière séquentielle dans les mois suivants.</p>
+        <p><strong>2. Acompte de lancement :</strong> Un acompte de <strong>25% (soit 500,00 $)</strong> est exigé à la signature pour réserver le temps de production et démarrer la liaison finale (Bases de données & Paiement).</p>
+        <p><strong>3. Solde à la livraison :</strong> Le solde de <strong>75% (soit 1 500,00 $)</strong> sera facturé et dû au moment de la livraison finale, avant le lancement public sur le domaine officiel.</p>
+        <p><strong>4. Droits et Frais :</strong> Les codes sources et l'utilisation exclusive du site sont cédés après paiement total. Les frais d'infrastructure tiers (renouvellement du nom de domaine, frais de transaction Stripe par vente) sont à la charge exclusive du client.</p>
+        <p><strong>5. Maintenance & Support mensuel (Optionnel) :</strong> Après la mise en ligne finale, un contrat de maintenance (mises à jour de sécurité, gestion serveur, corrections) pourra être mis en place pour un montant de <strong>50,00 $/mois</strong>. Sans ce forfait, toute intervention technique future (hors bugs initiaux) sera facturée au taux horaire.</p>
+        <p><strong>6. Évolutions hors périmètre :</strong> Toute demande de nouvelle fonctionnalité n'étant pas incluse dans ce document (hors V1, V1.5, V2) fera l'objet d'un avenant ou d'un nouveau devis séparé.</p>
+    </div>
+
+    <div class="signatures">
+        <div class="sign-box">
+            <strong>Prestataire (Amadou Bassoum)</strong>
+            <br><span style="font-size:0.8em;color:var(--gray);">Lu et approuvé</span>
+            <div class="sign-line"></div>
+            Date : 
+        </div>
+        <div class="sign-box">
+            <strong>Client (Mamadou-Bazan Togola)</strong>
+            <br><span style="font-size:0.8em;color:var(--gray);">Lu et approuvé, bon pour accord</span>
+            <div class="sign-line"></div>
+            Date : 
+        </div>
+    </div>
+
+</body>
+</html>

@@ -16,7 +16,11 @@ export default function CookieBanner() {
     setMounted(true)
     const consent = localStorage.getItem('moreart-cookie-consent')
     if (!consent && traversed) {
-      setShow(true)
+      // Attendre la fin du scroll cinématique avant d'afficher le bandeau
+      const timer = setTimeout(() => {
+        setShow(true)
+      }, 2500)
+      return () => clearTimeout(timer)
     } else if (consent) {
       setShow(false)
     }
@@ -51,7 +55,7 @@ export default function CookieBanner() {
              <div className="flex items-center gap-4">
                 <button 
                   onClick={handleAccept}
-                  className="bg-white text-black px-8 py-3 rounded-full text-[10px] eyebrow font-bold hover:bg-accent hover:text-white transition-all duration-300 shadow-lg shadow-accent/20"
+                  className="bg-white text-black px-8 py-3 rounded-full text-[10px] eyebrow font-bold hover:bg-accent hover:text-black transition-all duration-300 shadow-lg shadow-accent/20"
                 >
                    Accepter
                 </button>

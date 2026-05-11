@@ -18,9 +18,9 @@ export const useIrisStore = create<IrisStore>((set, get) => ({
     set({ traversed: v })
     if (v && typeof window !== 'undefined') {
       try {
-        sessionStorage.setItem(SESSION_KEY, 'true')
+        localStorage.setItem(SESSION_KEY, 'true')
       } catch {
-        // sessionStorage indisponible
+        // localStorage indisponible
       }
     }
   },
@@ -28,7 +28,7 @@ export const useIrisStore = create<IrisStore>((set, get) => ({
   hydrate: () => {
     if (typeof window === 'undefined') return
     try {
-      if (sessionStorage.getItem(SESSION_KEY) === 'true') {
+      if (localStorage.getItem(SESSION_KEY) === 'true') {
         set({ traversed: true, irisActive: false })
       }
     } catch {

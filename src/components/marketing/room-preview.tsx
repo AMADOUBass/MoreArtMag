@@ -119,20 +119,25 @@ export default function RoomPreview({ artwork, selectedSize, onClose, onSizeChan
   if (!mounted) return null
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-12 overflow-hidden">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[100] bg-[#f5f5f5]/98 backdrop-blur-3xl flex items-center justify-center p-4 md:p-12 overflow-hidden"
+    >
       {/* Close button */}
       <button 
         onClick={onClose}
-        className="absolute top-8 right-8 z-[110] w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all border border-white/10"
+        className="absolute top-8 right-8 z-[110] w-12 h-12 rounded-full border border-black/10 hover:bg-black hover:text-white flex items-center justify-center transition-all duration-500 text-black"
       >
         <X size={24} />
       </button>
 
-      <div className="relative w-full max-w-6xl aspect-video rounded-lg overflow-hidden shadow-2xl bg-zinc-900 border border-white/5">
+      <div className="relative w-full max-w-6xl aspect-video rounded-sm overflow-hidden shadow-2xl bg-white border border-black/5">
         <AnimatePresence mode="wait">
           {loading ? (
-            <div className="absolute inset-0 flex items-center justify-center bg-black">
-              <div className="w-12 h-12 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+            <div className="absolute inset-0 flex items-center justify-center bg-white">
+              <div className="w-12 h-12 border-2 border-black/20 border-t-black rounded-full animate-spin" />
             </div>
           ) : (
             <motion.div
@@ -245,6 +250,6 @@ export default function RoomPreview({ artwork, selectedSize, onClose, onSizeChan
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[10px] eyebrow text-white/40 text-center hidden md:block">
         NOTE : CETTE VISUALISATION EST UNE SIMULATION À TITRE INDICATIF. LES PROPORTIONS SONT ESTIMÉES.
       </div>
-    </div>
+    </motion.div>
   )
 }

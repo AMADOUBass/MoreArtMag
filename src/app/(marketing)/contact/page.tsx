@@ -2,322 +2,291 @@
 
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Send, Mail, Phone, MapPin, Globe, MessageCircle, ArrowRight } from 'lucide-react'
+import { Mail, Globe, ArrowUpRight } from 'lucide-react'
 import { toast } from 'sonner'
-import { z } from 'zod'
-
 import Breadcrumbs from '@/components/marketing/breadcrumbs'
-
-import Button from '@/components/ui/button'
-
-const contactSchema = z.object({
-  name: z.string().min(1, "Veuillez renseigner votre nom complet"),
-  email: z.string().min(1, "L'adresse email est obligatoire").email("Le format de l'email n'est pas valide"),
-  phone: z.string().optional(),
-  subject: z.string().min(1, "L'objet de votre message est requis").min(3, "Le sujet est trop court"),
-  message: z.string().min(1, "Le contenu de votre message est vide").min(10, "Votre message doit contenir au moins 10 caractères"),
-  type: z.enum(['general', 'commission', 'press', 'gallery']),
-  budget: z.string().optional(),
-  size: z.string().optional(),
-})
 
 export default function ContactPage() {
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
-    subject: '',
+    subject: "Acquisition d'œuvre",
     message: '',
-    type: 'general',
-    budget: '',
-    size: '',
   })
-  const [showBudgetSelect, setShowBudgetSelect] = useState(false)
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [touched, setTouched] = useState<Record<string, boolean>>({})
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
+  const subjects = [
+    { label: "Acquisition d'œuvre", value: "acquisition" },
+    { label: "Projet Collaboratif", value: "commission" },
+    { label: "Demande Presse", value: "press" },
+    { label: "Autre", value: "other" },
+  ]
+
+  const validateField = (name: string, value: string) => {
+    let error = ""
+    if (name === 'name' && value.length < 2) {
+      error = "Le nom doit contenir au moins 2 caractères."
+    }
+    if (name === 'email') {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!value) error = "L'adresse email est requise."
+      else if (!emailRegex.test(value)) error = "Veuillez entrer une adresse email valide."
+    }
+    if (name === 'message' && value.length < 10) {
+      error = "Votre message est trop court (min. 10 caractères)."
+    }
+    return error
+  }
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setTouched(prev => ({ ...prev, [name]: true }))
+    const error = validateField(name, value)
+    setErrors(prev => ({ ...prev, [name]: error }))
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+    if (touched[name]) {
+      const error = validateField(name, value)
+      setErrors(prev => ({ ...prev, [name]: error }))
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Validation finale avant envoi
+    const newErrors: Record<string, string> = {}
+    Object.keys(formData).forEach(key => {
+      const error = validateField(key, formData[key as keyof typeof formData])
+      if (error) newErrors[key] = error
+    })
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      setTouched({ name: true, email: true, message: true })
+      toast.error("Veuillez corriger les erreurs dans le formulaire.")
+      return
+    }
+
     setLoading(true)
-
+    
     try {
-      // Validation with Zod
-      contactSchema.parse(formData)
-
-      // API Call
       const response = await fetch('/api/inquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          type: 'general', // Type par défaut pour le formulaire de contact
+        }),
       })
 
-      if (!response.ok) throw new Error("Erreur d'envoi")
+      const data = await response.json()
 
-      toast.success("Message envoyé avec succès !")
-      setFormData({ name: '', email: '', phone: '', subject: '', message: '', type: 'general', budget: '', size: '' })
-    } catch (err: any) {
-      if (err instanceof z.ZodError) {
-        toast.error(err.issues[0].message)
-      } else {
-        toast.error("Une erreur est survenue.")
-      }
+      if (!response.ok) throw new Error(data.error || "Une erreur est survenue.")
+
+      toast.success("Votre message a été transmis avec succès !")
+      setFormData({ name: '', email: '', subject: "Acquisition d'œuvre", message: '' })
+      setErrors({})
+      setTouched({})
+    } catch (error: any) {
+      console.error(error)
+      toast.error(error.message || "Impossible d'envoyer le message. Réessayez plus tard.")
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <main className="bg-background-primary pt-32 pb-20">
-      <div className="container-custom py-20 lg:py-40">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-24">
+    <main className="pt-32 md:pt-64 pb-20 bg-[#f5f5f5] min-h-screen">
+      <div className="container-custom pb-20 lg:pb-40">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-32">
           
           {/* Left Column: Info */}
-          <div className="lg:col-span-5 space-y-16">
-            <header>
-               <Breadcrumbs items={[{ label: 'CONTACT' }]} />
-               <p className="eyebrow text-accent mb-8 flex items-center gap-4">
-                  <span className="w-12 h-[1px] bg-accent/50" />
-                  Contact & Collaboration
-               </p>
-               <h1 className="text-4xl sm:text-6xl md:text-8xl font-display italic text-white leading-[0.9] tracking-tighter">
-                  Engageons la <br/>
-                  <span className="text-accent">conversation.</span>
-               </h1>
-            </header>
-
-            <div className="space-y-10">
-                <div className="flex items-start gap-5 group">
-                   <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500 shadow-lg shadow-black/20">
-                      <Mail size={20} />
-                   </div>
-                   <div>
-                      <p className="eyebrow text-[10px] text-text-muted mb-2">Email</p>
-                      <p className="text-white text-xl font-display italic leading-tight">
-                         contact@moreartmag.com
-                      </p>
-                   </div>
-                </div>
-
-                <div className="flex items-start gap-5 group">
-                   <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500 shadow-lg shadow-black/20">
-                      <MapPin size={20} />
-                   </div>
-                   <div>
-                      <p className="eyebrow text-[10px] text-text-muted mb-2">Studio</p>
-                      <p className="text-white text-xl font-display italic leading-tight">
-                         430 Rue Faraday #102<br/>
-                         Québec, QC G1N 4E5
-                      </p>
-                   </div>
-                </div>
-
-                <div className="flex items-start gap-5 group">
-                   <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500 shadow-lg shadow-black/20">
-                      <Phone size={20} />
-                   </div>
-                   <div>
-                      <p className="eyebrow text-[10px] text-text-muted mb-2">Téléphone</p>
-                      <p className="text-white text-xl font-display italic leading-tight">
-                         (418) 670-4391
-                      </p>
-                   </div>
-                </div>
+          <div className="lg:col-span-5 space-y-16 lg:pr-12">
+            <div>
+              <Breadcrumbs items={[{ label: 'CONTACT' }]} />
+              <p className="eyebrow text-[#737373] mb-6 mt-8 flex items-center gap-4">
+                <span className="w-12 h-[1px] bg-black/20" />
+                Collaboration
+              </p>
+              <h1 className="text-4xl md:text-6xl lg:text-8xl font-display text-[#0a0a0a] leading-[0.9] tracking-tighter mb-8">
+                Engageons la <br/> 
+                <span className="text-[#a3a3a3]">conversation.</span>
+              </h1>
+              <p className="text-[#737373] text-xl leading-relaxed">
+                Qu'il s'agisse d'une acquisition, d'une commande spéciale ou d'une demande de presse, nous vous répondrons dans les plus brefs délais.
+              </p>
             </div>
 
-             <div className="pt-12 border-t border-white/5">
-                <p className="eyebrow text-text-muted mb-8 text-[9px]">Suivre l'aventure</p>
-                <div className="space-y-4">
-                   <a 
-                     href="https://www.instagram.com/moreart.mag/" 
-                     target="_blank" 
-                     rel="noopener noreferrer"
-                     className="group flex items-center gap-4 text-white hover:text-accent transition-colors duration-300"
-                   >
-                      <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-accent group-hover:bg-accent/5 transition-all duration-500">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                        </svg>
-                      </div>
-                      <span className="eyebrow text-[10px] tracking-widest uppercase">MoreArt Mag</span>
-                   </a>
-
-                   <a 
-                     href="https://www.instagram.com/triplevisiontv/" 
-                     target="_blank" 
-                     rel="noopener noreferrer"
-                     className="group flex items-center gap-4 text-white hover:text-accent transition-colors duration-300"
-                   >
-                      <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-accent group-hover:bg-accent/5 transition-all duration-500">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                        </svg>
-                      </div>
-                      <span className="eyebrow text-[10px] tracking-widest uppercase">TripleVision TV</span>
-                   </a>
+            <div className="space-y-8 pt-12 border-t border-black/5">
+              <div className="flex gap-6 group items-center">
+                <div className="w-12 h-12 rounded-full bg-[#0a0a0a] flex items-center justify-center shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-500">
+                  <Mail className="w-5 h-5 text-white" />
                 </div>
-             </div>
+                <div>
+                   <p className="eyebrow text-[#a3a3a3] text-[9px] mb-1 uppercase tracking-widest">Email Direct</p>
+                   <a href="mailto:contact@moreartmag.com" className="text-xl text-[#0a0a0a] hover:text-[#a3a3a3] transition-colors font-display">contact@moreartmag.com</a>
+                </div>
+              </div>
+
+              <div className="flex gap-6 group items-center">
+                <div className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center shrink-0 shadow-sm border border-black/5 group-hover:scale-110 transition-transform duration-500">
+                  <Globe className="w-5 h-5 text-black" />
+                </div>
+                <div>
+                   <p className="eyebrow text-[#a3a3a3] text-[9px] mb-1 uppercase tracking-widest">Localisation</p>
+                   <p className="text-xl text-[#0a0a0a] font-display">Québec, Canada</p>
+                </div>
+              </div>
+
+              <div className="flex gap-6 group items-center">
+                <a 
+                  href="https://www.instagram.com/moreart.mag/" 
+                  target="_blank"
+                  className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 shadow-sm border border-black/5 group-hover:scale-110 transition-transform duration-500 bg-white"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="black"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <div>
+                   <p className="eyebrow text-[#a3a3a3] text-[9px] mb-1 uppercase tracking-widest">Suivre</p>
+                   <a href="https://www.instagram.com/moreart.mag/" target="_blank" className="text-xl text-[#0a0a0a] hover:text-[#a3a3a3] transition-colors font-display">@moreart.mag</a>
+                </div>
+              </div>
+            </div>
           </div>
 
+          {/* Right Column: Form */}
           <div className="lg:col-span-7">
-              <motion.form 
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="relative bg-white/[0.02] backdrop-blur-3xl p-8 md:p-12 rounded-[2.5rem] border border-white/5 shadow-[0_40px_120px_rgba(0,0,0,0.5)] space-y-8 group/form w-full"
-                onSubmit={handleSubmit}
-                noValidate
-              >
-                {/* Subtle Artistic Glow */}
-                <div className="absolute -top-32 -right-32 w-64 h-64 bg-accent/10 rounded-full blur-[120px] pointer-events-none group-hover/form:bg-accent/15 transition-colors duration-1000" />
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-                   <div className="relative space-y-2">
-                      <label className="text-[10px] eyebrow text-accent tracking-[0.3em] uppercase ml-1">Identité</label>
-                      <input 
-                        type="text" 
-                        placeholder="Nom complet"
-                        className="w-full bg-transparent border-b border-white/20 py-3 text-white text-lg font-display italic focus:outline-none focus:border-accent transition-all duration-700 placeholder:text-white/30 placeholder:font-sans placeholder:not-italic"
-                        value={formData.name}
-                        onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      />
-                   </div>
-                   <div className="relative space-y-2">
-                      <label className="text-[10px] eyebrow text-accent tracking-[0.3em] uppercase ml-1">Correspondance</label>
-                      <input 
-                        type="email" 
-                        placeholder="votre@email.com"
-                        className="w-full bg-transparent border-b border-white/20 py-3 text-white text-lg font-display italic focus:outline-none focus:border-accent transition-all duration-700 placeholder:text-white/30 placeholder:font-sans placeholder:not-italic"
-                        value={formData.email}
-                        onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      />
-                   </div>
-                   
-                   <div className="relative space-y-2 md:col-span-2">
-                      <label className="text-[10px] eyebrow text-accent tracking-[0.3em] uppercase ml-1">Sujet de Réflexion</label>
-                      <input 
-                        type="text" 
-                        placeholder="De quoi souhaitez-vous discuter ?"
-                        className="w-full bg-transparent border-b border-white/20 py-3 text-white text-lg font-display italic focus:outline-none focus:border-accent transition-all duration-700 placeholder:text-white/30 placeholder:font-sans placeholder:not-italic"
-                        value={formData.subject}
-                        onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                      />
-                   </div>
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-white p-8 md:p-16 rounded-[3rem] shadow-[0_40px_120px_rgba(0,0,0,0.1)] border border-black/5 relative overflow-hidden"
+            >
+              <div className="absolute -top-24 -right-24 w-64 h-64 bg-black/[0.02] blur-[100px] rounded-full pointer-events-none" />
 
-                   <div className="space-y-4 md:col-span-2">
-                      <label className="text-[10px] eyebrow text-accent tracking-[0.3em] uppercase ml-1">Nature de la démarche</label>
-                      <div className="flex flex-wrap gap-2">
-                         {['general', 'commission', 'press', 'gallery'].map((type) => (
-                           <button
-                             key={type}
-                             type="button"
-                             onClick={() => setFormData({...formData, type: type as any})}
-                             className={`py-2 px-5 rounded-full border text-[8px] eyebrow transition-all duration-700 ${
-                               formData.type === type 
-                                 ? 'border-accent bg-accent text-white shadow-md shadow-accent/20' 
-                                 : 'border-white/20 bg-white/5 text-white/60 hover:border-white/40 hover:text-white'
-                             }`}
-                           >
-                             {type === 'general' ? 'Général' : 
-                              type === 'commission' ? 'Commande' : 
-                              type === 'press' ? 'Presse' : 'Galerie'}
-                           </button>
-                         ))}
-                      </div>
-                   </div>
+              <form className="space-y-10 relative z-10" onSubmit={handleSubmit} noValidate>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                  {/* Champ Nom */}
+                  <div className="space-y-3">
+                    <label className="eyebrow text-[#0a0a0a] text-[10px] uppercase tracking-[0.2em] ml-2">Nom Complet</label>
+                    <input 
+                      type="text" name="name" placeholder="Jean Dupont"
+                      className={`w-full bg-[#f8f8f8] border-b py-5 px-8 text-[#0a0a0a] focus:outline-none focus:bg-white transition-all placeholder:text-[#a3a3a3] rounded-2xl font-display text-lg shadow-sm ${errors.name ? 'border-red-500' : 'border-black/5 focus:border-black'}`}
+                      value={formData.name}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                    <AnimatePresence>
+                      {errors.name && (
+                        <motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="text-red-500 text-[10px] eyebrow ml-2">
+                          {errors.name}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </div>
 
-                   {formData.type === 'commission' && (
-                     <div className="md:col-span-2 grid grid-cols-2 gap-12 pt-2">
-                        <div className="relative space-y-2">
-                           <label className="text-[10px] eyebrow text-accent tracking-[0.3em] uppercase ml-1">Budget</label>
-                           <div className="relative">
-                              <button 
-                                type="button"
-                                onClick={() => setShowBudgetSelect(!showBudgetSelect)}
-                                className="w-full bg-transparent border-b border-white/20 py-3 text-white text-lg font-display italic focus:outline-none focus:border-accent transition-all duration-700 flex justify-between items-center"
-                              >
-                                 <span className={!formData.budget ? 'text-white/30 font-sans not-italic' : ''}>
-                                    {formData.budget === '500-1000' ? '500 $ - 1 000 $' : 
-                                     formData.budget === '1000-3000' ? '1 000 $ - 3 000 $' : 
-                                     formData.budget === '3000+' ? 'Plus de 3 000 $' : 'Sélectionner'}
-                                 </span>
-                                 <svg 
-                                   width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                                   className={`transition-transform duration-500 ${showBudgetSelect ? 'rotate-180' : ''}`}
-                                 >
-                                    <path d="m6 9 6 6 6-6"/>
-                                 </svg>
-                              </button>
-                              
-                              <AnimatePresence>
-                                 {showBudgetSelect && (
-                                    <motion.div 
-                                      initial={{ opacity: 0, y: 10 }}
-                                      animate={{ opacity: 1, y: 0 }}
-                                      exit={{ opacity: 0, y: 10 }}
-                                      className="absolute left-0 right-0 top-full mt-2 z-50 bg-background-secondary/95 backdrop-blur-xl border border-white/20 rounded-xl overflow-hidden shadow-2xl"
-                                    >
-                                       {['', '500-1000', '1000-3000', '3000+'].map((opt) => (
-                                          <button
-                                            key={opt}
-                                            type="button"
-                                            className="w-full text-left px-6 py-4 text-sm text-white hover:bg-accent/10 hover:text-accent transition-colors border-b border-white/10 last:border-0 font-display italic"
-                                            onClick={() => {
-                                               setFormData({...formData, budget: opt})
-                                               setShowBudgetSelect(false)
-                                            }}
-                                          >
-                                             {opt === '' ? 'Sélectionner' : 
-                                              opt === '500-1000' ? '500 $ - 1 000 $' : 
-                                              opt === '1000-3000' ? '1 000 $ - 3 000 $' : 'Plus de 3 000 $'}
-                                          </button>
-                                       ))}
-                                    </motion.div>
-                                 )}
-                              </AnimatePresence>
-                           </div>
-                        </div>
-                        <div className="relative space-y-2">
-                           <label className="text-[10px] eyebrow text-accent tracking-[0.3em] uppercase ml-1">Dimensions</label>
-                           <input 
-                             type="text" 
-                             placeholder="Ex: 80x100cm"
-                             className="w-full bg-transparent border-b border-white/20 py-3 text-white text-lg font-display italic focus:outline-none focus:border-accent transition-all duration-700 placeholder:text-white/30 placeholder:font-sans placeholder:not-italic"
-                             value={formData.size}
-                             onChange={(e) => setFormData({...formData, size: e.target.value})}
-                           />
-                        </div>
-                     </div>
-                   )}
-
-                   <div className="relative space-y-4 md:col-span-2">
-                      <label className="text-[10px] eyebrow text-accent tracking-[0.3em] uppercase ml-1">Votre Message</label>
-                      <textarea 
-                        rows={3}
-                        placeholder="Exprimez votre pensée..."
-                        className="w-full bg-white/[0.02] border border-white/20 rounded-2xl p-5 text-white text-lg font-display italic focus:outline-none focus:border-accent focus:bg-white/[0.04] transition-all duration-700 resize-none placeholder:text-white/30 placeholder:font-sans placeholder:not-italic"
-                        value={formData.message}
-                        onChange={(e) => setFormData({...formData, message: e.target.value})}
-                      />
-                   </div>
+                  {/* Champ Email */}
+                  <div className="space-y-3">
+                    <label className="eyebrow text-[#0a0a0a] text-[10px] uppercase tracking-[0.2em] ml-2">Adresse Email</label>
+                    <input 
+                      type="email" name="email" placeholder="jean@exemple.com"
+                      className={`w-full bg-[#f8f8f8] border-b py-5 px-8 text-[#0a0a0a] focus:outline-none focus:bg-white transition-all placeholder:text-[#a3a3a3] rounded-2xl font-display text-lg shadow-sm ${errors.email ? 'border-red-500' : 'border-black/5 focus:border-black'}`}
+                      value={formData.email}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                    <AnimatePresence>
+                      {errors.email && (
+                        <motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="text-red-500 text-[10px] eyebrow ml-2">
+                          {errors.email}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
 
-                <div className="pt-2">
-                  <Button 
-                    type="submit"
-                    loading={loading}
-                    variant="secondary"
-                    size="xl"
-                    className="w-full rounded-2xl py-6 text-xs tracking-[0.3em]"
-                    icon={<ArrowRight size={16} />}
-                  >
-                     Soumettre la demande
-                  </Button>
+                {/* Sujet (Sélecteur personnalisé) */}
+                <div className="space-y-3">
+                  <label className="eyebrow text-[#0a0a0a] text-[10px] uppercase tracking-[0.2em] ml-2">Sujet de Réflexion</label>
+                  <div className="relative">
+                    <div 
+                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                      className="w-full bg-[#f8f8f8] border-b border-black/5 py-5 px-8 text-[#0a0a0a] cursor-pointer rounded-2xl font-display text-lg flex justify-between items-center group hover:bg-white transition-all shadow-sm"
+                    >
+                      <span>{formData.subject}</span>
+                      <svg width="12" height="8" viewBox="0 0 12 8" fill="none" className={`transition-transform duration-500 ${isDropdownOpen ? 'rotate-180' : ''}`}>
+                        <path d="M1 1L6 6L11 1" stroke="currentColor" strokeWidth="2" />
+                      </svg>
+                    </div>
+                    
+                    <AnimatePresence>
+                      {isDropdownOpen && (
+                        <motion.div 
+                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                          className="absolute left-0 right-0 top-full mt-2 z-50 bg-white border border-black/5 rounded-2xl shadow-2xl overflow-hidden p-2"
+                        >
+                          {subjects.map((sub) => (
+                            <div 
+                              key={sub.value}
+                              className="px-6 py-4 hover:bg-[#f8f8f8] cursor-pointer rounded-xl transition-colors font-display text-lg text-[#0a0a0a] hover:text-black"
+                              onClick={() => {
+                                setFormData({...formData, subject: sub.label})
+                                setIsDropdownOpen(false)
+                              }}
+                            >
+                              {sub.label}
+                            </div>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
-              </motion.form>
+
+                {/* Message */}
+                <div className="space-y-3">
+                  <label className="eyebrow text-[#0a0a0a] text-[10px] uppercase tracking-[0.2em] ml-2">Votre Message</label>
+                  <textarea 
+                    rows={4} name="message" placeholder="Décrivez votre vision ici..."
+                    className={`w-full bg-[#f8f8f8] border-b py-6 px-8 text-[#0a0a0a] focus:outline-none focus:bg-white transition-all placeholder:text-[#a3a3a3] resize-none rounded-[2rem] font-display text-lg shadow-sm ${errors.message ? 'border-red-500' : 'border-black/5 focus:border-black'}`}
+                    value={formData.message}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  ></textarea>
+                  <AnimatePresence>
+                    {errors.message && (
+                      <motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="text-red-500 text-[10px] eyebrow ml-2">
+                        {errors.message}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                <motion.button 
+                  type="submit"
+                  disabled={loading}
+                  whileHover={{ scale: 1.02, backgroundColor: '#000' }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full py-8 bg-[#0a0a0a] text-white eyebrow text-[13px] font-bold tracking-[0.5em] transition-all duration-500 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center justify-center gap-4 group disabled:opacity-50"
+                >
+                  <span className="relative z-10">{loading ? "TRANSMISSION..." : "ENVOYER LA DEMANDE"}</span>
+                  {!loading && <ArrowUpRight size={20} className="relative z-10 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />}
+                </motion.button>
+              </form>
+            </motion.div>
           </div>
         </div>
       </div>

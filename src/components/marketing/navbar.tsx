@@ -10,6 +10,7 @@ import { useCart } from '@/store/use-cart'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const LINKS = [
+  { name: 'Accueil', href: '/' },
   { name: 'Photographies', href: '/photographies' },
   { name: 'Peintures', href: '/peintures' },
   { name: 'Boutique', href: '/boutique' },
@@ -65,8 +66,8 @@ export default function Navbar() {
           w-full max-w-7xl px-4 py-3 md:px-8 md:py-4
           rounded-2xl md:rounded-[2rem] border transition-all duration-700 ease-cinematic
           ${scrolled 
-            ? "bg-black/60 backdrop-blur-xl border-white/10 shadow-2xl py-3" 
-            : "bg-black/20 backdrop-blur-sm border-white/5 shadow-none"
+            ? "bg-white text-black border-black/5 shadow-2xl py-3" 
+            : "bg-white/80 backdrop-blur-xl border-black/5 shadow-sm py-4"
           }
           ${showNav 
             ? "translate-y-0 opacity-100 scale-100" 
@@ -77,18 +78,18 @@ export default function Navbar() {
         {/* Logo Section */}
         <Link href="/" className="group flex items-center gap-2 z-10">
           <div className="relative overflow-hidden">
-            <span className="font-display text-xl md:text-2xl italic text-text-primary tracking-tight block transition-transform duration-500 group-hover:-translate-y-full">
-              MoreArt<span className="text-accent">Mag</span>
+            <span className="font-display text-xl md:text-2xl italic text-[#0a0a0a] tracking-tight block transition-transform duration-500 group-hover:-translate-y-full">
+              MoreArt<span className="text-[#a3a3a3]">Mag</span>
             </span>
-            <span className="font-display text-xl md:text-2xl italic text-accent tracking-tight absolute top-0 left-0 transition-transform duration-500 translate-y-full group-hover:translate-y-0">
-              MoreArt<span className="text-text-primary">Mag</span>
+            <span className="font-display text-xl md:text-2xl italic text-[#a3a3a3] tracking-tight absolute top-0 left-0 transition-transform duration-500 translate-y-full group-hover:translate-y-0">
+              MoreArt<span className="text-[#0a0a0a]">Mag</span>
             </span>
           </div>
         </Link>
 
         {/* Desktop Nav with Liquid Indicator */}
         <nav 
-          className="hidden md:flex items-center gap-1 relative px-1 py-1 bg-white/5 rounded-full border border-white/5"
+          className="hidden md:flex items-center gap-1 relative px-1 py-1 bg-black/5 rounded-full border border-black/5"
           onMouseLeave={() => setHoveredIndex(null)}
         >
           {LINKS.filter(l => l.name !== 'Contact').map((link, idx) => (
@@ -98,7 +99,7 @@ export default function Navbar() {
               onMouseEnter={() => setHoveredIndex(idx)}
               className={`
                 relative px-6 py-2 text-[10px] uppercase tracking-[0.2em] transition-colors duration-500 z-10
-                ${hoveredIndex === idx || pathname === link.href ? "text-text-primary" : "text-text-secondary"}
+                ${hoveredIndex === idx || pathname === link.href ? "text-[#0a0a0a]" : "text-[#737373]"}
               `}
             >
               {link.name}
@@ -107,7 +108,7 @@ export default function Navbar() {
               {pathname === link.href && (
                 <motion.span 
                   layoutId="activeDot"
-                  className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-accent rounded-full" 
+                  className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-black rounded-full" 
                 />
               )}
 
@@ -115,7 +116,7 @@ export default function Navbar() {
               {hoveredIndex === idx && (
                 <motion.div
                   layoutId="hoverPill"
-                  className="absolute inset-0 bg-white/10 rounded-full -z-0"
+                  className="absolute inset-0 bg-black/5 rounded-full -z-0"
                   transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                 />
               )}
@@ -127,17 +128,17 @@ export default function Navbar() {
          <div className="flex items-center gap-3 md:gap-5 z-10">
           <motion.div
             key={`cart-${cartCount}`}
-            animate={{ scale: [1, 1.5, 1] }}
+            animate={{ scale: [1, 1.2, 1] }}
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             <Link 
               href="/panier" 
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-text-secondary hover:text-accent border border-white/5 transition-all duration-300 hover:scale-110 relative"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-black/5 text-[#737373] hover:text-black border border-black/5 transition-all duration-300 hover:scale-110 relative"
               aria-label="Panier"
             >
               <ShoppingBag size={18} strokeWidth={1.5} />
               {mounted && cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg animate-in zoom-in duration-300">
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-black text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg animate-in zoom-in duration-300">
                   {cartCount}
                 </span>
               )}
@@ -146,7 +147,7 @@ export default function Navbar() {
           
           <Link 
             href="/contact" 
-            className="group hidden sm:flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] bg-accent text-white px-6 py-3 rounded-full hover:bg-accent-hover transition-all duration-300 shadow-lg shadow-accent/20"
+            className="group hidden sm:flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] bg-black text-white px-6 py-3 rounded-full hover:bg-[#1a1a1a] transition-all duration-300 shadow-xl"
           >
             Contact
             <ArrowRight size={12} className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -154,7 +155,7 @@ export default function Navbar() {
 
           <button 
             onClick={toggleMenu}
-            className="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-text-secondary border border-white/5"
+            className="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-black/5 text-[#737373] border border-black/5"
           >
             {isMenuOpen ? <X size={20} strokeWidth={1.5} /> : <Menu size={20} strokeWidth={1.5} />}
           </button>
@@ -169,16 +170,16 @@ export default function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ duration: 0.5, ease: [0.77, 0, 0.175, 1] }}
-            className="fixed inset-0 z-40 bg-background-primary flex flex-col p-8 md:hidden pointer-events-auto"
+            className="fixed inset-0 z-40 bg-[#f5f5f5] flex flex-col p-8 md:hidden pointer-events-auto"
           >
             {/* Bouton Fermer Explicite */}
             <div className="flex justify-between items-center mb-8">
-               <Link href="/" onClick={() => setIsMenuOpen(false)} className="font-display text-2xl italic">
-                  MoreArt<span className="text-accent">Mag</span>
+               <Link href="/" onClick={() => setIsMenuOpen(false)} className="font-display text-2xl italic text-[#0a0a0a]">
+                  MoreArt<span className="text-[#a3a3a3]">Mag</span>
                </Link>
                <button 
                  onClick={() => setIsMenuOpen(false)}
-                 className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-white"
+                 className="w-12 h-12 flex items-center justify-center rounded-full bg-white border border-black/5 text-black shadow-lg"
                >
                  <X size={24} />
                </button>
@@ -195,7 +196,7 @@ export default function Navbar() {
                   <Link 
                     href={link.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className="text-5xl font-display italic text-white hover:text-accent transition-colors"
+                    className="text-5xl font-display text-[#0a0a0a] hover:text-[#a3a3a3] transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -206,19 +207,19 @@ export default function Navbar() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="pt-12 border-t border-white/5"
+                className="pt-12 border-t border-black/5"
               >
                 <Link 
                   href="/contact"
                   onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center gap-4 text-accent eyebrow"
+                  className="flex items-center gap-4 text-[#a3a3a3] eyebrow"
                 >
                   Démarrer un projet <ArrowRight size={16} />
                 </Link>
               </motion.div>
             </div>
 
-            <div className="py-8 border-t border-white/5 flex justify-between items-center text-[9px] eyebrow text-text-muted">
+            <div className="py-8 border-t border-black/5 flex justify-between items-center text-[9px] eyebrow text-[#a3a3a3]">
                <p>© 2026 MOREART MAG</p>
                <div className="flex gap-4">
                   <Link href="/mentions-legales" onClick={() => setIsMenuOpen(false)}>LÉGAL</Link>

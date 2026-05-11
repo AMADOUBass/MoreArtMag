@@ -42,10 +42,10 @@ export async function POST(req: Request) {
 
     if (dbError) throw dbError
 
-    // 2. Send email via Resend (Notification to Bazan)
+    // 2. Send email via Resend
     await resend.emails.send({
-      from: 'MoreArt Mag <onboarding@moreartmag.art>',
-      to: 'bazan@moreartmag.com',
+      from: 'MoreArt Mag <onboarding@resend.dev>',
+      to: 'bassoumamadou0@gmail.com',
       subject: `Nouveau message: ${validatedData.subject}`,
       html: `
         <h2>Nouvelle demande reçue</h2>

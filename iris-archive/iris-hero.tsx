@@ -225,10 +225,10 @@ export default function IrisHero() {
           scrollIndicatorRef.current.style.opacity = '0'
         }
         if (titleRef.current) {
-          const opacity = p < 0.05 ? 1 : Math.max(0, 1 - (p - 0.05) / 0.35)
+          const opacity = p < 0.05 ? 1 : Math.max(0, 1 - (p - 0.05) / 0.60)
           titleRef.current.style.opacity = opacity.toString()
         }
-        if (p >= 0.85 && !useIrisStore.getState().traversed) {
+        if (p >= 0.95 && !useIrisStore.getState().traversed) {
           useIrisStore.getState().setTraversed(true)
           setIrisActive(false)
           hideCanvas()
@@ -276,11 +276,16 @@ export default function IrisHero() {
         style={{ display: canvasVisible ? 'block' : 'none' }}
         aria-hidden={!canvasVisible}
       >
-        <div className="absolute inset-0">
+        <div className="absolute inset-0" style={{ touchAction: 'pan-y' }}>
           <Canvas
             camera={{ position: [0, 0, 1], fov: 60 }}
             dpr={isMobile ? [1, 1.5] : [1, 2]}
             gl={{ alpha: true, antialias: true }}
+            onCreated={({ gl }) => {
+              // R3F force touch-action:none sur le canvas — on override pour
+              // laisser le scroll vertical passer à Lenis sans pinch-zoom ni scroll horizontal
+              gl.domElement.style.touchAction = 'pan-y'
+            }}
           >
             <Suspense fallback={null}>
               <IrisMesh scrollDataRef={scrollData} isMobile={isMobile} />
@@ -303,12 +308,19 @@ export default function IrisHero() {
           ref={scrollIndicatorRef}
           className="absolute bottom-6 left-1/2 -translate-x-1/2 pointer-events-none transition-opacity duration-700 flex flex-col items-center gap-3"
         >
+          {/* Mobile : doigt qui glisse vers le bas */}
           <span className="eyebrow text-[8px] tracking-[0.35em] text-white/60 md:hidden">GLISSER</span>
+          <svg width="24" height="36" viewBox="0 0 24 36" fill="none" className="opacity-50 animate-bounce md:hidden">
+            <path d="M12 2 C9.8 2 8 3.8 8 6 L8 20 C8 22.2 9.8 24 12 24 C14.2 24 16 22.2 16 20 L16 6 C16 3.8 14.2 2 12 2Z" stroke="white" strokeWidth="1.5"/>
+            <path d="M12 6 L12 11" stroke="white" strokeWidth="1.5" strokeLinecap="round" className="animate-pulse"/>
+            <path d="M8 28 L12 34 L16 28" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          {/* Desktop : souris avec scroll wheel */}
           <span className="eyebrow text-[8px] tracking-[0.35em] text-white/60 hidden md:block">DÉFILER</span>
-          <svg width="20" height="32" viewBox="0 0 20 32" fill="none" className="opacity-50 animate-bounce">
-            <rect x="7" y="1" width="6" height="12" rx="3" stroke="white" strokeWidth="1.5"/>
-            <circle cx="10" cy="6" r="2" fill="white" className="animate-pulse"/>
-            <path d="M10 18 L10 30 M6 26 L10 30 L14 26" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg width="20" height="32" viewBox="0 0 20 32" fill="none" className="opacity-50 animate-bounce hidden md:block">
+            <rect x="6" y="1" width="8" height="14" rx="4" stroke="white" strokeWidth="1.5"/>
+            <circle cx="10" cy="7" r="2" fill="white" className="animate-pulse"/>
+            <path d="M10 19 L10 30 M6 26 L10 30 L14 26" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </div>
       </div>

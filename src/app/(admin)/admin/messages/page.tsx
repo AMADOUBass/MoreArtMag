@@ -111,7 +111,7 @@ export default function AdminMessagesPage() {
 
                    <a 
                      href={`mailto:${msg.email}?subject=Re: ${msg.subject}`}
-                     className="p-3 rounded-xl bg-accent text-white hover:bg-accent-hover transition-all"
+                    className="p-3 rounded-xl bg-accent text-black hover:bg-accent-hover transition-all"
                      title="Répondre par email"
                    >
                       <Mail size={16} />

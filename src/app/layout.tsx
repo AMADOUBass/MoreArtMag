@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Cormorant_Garamond } from 'next/font/google'
+import { Inter, Cormorant_Garamond, IBM_Plex_Mono } from 'next/font/google'
 import SmoothScroll from '@/components/providers/smooth-scroll'
 import Navbar from '@/components/marketing/navbar'
 import './globals.css'
@@ -18,10 +18,19 @@ const cormorant = Cormorant_Garamond({
   display: 'swap',
 })
 
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700'],
+  variable: '--font-ibm-plex-mono',
+  display: 'swap',
+})
+
 export const viewport: Viewport = {
   themeColor: '#0a0604',
   width: 'device-width',
   initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 export const metadata: Metadata = {
@@ -78,7 +87,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="fr" className={`${inter.variable} ${cormorant.variable}`}>
+    <html lang="fr" className={`${inter.variable} ${cormorant.variable} ${ibmPlexMono.variable}`}>
       <body className="antialiased bg-black" suppressHydrationWarning={true}>
         <Toaster position="bottom-right" richColors theme="dark" />
         {children}

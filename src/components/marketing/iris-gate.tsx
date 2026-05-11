@@ -26,13 +26,9 @@ export default function IrisGate({ children }: { children: React.ReactNode }) {
 
   const open = traversed || reducedMotion
 
-  // On rend les enfants en permanence (avec visibility:hidden tant que la
-  // traversée n'est pas faite) plutôt que return null, sinon le doc serait
-  // trop court pour que ScrollTrigger atteigne son end → l'animation
-  // resterait bloquée et onLeave ne firerait jamais.
   return (
     <div
-      style={{ visibility: open ? 'visible' : 'hidden' }}
+      style={{ display: open ? 'block' : 'none' }}
       aria-hidden={!open}
     >
       {children}

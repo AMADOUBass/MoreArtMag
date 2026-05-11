@@ -50,30 +50,33 @@ export default function CartPage() {
   }
 
   if (!mounted) return (
-    <div className="min-h-screen bg-background-primary pt-40 flex items-center justify-center">
-       <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin" />
+    <div className="min-h-screen bg-[#f5f5f5] pt-40 flex items-center justify-center">
+        <div className="relative w-12 h-12">
+          <div className="absolute inset-0 rounded-full border-2 border-black/5" />
+          <div className="absolute inset-0 rounded-full border-2 border-t-black/40 animate-spin" />
+        </div>
     </div>
   )
 
   const isCartEmpty = items.length === 0
 
   return (
-    <main className="min-h-screen bg-background-primary pt-32 pb-20">
+    <main className="min-h-screen bg-[#f5f5f5] pt-32 pb-20">
       <div className="container-custom py-20">
         {/* Header Harmonisé - Style Musée */}
         <div className="mb-32 md:mb-56 max-w-4xl relative">
-          <div className="absolute -left-12 -top-12 text-[140px] font-display italic text-white/[0.03] select-none pointer-events-none leading-none">
+          <div className="absolute -left-12 -top-12 text-[140px] font-display text-black/[0.03] select-none pointer-events-none leading-none">
             04
           </div>
-          <p className="eyebrow mb-8 flex items-center gap-4">
-            <span className="w-12 h-[1px] bg-accent/50" />
+          <p className="eyebrow mb-8 flex items-center gap-4 text-[#404040]">
+            <span className="w-12 h-[1px] bg-black/20" />
             VOTRE SÉLECTION
           </p>
-          <h1 className="text-6xl md:text-8xl lg:text-9xl mb-12 leading-[0.9] font-display tracking-tighter">
+          <h1 className="text-6xl md:text-8xl lg:text-9xl mb-12 leading-[0.9] font-display tracking-tighter text-[#0a0a0a]">
             L'art à <br/> 
-            <span className="italic text-accent ml-12 md:ml-24">portée de main.</span>
+            <span className="text-[#a3a3a3] ml-12 md:ml-24">portée de main.</span>
           </h1>
-          <p className="text-text-secondary text-xl md:text-2xl leading-relaxed italic max-w-2xl mt-12 border-t border-white/5 pt-12">
+          <p className="text-[#737373] text-xl md:text-2xl leading-relaxed max-w-2xl mt-12 border-t border-black/5 pt-12">
              {totalItems()} {totalItems() > 1 ? 'œuvres attendent' : 'œuvre attend'} de rejoindre votre espace personnel.
           </p>
         </div>
@@ -85,13 +88,13 @@ export default function CartPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="py-40 text-center border border-dashed border-white/5 rounded-sm"
+              className="py-40 text-center border border-dashed border-black/10 rounded-sm"
             >
-               <ShoppingBag size={48} className="mx-auto text-white/5 mb-8" />
-               <p className="text-3xl font-display italic text-white mb-12">Votre panier est vide.</p>
+               <ShoppingBag size={48} className="mx-auto text-black/5 mb-8" />
+               <p className="text-3xl font-display text-[#0a0a0a] mb-12">Votre panier est vide.</p>
                <Link 
                  href="/photographies" 
-                 className="inline-block px-12 py-6 border border-white/10 text-white hover:border-accent hover:bg-accent/5 hover:text-accent transition-all duration-500 eyebrow uppercase tracking-widest text-[10px] rounded-sm"
+                 className="inline-block px-12 py-6 border border-black/10 text-[#0a0a0a] hover:bg-black hover:text-white transition-all duration-500 eyebrow uppercase tracking-widest text-[10px] rounded-sm"
                >
                   Découvrir la collection
                </Link>
@@ -113,9 +116,9 @@ export default function CartPage() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    className="flex flex-col md:flex-row gap-8 pb-12 border-b border-white/5 group"
+                    className="flex flex-col md:flex-row gap-8 pb-12 border-b border-black/5 group"
                   >
-                    <div className="relative aspect-[4/5] w-full md:w-40 bg-background-secondary rounded-sm overflow-hidden flex-shrink-0">
+                    <div className="relative aspect-[4/5] w-full md:w-40 bg-white rounded-sm overflow-hidden flex-shrink-0 shadow-xl border border-black/5">
                        <Image 
                           src={item.image || 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=800&auto=format&fit=crop'} 
                           alt={item.title} 
@@ -127,38 +130,38 @@ export default function CartPage() {
                     <div className="flex-1 flex flex-col justify-between py-2">
                        <div className="flex justify-between items-start">
                           <div>
-                             <h3 className="text-2xl font-display italic text-white mb-2">{item.title}</h3>
-                             <p className="eyebrow text-[10px] text-text-muted">{item.sizeLabel} — Tirage Fine Art</p>
+                             <h3 className="text-2xl font-display text-[#0a0a0a] mb-2">{item.title}</h3>
+                             <p className="eyebrow text-[10px] text-[#737373]">{item.sizeLabel} — Tirage Fine Art</p>
                           </div>
                           <button 
                             onClick={() => {
                                removeItem(item.id)
                                toast.info(`${item.title} retiré du panier`)
                             }}
-                            className="p-2 text-text-muted hover:text-error transition-colors"
+                            className="p-2 text-[#a3a3a3] hover:text-red-500 transition-colors"
                           >
                             <Trash2 size={18} />
                           </button>
                        </div>
 
                        <div className="flex justify-between items-center mt-8">
-                          <div className="flex items-center gap-4 bg-white/5 p-1 rounded-full border border-white/5">
+                          <div className="flex items-center gap-4 bg-black/5 p-1 rounded-full border border-black/5">
                              <button 
                                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-white transition-colors"
+                                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-black/5 text-[#0a0a0a] transition-colors"
                              >
                                 <Minus size={14} />
                              </button>
-                             <span className="w-8 text-center text-sm font-bold text-white">{item.quantity}</span>
+                             <span className="w-8 text-center text-sm font-bold text-[#0a0a0a]">{item.quantity}</span>
                              <button 
                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-white transition-colors"
+                                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-black/5 text-[#0a0a0a] transition-colors"
                                 disabled={item.stockRemaining !== null && item.quantity >= item.stockRemaining}
                              >
                                 <Plus size={14} />
                              </button>
                           </div>
-                          <p className="text-xl font-display text-white">
+                          <p className="text-xl font-display text-[#0a0a0a]">
                              {(item.priceCents * item.quantity / 100).toLocaleString('fr-CA', { style: 'currency', currency: item.currency })}
                           </p>
                        </div>
@@ -169,42 +172,50 @@ export default function CartPage() {
 
               {/* Summary */}
               <div className="lg:col-span-4">
-                 <div className="bg-background-secondary border border-white/5 p-6 md:p-10 rounded-sm sticky top-40 shadow-2xl">
-                    <h2 className="text-2xl font-display italic text-white mb-8 pb-8 border-b border-white/5">Récapitulatif</h2>
+                 <div className="bg-white border border-black/5 p-6 md:p-10 rounded-sm sticky top-40 shadow-2xl">
+                    <h2 className="text-2xl font-display text-[#0a0a0a] mb-8 pb-8 border-b border-black/5">Récapitulatif</h2>
                     
                     <div className="space-y-6 mb-12">
-                       <div className="flex justify-between eyebrow text-text-muted">
+                       <div className="flex justify-between eyebrow text-[#737373]">
                           <span>Sous-total</span>
                           <span>{(totalPrice() / 100).toLocaleString('fr-CA', { style: 'currency', currency: items[0]?.currency || 'CAD' })}</span>
                        </div>
-                       <div className="flex justify-between eyebrow text-text-muted">
+                       <div className="flex justify-between eyebrow text-[#737373]">
                           <span>Livraison</span>
-                          <span className="text-accent italic">Calculée à l'étape suivante</span>
+                          <span className="text-[#a3a3a3]">Calculée à l'étape suivante</span>
                        </div>
-                       <div className="pt-6 border-t border-white/5 flex justify-between items-end">
-                          <span className="text-white font-display italic text-xl">Total</span>
-                          <span className="text-3xl font-display text-accent">
+                       <div className="pt-6 border-t border-black/5 flex justify-between items-end">
+                          <span className="text-[#0a0a0a] font-display text-xl">Total</span>
+                          <span className="text-3xl font-display text-[#0a0a0a]">
                              {(totalPrice() / 100).toLocaleString('fr-CA', { style: 'currency', currency: items[0]?.currency || 'CAD' })}
                           </span>
                        </div>
                     </div>
 
-                    <Button 
+                    <button 
                       onClick={handleCheckout}
-                      loading={isCheckingOut}
-                      size="xl"
-                      className="w-full"
-                      icon={<ArrowRight size={16} />}
+                      className={`w-full flex items-center justify-center gap-3 h-16 rounded-sm font-display text-xl transition-all duration-500 ${
+                        isCheckingOut 
+                        ? 'bg-black/10 text-black/40 cursor-not-allowed' 
+                        : 'bg-black text-white hover:bg-[#1a1a1a] shadow-xl hover:shadow-2xl translate-y-0 hover:-translate-y-1'
+                      }`}
                     >
-                       Passer à la caisse 
-                    </Button>
+                       {isCheckingOut ? (
+                          <div className="w-5 h-5 border-2 border-white/20 border-t-white animate-spin rounded-full" />
+                       ) : (
+                         <>
+                           Passer à la caisse 
+                           <ArrowRight size={18} />
+                         </>
+                       )}
+                    </button>
 
                     <div className="mt-12 space-y-4">
-                       <p className="text-[10px] eyebrow text-text-muted flex items-center gap-3">
-                          <span className="w-1.5 h-1.5 bg-success rounded-full" /> Paiement sécurisé par Stripe
+                       <p className="text-[10px] eyebrow text-[#a3a3a3] flex items-center gap-3">
+                          <span className="w-1.5 h-1.5 bg-green-500/40 rounded-full" /> Paiement sécurisé par Stripe
                        </p>
-                       <p className="text-[10px] eyebrow text-text-muted flex items-center gap-3">
-                          <span className="w-1.5 h-1.5 bg-accent rounded-full" /> Livraison mondiale assurée
+                       <p className="text-[10px] eyebrow text-[#a3a3a3] flex items-center gap-3">
+                          <span className="w-1.5 h-1.5 bg-black/20 rounded-full" /> Livraison mondiale assurée
                        </p>
                     </div>
                  </div>

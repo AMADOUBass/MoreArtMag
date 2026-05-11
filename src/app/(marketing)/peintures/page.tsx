@@ -74,24 +74,24 @@ export default async function PeinturesPage() {
   const artworks = await getPaintings()
 
   return (
-    <main className="pt-40 pb-20 bg-background-primary min-h-screen">
+    <main className="pt-32 md:pt-64 pb-20 bg-[#f5f5f5] min-h-screen">
       <div className="container-custom">
         {/* Header Harmonisé */}
         <div className="mb-32 md:mb-56 max-w-4xl relative">
-          <div className="absolute -left-12 -top-12 text-[140px] font-display italic text-white/[0.03] select-none pointer-events-none leading-none">
+          <div className="absolute -left-12 -top-12 text-[140px] font-display text-black/[0.03] select-none pointer-events-none leading-none">
             02
           </div>
-          <p className="eyebrow mb-8 flex items-center gap-4">
-            <span className="w-12 h-[1px] bg-accent/50" />
+          <p className="eyebrow mb-8 flex items-center gap-4 text-[#404040]">
+            <span className="w-12 h-[1px] bg-black/20" />
             Matière & Sédimentation
           </p>
-          <h1 className="text-6xl md:text-8xl lg:text-9xl mb-12 leading-[0.9] font-display tracking-tighter">
+          <h1 className="text-6xl md:text-8xl lg:text-9xl mb-12 leading-[0.9] font-display tracking-tighter text-[#0a0a0a]">
             La trace <br/> 
-            <span className="italic text-accent ml-12 md:ml-24">du temps.</span>
+            <span className="text-[#a3a3a3] ml-12 md:ml-24">du temps.</span>
           </h1>
           <div className="flex flex-col md:flex-row gap-12 items-start md:items-center ml-auto md:max-w-2xl">
-             <div className="w-px h-24 bg-white/10 hidden md:block" />
-             <p className="text-text-secondary text-xl md:text-2xl leading-relaxed italic">
+             <div className="w-px h-24 bg-black/10 hidden md:block" />
+             <p className="text-[#737373] text-xl md:text-2xl leading-relaxed">
               "Peindre, c'est sédimenter l'instant. C'est laisser la matière raconter ce que les mots ne peuvent plus contenir."
             </p>
           </div>
@@ -105,7 +105,7 @@ export default async function PeinturesPage() {
               className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
             >
               <div className={`lg:col-span-7 ${idx % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
-                <Link href={`/oeuvres/${art.slug.current}`} className="relative block aspect-[4/5] bg-background-secondary rounded-sm overflow-hidden shadow-2xl group cursor-pointer">
+                <Link href={`/oeuvres/${art.slug.current}`} className="relative block aspect-[4/5] rounded-sm overflow-hidden shadow-[0_20px_80px_rgba(0,0,0,0.08)] group cursor-pointer border border-black/5">
                   <Image
                     src={art._id.startsWith('pa') ? `/images/placeholders/painting_${art._id === 'pa3' ? '1' : art._id === 'pa4' ? '2' : art._id.replace('pa', '')}.png` : (art.mainImage ? urlFor(art.mainImage).width(1200).url() : '/images/placeholders/painting_1.png')}
                     alt={art.title}
@@ -116,13 +116,13 @@ export default async function PeinturesPage() {
               </div>
 
               <div className={`lg:col-span-5 ${idx % 2 === 0 ? 'lg:order-2 lg:pl-12' : 'lg:order-1 lg:pr-12'}`}>
-                <p className="eyebrow text-accent mb-6">Fragment {idx + 1}</p>
-                <h2 className="text-5xl font-display italic text-white mb-8 leading-tight">{art.title}</h2>
-                <p className="text-text-secondary text-lg leading-relaxed mb-12">
+                <p className="eyebrow text-[#a3a3a3] mb-6">Fragment {idx + 1}</p>
+                <h2 className="text-5xl font-display text-[#0a0a0a] mb-8 leading-tight">{art.title}</h2>
+                <p className="text-[#737373] text-lg leading-relaxed mb-12">
                   {art.shortDescription || "Une exploration profonde de la matière, où chaque couche de pigment raconte une histoire de sédimentation et de mémoire."}
                 </p>
                 <Link href={`/oeuvres/${art.slug.current}`}>
-                  <button className="px-10 py-5 border border-white/10 hover:border-accent hover:bg-accent/5 text-white transition-all duration-500 eyebrow text-[10px] uppercase tracking-widest rounded-sm cursor-pointer">
+                  <button className="px-10 py-5 border border-black/10 hover:border-black hover:bg-black/5 text-[#0a0a0a] transition-all duration-500 eyebrow text-[10px] uppercase tracking-widest rounded-sm cursor-pointer">
                      Découvrir l'œuvre
                   </button>
                 </Link>

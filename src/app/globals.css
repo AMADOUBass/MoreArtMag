@@ -2,23 +2,23 @@
 
 @theme {
   /* Fonts */
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-display: var(--font-cormorant), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-sans: var(--font-ibm-plex-mono), "IBM Plex Mono Fallback", monospace;
+  --font-display: var(--font-ibm-plex-mono), "IBM Plex Mono Fallback", monospace;
 
   /* Colors */
-  --color-background-primary: #0a0604;
-  --color-background-secondary: #14100c;
-  --color-background-tertiary: #1f1813;
-  --color-background-elevated: #2a221b;
+  --color-background-primary: #0a0a0a;
+  --color-background-secondary: #141414;
+  --color-background-tertiary: #1f1f1f;
+  --color-background-elevated: #2a2a2a;
 
-  --color-text-primary: #f5efe6;
-  --color-text-secondary: #c9bfb0;
-  --color-text-muted: #7a6a5a;
-  --color-text-inverse: #0a0604;
+  --color-text-primary: #f5f5f5;
+  --color-text-secondary: #a3a3a3;
+  --color-text-muted: #737373;
+  --color-text-inverse: #0a0a0a;
 
-  --color-accent: #c08855;
-  --color-accent-hover: #d49a65;
-  --color-accent-muted: #8a5d38;
+  --color-accent: #ffffff;
+  --color-accent-hover: #e5e5e5;
+  --color-accent-muted: #a3a3a3;
 
   --color-success: #6b8e5a;
   --color-warning: #c89052;
@@ -106,8 +106,12 @@
       @apply text-xs uppercase tracking-[0.18em] text-text-muted;
     }
     
+    .italic {
+      font-style: normal !important;
+    }
+
     .tagline {
-      @apply font-display italic text-text-secondary;
+      @apply font-display text-text-secondary;
     }
 
     .animate-scroll-line {

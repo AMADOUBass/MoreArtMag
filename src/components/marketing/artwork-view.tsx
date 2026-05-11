@@ -95,7 +95,7 @@ export default function ArtworkView({ artwork }: ArtworkViewProps) {
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
-          className="bg-background-secondary group relative aspect-[4/5] cursor-zoom-in overflow-hidden rounded-sm shadow-2xl"
+          className="bg-white group relative aspect-[4/5] cursor-zoom-in overflow-hidden rounded-sm shadow-2xl border border-black/5"
           onClick={() => setShowLightbox(true)}
         >
           {artwork.mainImage ? (
@@ -120,7 +120,7 @@ export default function ArtworkView({ artwork }: ArtworkViewProps) {
               e.stopPropagation()
               setShowLightbox(true)
             }}
-            className="hover:bg-accent hover:border-accent absolute top-6 right-6 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-black/40 text-white backdrop-blur-md transition-all duration-300"
+            className="hover:bg-black hover:text-white absolute top-6 right-6 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-black/10 bg-white/40 text-black backdrop-blur-md transition-all duration-300"
           >
             <Maximize2 size={20} />
           </button>
@@ -136,37 +136,37 @@ export default function ArtworkView({ artwork }: ArtworkViewProps) {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <p className="eyebrow text-accent mb-6 flex items-center gap-3">
-            <span className="bg-accent/40 h-[1px] w-8" />
+          <p className="eyebrow text-[#a3a3a3] mb-6 flex items-center gap-3">
+            <span className="bg-black/20 h-[1px] w-8" />
             {artwork.type === 'photo' ? 'Photographie' : 'Peinture'}
           </p>
-          <h1 className="font-display mb-8 text-4xl leading-tight text-white italic md:text-7xl">
+          <h1 className="font-display mb-8 text-4xl leading-tight text-[#0a0a0a] md:text-7xl">
             {artwork.title}
           </h1>
 
-          <div className="eyebrow text-text-muted mb-12 flex items-center gap-6 text-[10px] md:gap-8 md:text-sm">
+          <div className="eyebrow text-[#737373] mb-12 flex items-center gap-6 text-[10px] md:gap-8 md:text-sm">
             <div className="flex min-w-fit flex-col">
-              <span className="mb-1 text-white">Année</span>
+              <span className="mb-1 text-[#0a0a0a]">Année</span>
               <span>{artwork.year}</span>
             </div>
-            <div className="h-8 w-px shrink-0 bg-white/10" />
+            <div className="h-8 w-px shrink-0 bg-black/10" />
             <div className="flex min-w-fit flex-col">
-              <span className="mb-1 text-white">Lieu</span>
+              <span className="mb-1 text-[#0a0a0a]">Lieu</span>
               <span>{artwork.location || 'Studio'}</span>
             </div>
             {selectedSize && (
               <>
-                <div className="h-8 w-px shrink-0 bg-white/10" />
+                <div className="h-8 w-px shrink-0 bg-black/10" />
                 <div className="flex min-w-fit flex-col">
-                  <span className="mb-1 text-white">Dimensions</span>
+                  <span className="mb-1 text-[#0a0a0a]">Dimensions</span>
                   <span>{selectedSize.label}</span>
                 </div>
               </>
             )}
           </div>
 
-          <div className="prose prose-invert mb-12 max-w-none">
-            <p className="text-text-secondary text-lg leading-relaxed italic">
+          <div className="prose mb-12 max-w-none">
+            <p className="text-[#737373] text-lg leading-relaxed">
               {artwork.shortDescription ||
                 'Une exploration des formes et des ombres née du mouvement intuitif de la main.'}
             </p>
@@ -175,8 +175,8 @@ export default function ArtworkView({ artwork }: ArtworkViewProps) {
           {/* Size Selector */}
           {artwork.sizes && artwork.sizes.length > 0 && (
             <div className="mb-12">
-              <p className="eyebrow mb-6 flex items-center gap-2 text-white">
-                <Ruler size={14} className="text-accent" /> Format & Edition
+              <p className="eyebrow mb-6 flex items-center gap-2 text-[#0a0a0a]">
+                <Ruler size={14} className="text-[#a3a3a3]" /> Format & Edition
               </p>
               <div className="grid grid-cols-1 gap-4">
                 {artwork.sizes.map((size) => (
@@ -185,20 +185,20 @@ export default function ArtworkView({ artwork }: ArtworkViewProps) {
                     onClick={() => setSelectedSize(size)}
                     className={`flex items-center justify-between rounded-sm border p-5 transition-all duration-300 ${
                       selectedSize?.sizeId === size.sizeId
-                        ? 'border-accent bg-accent/5'
-                        : 'border-white/10 hover:border-white/30'
+                        ? 'border-black bg-black/5'
+                        : 'border-black/10 hover:border-black/30'
                     }`}
                   >
                     <div className="flex flex-col items-start">
-                      <span className="font-display text-white italic">
+                      <span className="font-display text-[#0a0a0a]">
                         {size.label}
                       </span>
-                      <span className="eyebrow text-text-muted text-[10px]">
+                      <span className="eyebrow text-[#737373] text-[10px]">
                         Édition Limitée
                       </span>
                     </div>
                     <div className="flex items-center gap-4">
-                      <span className="font-display text-xl text-white">
+                      <span className="font-display text-xl text-[#0a0a0a]">
                         {(() => {
                           const s = artwork.stock?.find(
                             (st) => st.size_sanity_id === size.sizeId
@@ -212,7 +212,7 @@ export default function ArtworkView({ artwork }: ArtworkViewProps) {
                         })()}
                       </span>
                       {selectedSize?.sizeId === size.sizeId && (
-                        <Check size={18} className="text-accent" />
+                        <Check size={18} className="text-black" />
                       )}
                     </div>
                   </button>
@@ -223,43 +223,47 @@ export default function ArtworkView({ artwork }: ArtworkViewProps) {
 
           {/* Actions */}
           <div className="space-y-6">
-            <Button
+            <button
               onClick={handleAddToCart}
-              loading={isAdding}
               disabled={isSoldOut || !currentStock}
-              size="xl"
-              className="w-full"
-              icon={
-                isSoldOut || !currentStock ? null : <ShoppingBag size={18} />
-              }
+              className={`w-full flex items-center justify-center gap-3 h-16 rounded-sm font-display text-xl transition-all duration-500 ${
+                isSoldOut || !currentStock 
+                ? 'bg-black/10 text-black/40 cursor-not-allowed' 
+                : 'bg-black text-white hover:bg-[#1a1a1a] shadow-xl hover:shadow-2xl translate-y-0 hover:-translate-y-1'
+              }`}
             >
-              {isSoldOut
-                ? 'Indisponible'
-                : !currentStock
-                  ? 'Prix non configuré'
-                  : 'Ajouter à la collection'}
-            </Button>
+              {isAdding ? (
+                 <div className="w-5 h-5 border-2 border-white/20 border-t-white animate-spin rounded-full" />
+              ) : (
+                <>
+                  {isSoldOut || !currentStock ? null : <ShoppingBag size={20} />}
+                  {isSoldOut
+                    ? 'Indisponible'
+                    : !currentStock
+                      ? 'Prix non configuré'
+                      : 'Ajouter à la collection'}
+                </>
+              )}
+            </button>
 
-            <Button
-              variant="outline"
+            <button
               onClick={() => setShowRoomPreview(true)}
-              size="xl"
-              className="w-full"
-              icon={<Maximize2 size={16} />}
+              className="w-full flex items-center justify-center gap-3 h-16 rounded-sm font-display text-xl border border-black/10 hover:bg-black/5 transition-all duration-300"
             >
+              <Maximize2 size={18} />
               Visualiser dans mon intérieur
-            </Button>
+            </button>
           </div>
 
           {/* Accordions / Extra Info */}
-          <div className="mt-16 space-y-8 border-t border-white/5 pt-12">
+          <div className="mt-16 space-y-8 border-t border-black/5 pt-12">
             <div className="flex items-start gap-4">
-              <Info size={18} className="text-accent mt-1" />
+              <Info size={18} className="text-[#a3a3a3] mt-1" />
               <div>
-                <p className="font-display mb-2 text-white italic">
+                <p className="font-display mb-2 text-[#0a0a0a]">
                   Certificat d'Authenticité
                 </p>
-                <p className="text-text-muted text-sm leading-relaxed">
+                <p className="text-[#737373] text-sm leading-relaxed">
                   Chaque œuvre est accompagnée d'un certificat signé par Bazan
                   Togola, garantissant son origine et sa valeur.
                 </p>

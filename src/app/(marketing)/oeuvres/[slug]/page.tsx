@@ -68,7 +68,7 @@ export default async function ArtworkPage({ params }: PageProps) {
   const relatedWorks = await getRelatedWorks(artwork.type, artwork._id)
 
   return (
-    <main className="pt-32 pb-20 bg-background-primary min-h-screen">
+    <main className="pt-32 pb-20 bg-[#f5f5f5] min-h-screen">
       <div className="container-custom py-20">
         {/* Navigation fil d'Ariane dynamique */}
         <Breadcrumbs items={[
@@ -105,13 +105,13 @@ export default async function ArtworkPage({ params }: PageProps) {
 
         {/* Section: Related Works */}
         {relatedWorks.length > 0 && (
-          <section className="mt-40 pt-40 border-t border-white/5">
+          <section className="mt-40 pt-40 border-t border-black/5">
             <div className="flex justify-between items-end mb-16">
                <div>
-                  <p className="eyebrow text-accent mb-4">Dans la même série</p>
-                  <h2 className="text-4xl md:text-5xl font-display italic text-white">Fragments Complémentaires</h2>
+                  <p className="eyebrow text-[#a3a3a3] mb-4">Dans la même série</p>
+                  <h2 className="text-4xl md:text-5xl font-display text-[#0a0a0a]">Fragments Complémentaires</h2>
                </div>
-               <Link href="/moreart" className="eyebrow text-white hover:text-accent transition-colors hidden md:block">
+               <Link href="/moreart" className="eyebrow text-[#0a0a0a] hover:text-[#a3a3a3] transition-colors hidden md:block">
                   Voir toute la collection →
                </Link>
             </div>
@@ -119,7 +119,7 @@ export default async function ArtworkPage({ params }: PageProps) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                {relatedWorks.map((art) => (
                  <Link key={art._id} href={`/oeuvres/${art.slug.current}`} className="group space-y-6">
-                    <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-background-secondary shadow-xl">
+                    <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-white shadow-xl border border-black/5">
                        {art.mainImage ? (
                          <Image
                            src={urlFor(art.mainImage).width(800).url()}
@@ -128,15 +128,15 @@ export default async function ArtworkPage({ params }: PageProps) {
                            className="object-cover transition-transform duration-1000 group-hover:scale-110"
                          />
                        ) : (
-                         <div className="w-full h-full flex items-center justify-center bg-white/5 italic text-[10px] text-text-muted">
+                         <div className="w-full h-full flex items-center justify-center bg-black/5 italic text-[10px] text-[#737373]">
                            Image non disponible
                          </div>
                        )}
-                       <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700" />
+                       <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-700" />
                     </div>
                     <div>
-                       <h3 className="text-2xl font-display italic text-white group-hover:text-accent transition-colors duration-300">{art.title}</h3>
-                       <p className="eyebrow text-text-muted text-[10px] mt-2">{art.location} — {art.year}</p>
+                       <h3 className="text-2xl font-display text-[#0a0a0a] group-hover:text-[#a3a3a3] transition-colors duration-300">{art.title}</h3>
+                       <p className="eyebrow text-[#737373] text-[10px] mt-2">{art.location} — {art.year}</p>
                     </div>
                  </Link>
                ))}
